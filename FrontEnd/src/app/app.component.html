@@ -1,8 +1,6 @@
 <div>
   <app-header></app-header>
-  <div class="container">
-    <app-sorting></app-sorting> 
-    <app-optimizing></app-optimizing>
-    <app-shortest-way></app-shortest-way>
+  <div class="container" >
+    <app-box *ngFor="let i of [0, 1, 2]" [title]="Algorithms[i]"></app-box>
   </div>
 </div>

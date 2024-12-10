@@ -1,9 +1,5 @@
-algo1
-<br>
-algo2
-<br>
-algo3
-<br>
-algo4
-<br>
-algo5
+<div>
+        <div *ngFor="let i of  [0, 1, 2, 3]; let index = index" [ngClass]="{'bg-gray': index % 2 === 1}">
+                {{algorithms[i]}}
+        </div>
+</div>

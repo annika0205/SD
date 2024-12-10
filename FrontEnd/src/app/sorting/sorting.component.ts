@@ -7,4 +7,10 @@ import { PreviewBoxComponent } from '../preview-box/preview-box.component';
   styleUrl: './sorting.component.css'
 })
 export class SortingComponent {
+  algorithms=[
+    'Bubblesort',
+    'MergeSort',
+    'Quicksort',
+    'Selectionsort'
+]
 }

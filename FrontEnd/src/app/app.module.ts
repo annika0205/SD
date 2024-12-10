@@ -8,6 +8,9 @@ import { OptimizingComponent } from './optimizing/optimizing.component';
 import { ShortestWayComponent } from './shortest-way/shortest-way.component';
 import { HeaderComponent } from './header/header.component';
 import { PreviewBoxComponent } from './preview-box/preview-box.component';
+import { BoxComponent } from './box/box.component';
+
+
 
 @NgModule({
   declarations: [
@@ -16,7 +19,8 @@ import { PreviewBoxComponent } from './preview-box/preview-box.component';
     OptimizingComponent,
     ShortestWayComponent,
     HeaderComponent,
-    PreviewBoxComponent
+    PreviewBoxComponent,
+    BoxComponent
   ],
   imports: [
     BrowserModule,
