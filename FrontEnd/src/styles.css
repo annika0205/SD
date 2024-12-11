@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    gap: 1px; 
+  }
+  
+  .standard-card {
+    background-color: white;
+    width: 400px;
+    min-height: 440px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-left: 7px;
+    margin-right: 7px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);   
+      }
+  }
+
+  .preview-card{
+    background-color: white;
+    width: 90%; /* Macht die Karte kleiner */
+    height: 80%; /* Passt die Höhe entsprechend an */
+    margin: auto; /* Zentriert die Karte */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    position: absolute; /* Absolute Positionierung innerhalb der übergeordneten Karte */
+    top: 15%; /* Zentriert vertikal */
+    left: 5%; /* Zentriert horizontal */
+    margin-bottom: 40px;
+}
+
+  h2 {text-decoration: underline; text-align: center;}
+        

@@ -1,0 +1,5 @@
+<div>
+        <div *ngFor="let i of  [0, 1, 2, 3]; let index = index" [ngClass]="{'bg-gray': index % 2 === 1}">
+                {{algorithms[i]}}
+        </div>
+</div>
