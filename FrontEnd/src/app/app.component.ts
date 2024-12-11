@@ -8,9 +8,4 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'SD-Projekt';
   
-  Algorithms=['Sortieralgorithmen',
-    'Optimierungsalgorithmen',
-    'Kürzester-Weg-Algorithmen'
-  ]
-
 }
