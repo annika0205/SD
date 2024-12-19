@@ -1,3 +1,14 @@
+.list {
+font-size: 30px;
+margin-left: 20px;
+margin-right: 20px;
+transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.008);
+  }
+}
+
 .bg-gray {
     background-color: lightgray;
   }
