@@ -1,3 +1,7 @@
 <div class="container" >
-    <app-box *ngFor="let i of [0, 1, 2]" [title]="Algorithms[i]"></app-box>
+    <app-box 
+    *ngFor="let i of [0, 1, 2]; let index = index"
+    [title]="Algorithms[i]"
+    (navigate)="onNavigate(index)"
+    ></app-box>
   </div>
