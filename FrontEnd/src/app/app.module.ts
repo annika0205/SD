@@ -11,6 +11,8 @@ import { PreviewBoxComponent } from './preview-box/preview-box.component';
 import { BoxComponent } from './box/box.component';
 import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
+import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
+import { MergesortComponent } from './sorting/mergesort/mergesort.component';
 
 
 
@@ -23,7 +25,9 @@ import { StartpageComponent } from './startpage/startpage.component';
     HeaderComponent,
     PreviewBoxComponent,
     BoxComponent,
-    StartpageComponent
+    StartpageComponent,
+    SelectionSortComponent,
+    MergesortComponent
   ],
   imports: [
     BrowserModule,
