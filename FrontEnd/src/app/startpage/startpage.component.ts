@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-startpage',
@@ -11,5 +12,18 @@ export class StartpageComponent {
     'Optimierungsalgorithmen',
     'Kürzester-Weg-Algorithmen'
   ]
+
+  constructor(private router: Router) {}
+
+  onNavigate(index: number) {
+    const routes = [
+      '/sortieralgorithmen',
+      '/optimierungsalgorithmen',
+      '/kürzesterweg'
+    ];
+
+    // Navigiere zur Route basierend auf dem Index
+    this.router.navigate([routes[index]]);
+  }
 
 }
