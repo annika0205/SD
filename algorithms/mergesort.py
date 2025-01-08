@@ -1,36 +1,44 @@
-def merge_sort(arr):
-    # Liste hat nur ein ELemet=> Liste sortiert
-    if len(arr) <= 1:
-        return arr
-    
-    
-    mid = len(arr) // 2
-    linke_haelfte = arr[:mid]
-    rechte_haelfte = arr[mid:]
-    
-    # Rekursiv die beiden Hälften sortieren
-    links_sortiert = merge_sort(linke_haelfte)
-    rechts_sortiert= merge_sort(rechte_haelfte)
-    
-    # Zusammenführen der beiden sortierten Hälften
-    return merge(links_sortiert, rechts_sortiert)
+function mergeSort(arr: number[]): number[] {
+    // Liste hat nur ein Element => Liste ist sortiert
+    if (arr.length <= 1) {
+        return arr;
+    }
 
-def merge(links, rechts):
-    # Ergebnis-Array für die zusammengeführten Werte
-    merged = []
-    i = j = 0
-    
-    # Solange beide Listen noch Elemente haben, vergleiche sie
-    while i < len(links) and j < len(rechts):
-        if links[i] < rechts[j]:
-            merged.append(left[i])
-            i += 1
-        else:
-            merged.append(rechts[j])
-            j += 1
-    
-    # Füge die restlichen Elemente der nicht-leeren Liste hinzu
-    merged.extend(links[i:])
-    merged.extend(rechts[j:])
-    
-    return merged
+    const mid = Math.floor(arr.length / 2);
+    const leftHalf = arr.slice(0, mid);
+    const rightHalf = arr.slice(mid);
+
+    // Rekursiv die beiden Hälften sortieren
+    const leftSorted = mergeSort(leftHalf);
+    const rightSorted = mergeSort(rightHalf);
+
+    // Zusammenführen der beiden sortierten Hälften
+    return merge(leftSorted, rightSorted);
+}
+
+function merge(left: number[], right: number[]): number[] {
+    // Ergebnis-Array für die zusammengeführten Werte
+    const merged: number[] = [];
+    let i = 0, j = 0;
+
+    // Solange beide Listen noch Elemente haben, vergleiche sie
+    while (i < left.length && j < right.length) {
+        if (left[i] < right[j]) {
+            merged.push(left[i]);
+            i++;
+        } else {
+            merged.push(right[j]);
+            j++;
+        }
+    }
+
+    // Füge die restlichen Elemente der nicht-leeren Liste hinzu
+    merged.push(...left.slice(i));
+    merged.push(...right.slice(j));
+
+    return merged;
+}
+
+// Beispiel:
+const arr = [38, 27, 43, 3, 9, 82, 10];
+console.log(mergeSort(arr));  // Ausgabe: [3, 9, 10, 27, 38, 43, 82]
