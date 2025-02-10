@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PreviewBoxComponent } from '../preview-box/preview-box.component';
 
 @Component({
@@ -13,4 +13,5 @@ export class SortingComponent {
     'Quicksort',
     'Selectionsort'
 ]
+@Input() items: string[] = [];
 }

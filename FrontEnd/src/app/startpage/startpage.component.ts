@@ -7,9 +7,15 @@ import { Component } from '@angular/core';
 })
 export class StartpageComponent {
 
-  Algorithms=['Sortieralgorithmen',
-    'Optimierungsalgorithmen',
-    'Kürzester-Weg-Algorithmen'
-  ]
+  // Algorithms=['Sortieralgorithmen',
+  //   'Optimierungsalgorithmen',
+  //   'Kürzester-Weg-Algorithmen'
+  // ]
+
+  boxes = [
+    { title:'Sortieralgorithmen', items: ['Bubblesort', 'Insertionsort', 'Mergesort', 'Selectionsort', 'Quicksort', 'Heapsort', 'Countingsort'] },
+    { title: 'Optimierungsalgorithmen', items: ['Item 2.1', 'Item 2.2', 'Item 2.3', 'Item 2.4'] },
+    { title: 'Kürzester-Weg-Algorithmen', items: ['Dijkstra', 'A*', 'Item 3.3', 'Item 3.4'] }
+  ];
 
 }
