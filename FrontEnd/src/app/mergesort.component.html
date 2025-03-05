@@ -1,0 +1,128 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+
+  <!-- Eingabebereich -->
+  <div class="input-container">
+    <input type="text" 
+           *ngFor="let value of inputValues; let i = index"
+           [value]="value"
+           (input)="onNumberInput($event, i)"
+           [disabled]="isDisabled"
+           [placeholder]="'Zahl ' + (i + 1)"
+           inputmode="numeric"
+           pattern="[0-9]*"
+           maxlength="3">
+  </div>
+
+  <!-- Steuerungsbuttons -->
+  <div class="button-container">
+    <button (click)="generateRandomNumbers()" [disabled]="isDisabled">
+      Zufallszahlen generieren
+    </button>
+    <button (click)="startSorting()" [disabled]="isDisabled">
+      Sortieren
+    </button>
+    <button (click)="resetVisualization()" [disabled]="isDisabled">
+      Zurücksetzen
+    </button>
+  </div>
+
+  <!-- Visualisierungsbereich -->
+  <div class="visualization-container">
+    <div class="array-container">
+      <!-- Ursprüngliches Array -->
+      <div class="array-row" *ngIf="originalArray.length > 0">
+        <div class="step-label">Start:</div>
+        <div class="array-visual-wrapper">
+          <div class="array-visual">
+            <div class="array-item" *ngFor="let num of originalArray">{{ num }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sortierungsschritte -->
+      <ng-container *ngFor="let step of steps">
+        <!-- Split-Schritt -->
+        <div class="array-row" *ngIf="step.type === 'split'">
+          <div class="step-label">Teilen:</div>
+          <div class="array-visual-wrapper">
+            <div class="array-visual">
+              <ng-container *ngFor="let num of step.array; let i = index">
+                <div class="subarray-wrapper" *ngIf="i === step.left">
+                  <div class="subarray">
+                    <div class="array-item" 
+                         *ngFor="let n of step.array.slice(step.left, step.right + 1); let j = index"
+                         [style.background-color]="getStepColor(j + step.left, step)">
+                      {{ n }}
+                    </div>
+                  </div>
+                </div>
+                <div class="array-item" 
+                     *ngIf="i < step.left || i > step.right"
+                     [style.background-color]="'#999'">
+                  {{ num }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Merge-Vorgang -->
+        <div class="array-row" *ngIf="step.type === 'merge-before'">
+          <div class="step-label">Verschmelzen:</div>
+          <div class="array-visual-wrapper">
+            <div class="array-visual merge-visual">
+              <div class="subarray-wrapper">
+                <div class="subarray">
+                  <div class="array-item" 
+                       *ngFor="let num of step.leftArray"
+                       style="background-color: #4CAF50">{{ num }}</div>
+                </div>
+              </div>
+              <div class="subarray-wrapper">
+                <div class="subarray">
+                  <div class="array-item" 
+                       *ngFor="let num of step.rightArray"
+                       style="background-color: #2196F3">{{ num }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="merge-arrow" *ngIf="step.type === 'merge-before'">↓</div>
+
+        <!-- Merge-Ergebnis -->
+        <div class="array-row" *ngIf="step.type === 'merge-after'">
+          <div class="step-label">Ergebnis:</div>
+          <div class="array-visual-wrapper">
+            <div class="array-visual">
+              <ng-container *ngFor="let num of step.array; let i = index">
+                <div class="subarray-wrapper" *ngIf="i === step.left">
+                  <div class="subarray">
+                    <div class="array-item" 
+                         *ngFor="let n of step.array.slice(step.left, step.right + 1)"
+                         [style.background-color]="isFinalStep(step) ? '#FF5722' : '#9C27B0'">
+                      {{ n }}
+                    </div>
+                  </div>
+                </div>
+                <div class="array-item" 
+                     *ngIf="i < step.left || i > step.right"
+                     style="background-color: #999">
+                  {{ num }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Log-Bereich -->
+  <div class="logs">
+    <div *ngFor="let log of logs">{{ log }}</div>
+  </div>
+</div>
+
