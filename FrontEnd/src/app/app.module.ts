@@ -12,7 +12,7 @@ import { BoxComponent } from './box/box.component';
 import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
 import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
-import { MergesortComponent } from './sorting/mergesort/mergesort.component';
+import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
 
 
 
@@ -27,7 +27,7 @@ import { MergesortComponent } from './sorting/mergesort/mergesort.component';
     BoxComponent,
     StartpageComponent,
     SelectionSortComponent,
-    MergesortComponent
+    MergeSortComponent
   ],
   imports: [
     BrowserModule,
