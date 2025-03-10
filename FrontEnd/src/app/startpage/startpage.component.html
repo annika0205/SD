@@ -1,21 +1,3 @@
-<<<<<<< Updated upstream
-<div class="container" >
-    <app-box *ngFor="let i of [0, 1, 2]" [title]="Algorithms[i]"></app-box>
-  </div>
-=======
-<!-- <div class="container" >
-    <app-box 
-    *ngFor="let i of [0, 1, 2]; let index = index"
-    [title]="Algorithms[i]"
-    (navigate)="onNavigate(index)"
-    ></app-box>
-  </div> -->
 <div class="container">
-  
-  <!-- <div *ngFor="let box of boxes" class="box"> -->
-    <!-- <h2>{{ box.title }}</h2> -->
-    <!-- <app-preview-box [items]="box.items" ></app-preview-box>> -->
-     <app-box *ngFor="let box of boxes; index as i" [title]="box.title" [items]="box.items" (navigate)="onNavigate(i)"></app-box>
-  <!-- </div> -->
+     <app-box *ngFor="let box of boxes; let index= index" [title]="box.title" [items]="box.items" (navigate)="onNavigate(index)"></app-box>
 </div>
->>>>>>> Stashed changes

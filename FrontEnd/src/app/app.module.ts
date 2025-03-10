@@ -11,6 +11,7 @@ import { PreviewBoxComponent } from './preview-box/preview-box.component';
 import { BoxComponent } from './box/box.component';
 import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
+import { AlgoExampleComponent } from './algo-example/algo-example.component';
 
 
 
@@ -23,7 +24,8 @@ import { StartpageComponent } from './startpage/startpage.component';
     HeaderComponent,
     PreviewBoxComponent,
     BoxComponent,
-    StartpageComponent
+    StartpageComponent,
+    AlgoExampleComponent
   ],
   imports: [
     BrowserModule,

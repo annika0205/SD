@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="main-display">Visualisierung des Algorithmus</div>
+    
+    <div class="input-section">
+      <input 
+        *ngFor="let input of inputs; let i = index" 
+        type="text" 
+        [placeholder]="'Eingabe ' + (i + 1) + '...'" 
+        [value]="input" 
+        (input)="handleInputChange(i, $event)" 
+      />
+      <button>Sortieren</button>
+      <button>schrittweise Sortieren</button>
+    </div>
+  
+    <div class="sidebar" [class.open]="sidebarOpen">
+      <div class="sidebar-title" (click)="toggleSidebar()">
+        Beschreibung
+      </div>
+      <div class="sidebar-content">
+        Algorithmus Beschreibung
+      </div>
+    </div>
+  </div>

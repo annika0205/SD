@@ -1,6 +1,7 @@
 .container {
     display: flex;
     gap: 1px; 
+    font-family: Arial, Helvetica, sans-serif;
   }
   
   .standard-card {
@@ -36,4 +37,14 @@
 }
 
   h2 {text-decoration: underline; text-align: center;}
-        
+
+ul {
+  list-style-type: none ;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.clickableList{
+  font-size: 40px;
+  font-weight: bold;
+}
