@@ -14,6 +14,8 @@ import { StartpageComponent } from './startpage/startpage.component';
 import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
 import { FormsModule } from '@angular/forms';
+import { AlgoExampleComponent } from './algo-example/algo-example.component';
+
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { FormsModule } from '@angular/forms';
     BoxComponent,
     StartpageComponent,
     SelectionSortComponent,
-    MergeSortComponent
+    MergeSortComponent,
+    AlgoExampleComponent
   ],
   imports: [
     BrowserModule,

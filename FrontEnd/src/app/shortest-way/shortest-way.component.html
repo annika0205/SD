@@ -1,3 +1,5 @@
-<div class="standard-card">
-    <h2>Kürzester-Weg-Algorithmen</h2>
+<div>
+    <ul>
+        <li *ngFor="let item of items, let index = index" [ngClass]="{'bg-gray': index % 2 === 1, 'clickableList': true}">{{ item }}</li>
+    </ul>
 </div>

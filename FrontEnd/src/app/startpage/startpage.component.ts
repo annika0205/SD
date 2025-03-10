@@ -8,10 +8,11 @@ import { Router } from '@angular/router';
 })
 export class StartpageComponent {
 
-  Algorithms=['Sortieralgorithmen',
-    'Optimierungsalgorithmen',
-    'Kürzester-Weg-Algorithmen'
-  ]
+  boxes = [
+    { title:'Sortieralgorithmen', items: ['Bubblesort', 'Insertionsort', 'Mergesort', 'Selectionsort', 'Quicksort', 'Heapsort', 'Countingsort'] },
+    { title: 'Optimierungsalgorithmen', items: ['Item 2.1', 'Item 2.2', 'Item 2.3', 'Item 2.4'] },
+    { title: 'Kürzester-Weg-Algorithmen', items: ['Dijkstra', 'A*', 'Item 3.3', 'Item 3.4'] }
+  ];
 
   constructor(private router: Router) {}
 
@@ -23,7 +24,6 @@ export class StartpageComponent {
     ];
 
     // Navigiere zur Route basierend auf dem Index
-    this.router.navigate([routes[index]]);
+    this.router.navigate([routes[index]],{ state: { items: this.boxes[index].items } });
   }
-
 }

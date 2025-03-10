@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-preview-box',
@@ -7,10 +7,12 @@ import { Component } from '@angular/core';
 })
 export class PreviewBoxComponent {
 
-  algorithms=[
-    'Bubblesort',
-    'MergeSort',
-    'Quicksort',
-    'Selectionsort'
-]
+//   algorithms=[
+//     'Bubblesort',
+//     'MergeSort',
+//     'Quicksort',
+//     'Selectionsort'
+// ]
+
+@Input() items: string[] = [];
 }
