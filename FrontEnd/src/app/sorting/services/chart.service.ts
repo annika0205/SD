@@ -31,11 +31,23 @@ export class ChartService {
     });
   }
 
-  updateChart(data: number[]): void {
+  updateChart(data: number[], index1: number, index2: number): void {
     if (this.chart) {
       this.chart.data.labels = data;
       this.chart.data.datasets[0].data = data;
+      this.chart.data.datasets[0].backgroundColor = 'rgb(6, 50, 114)'
+      const backgroundColors = data.map((_, index) => {
+        // Setze die Farbe für die Balken zwischen index1 und index2
+        if (index >= index1 && index <= index2) {
+          return 'rgb(6, 50, 114)';
+        }
+        return 'rgba(0, 0, 0, 0.1)';  // Beispiel für eine andere Farbe
+      });
+      
+      // Wende die Hintergrundfarben auf das Dataset an
+      this.chart.data.datasets[0].backgroundColor = backgroundColors;
       this.chart.update();
+      
     }
   }
 }
