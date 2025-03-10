@@ -13,7 +13,7 @@ import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
 import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -31,7 +31,8 @@ import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
   ],
   imports: [
     BrowserModule,
-    routing
+    routing,
+    FormsModule
   ],
   providers: [
     provideClientHydration()

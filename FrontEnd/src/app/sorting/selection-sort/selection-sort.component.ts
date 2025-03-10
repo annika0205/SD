@@ -13,14 +13,23 @@ export class SelectionSortComponent implements AfterViewInit {
     private selectionSortService: SelectionSortService,
     private chartService: ChartService
   ) {}
-
-  starting_values = [8, 2, 7, 4, 5, 1, 6];
+  input_values = "";
+  starting_values = [1, 2, 3, 4, 5];
   finishes_values: number[] = [];
 
   ngAfterViewInit(): void {
     this.chartService.createChart('myChart', this.starting_values, this.starting_values);
+ // Beim Laden schon die Standardwerte verarbeiten
+  }
 
-    this.selectionSortService.sort([...this.starting_values]);
+  onClick(): void {
+    
+    console.log(this.input_values);
+    this.starting_values = this.input_values.split(',').map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));  // Filtert ungültige Zahlen raus (NaN)
+    console.log("Die Startwerte sind", this.starting_values);
+    this.chartService.updateChart(this.starting_values);
+
+    this.selectionSortService.sort([...this.starting_values], "max");
 
     for (let i = 0; i < this.starting_values.length; i++) {
       setTimeout(() => {
