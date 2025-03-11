@@ -10,7 +10,9 @@ const APP_ROUTES: Routes = [
     {path:'optimierungsalgorithmen', component: OptimizingComponent},
     {path:'kürzesterweg', component: ShortestWayComponent},
     {path:'', component: StartpageComponent},
-    {path:'example', component: AlgoExampleComponent}
+    {path:'bubblesort', component: AlgoExampleComponent},
+    {path:'insertionsort', component: AlgoExampleComponent},
+    {path:'mergesort', component: AlgoExampleComponent}
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

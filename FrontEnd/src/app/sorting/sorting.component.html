@@ -1,5 +1,5 @@
 <div>
     <ul>
-        <li *ngFor="let item of items, let index = index" [ngClass]="{'bg-gray': index % 2 === 1, 'clickableList': true}">{{ item }}</li>
+        <li *ngFor="let item of items, let index = index" [ngClass]="{'bg-gray': index % 2 === 1, 'clickableList': true}" (click)="navigateToAlgo(index)">{{ item }}</li>
     </ul>
 </div>

@@ -47,4 +47,15 @@ ul {
 .clickableList{
   font-size: 40px;
   font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.005);   
+    background-color: #f0f0f0;
+  }
+  
+}
+.bg-gray {
+  background-color: lightgray;
 }
