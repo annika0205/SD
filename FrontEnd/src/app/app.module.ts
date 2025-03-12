@@ -15,6 +15,7 @@ import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
 import { FormsModule } from '@angular/forms';
 import { AlgoExampleComponent } from './algo-example/algo-example.component';
+import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
 
 
 
@@ -30,7 +31,8 @@ import { AlgoExampleComponent } from './algo-example/algo-example.component';
     StartpageComponent,
     SelectionSortComponent,
     MergeSortComponent,
-    AlgoExampleComponent
+    AlgoExampleComponent,
+    TemplateSortingComponent
   ],
   imports: [
     BrowserModule,
