@@ -1,3 +1,6 @@
-<div class="container">
-     <app-box *ngFor="let box of boxes; let index= index" [title]="box.title" [items]="box.items" (navigate)="onNavigate(index)"></app-box>
+<div class="container" >
+     <app-box *ngFor="let box of boxes; let index= index" [title]="box.title" [items]="box.items" (navigate)="onNavigate(index)" class="app-box" ></app-box>
 </div>
+
+
+
