@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { SelectionSortComponent } from './selection-sort/selection-sort.component';
 import { MergeSortComponent } from './mergesort/mergesort.component';
 import { Router } from '@angular/router';
+import { StartpageComponent } from '../startpage/startpage.component';
 
 @Component({
   selector: 'app-sorting',
@@ -19,5 +20,18 @@ constructor(private router: Router) {}
   ngOnInit() {
     this.items = history.state.items || []; // Holt die Items aus dem Router-State
   }
+  
+  
+
+  navigateToAlgo(index: number) {
+    const routes = [
+      '/bubblesort',
+      '/insertionsort',
+      '/mergesort'
+    ];
+
+    this.router.navigate([routes[index]]);
+  }
+  
 }
 
