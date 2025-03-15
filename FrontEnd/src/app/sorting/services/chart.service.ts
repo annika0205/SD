@@ -22,12 +22,20 @@ export class ChartService {
         labels: labels,
         datasets: [
           {
+            label: "HierSuchen",
             backgroundColor: 'rgb(47, 142, 205)',
             data: data
           }
         ]
       },
-      options: {}
+      options: {
+        layout: {
+          padding: {
+            left: 20,   // Abstand links
+            right: 20   // Abstand rechts
+          }
+        }
+      }
     });
   }
 
