@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { SelectionSortService } from './selection-sort-service';
 import { ChartService } from '../services/chart.service';
+import { TemplateSortingComponent } from '../template-sorting/template-sorting.component';
 
 @Component({
   selector: 'app-selection-sort',

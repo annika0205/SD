@@ -1,10 +1,10 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-  }
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 10vh);
+  overflow: hidden;
+  position: relative;
+}
   
   .main-display {
     flex: 1;
