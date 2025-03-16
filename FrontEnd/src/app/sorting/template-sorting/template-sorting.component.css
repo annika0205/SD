@@ -4,6 +4,7 @@
   height: calc(100vh - 10vh);
   overflow: hidden;
   position: relative;
+  flex-grow: 1;
 }
   
   .main-display {

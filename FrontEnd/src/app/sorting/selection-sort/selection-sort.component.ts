@@ -6,8 +6,7 @@ import { TemplateSortingComponent } from '../template-sorting/template-sorting.c
 @Component({
   selector: 'app-selection-sort',
   templateUrl: './selection-sort.component.html',
-  styleUrls: ['./selection-sort.component.css',
-  '../../algo-example/algo-example.component.css'],
+  styleUrls: ['./selection-sort.component.css'],
   providers: [SelectionSortService]
 })
 export class SelectionSortComponent implements AfterViewInit {

@@ -1,6 +1,6 @@
 <app-template-sorting [description]="'Test'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
 
-  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin-top: 10px;margin: 10px;">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="onSortModeChange('min')">
     <label class="btn btn-outline-primary" for="btnradio1">Min Sort</label>
 
@@ -9,5 +9,5 @@
 
   </div>
   
-  <canvas id="myChart"></canvas>
+  <canvas height="100vh" margin id="myChart"></canvas>
 </app-template-sorting>
