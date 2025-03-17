@@ -9,5 +9,12 @@
   
     </div>
     
-    <canvas height="100vh" id="myChart"></canvas>
+    <div class="chart-container">
+      <div class="chart-wrapper" style="position: relative; width: 100%; max-width: 800px;">
+        <canvas id="myChart"></canvas>
+        <canvas id="bubbleOverlay" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
+      </div>
+    </div>
+    
+    
   </app-template-sorting>

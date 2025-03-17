@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { isPlatformBrowser } from '@angular/common';
 
 Chart.register(...registerables);
 
@@ -7,9 +8,16 @@ Chart.register(...registerables);
   providedIn: 'root'
 })
 export class ChartService {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  
   private chart: Chart | null = null;
 
   createChart(canvasId: string, labels: number[], data: number[]): void {
+    // Only execute in browser environment
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!canvas) {
       console.error('Canvas not found!');
@@ -40,22 +48,25 @@ export class ChartService {
   }
 
   updateChart(data: number[], index1: number, index2: number): void {
-    if (this.chart) {
-      this.chart.data.labels = data;
-      this.chart.data.datasets[0].data = data;
-      this.chart.data.datasets[0].backgroundColor = 'rgb(6, 50, 114)'
-      const backgroundColors = data.map((_, index) => {
-        // Setze die Farbe für die Balken zwischen index1 und index2
-        if (index >= index1 && index <= index2) {
-          return 'rgb(6, 50, 114)';
-        }
-        return 'rgba(0, 0, 0, 0.1)';  // Beispiel für eine andere Farbe
-      });
-      
-      // Wende die Hintergrundfarben auf das Dataset an
-      this.chart.data.datasets[0].backgroundColor = backgroundColors;
-      this.chart.update();
-      
+    // Only execute in browser environment
+    if (!isPlatformBrowser(this.platformId) || !this.chart) {
+      return;
     }
+    
+    this.chart.data.labels = data;
+    this.chart.data.datasets[0].data = data;
+    this.chart.data.datasets[0].backgroundColor = 'rgb(6, 50, 114)'
+    const backgroundColors = data.map((_, index) => {
+      // Setze die Farbe für die Balken zwischen index1 und index2
+      if (index >= index1 && index <= index2) {
+        return 'rgb(6, 50, 114)';
+      }
+      return 'rgba(0, 0, 0, 0.1)';  // Beispiel für eine andere Farbe
+    });
+    
+    // Wende die Hintergrundfarben auf das Dataset an
+    this.chart.data.datasets[0].backgroundColor = backgroundColors;
+    this.chart.update();
+    
   }
 }
