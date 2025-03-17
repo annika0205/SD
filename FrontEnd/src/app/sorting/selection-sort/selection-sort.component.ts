@@ -1,7 +1,7 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { SelectionSortService } from './selection-sort-service';
 import { ChartService } from '../services/chart.service';
-import { TemplateSortingComponent } from '../template-sorting/template-sorting.component';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-selection-sort',
@@ -12,7 +12,8 @@ import { TemplateSortingComponent } from '../template-sorting/template-sorting.c
 export class SelectionSortComponent implements AfterViewInit {
   constructor(
     private selectionSortService: SelectionSortService,
-    private chartService: ChartService
+    private chartService: ChartService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   sidebarOpen = false;
@@ -27,8 +28,10 @@ export class SelectionSortComponent implements AfterViewInit {
   finishes_values: number[] = [];
 
   ngAfterViewInit(): void {
-    this.chartService.createChart('myChart', this.starting_values, this.starting_values);
- // Beim Laden schon die Standardwerte verarbeiten
+    // Only execute in browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      this.chartService.createChart('myChart', this.starting_values, this.starting_values);
+    }
   }
 
   sortMode: "min" | "max" = "max"; // Standardwert ist "max"

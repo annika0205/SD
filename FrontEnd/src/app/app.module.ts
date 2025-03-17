@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { AlgoExampleComponent } from './algo-example/algo-example.component';
 import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
 import { GradientDescentComponent } from './optimizing/gradient-descent/gradient-descent.component';
+import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
 
 
 
@@ -34,7 +35,8 @@ import { GradientDescentComponent } from './optimizing/gradient-descent/gradient
     MergeSortComponent,
     AlgoExampleComponent,
     TemplateSortingComponent,
-    GradientDescentComponent
+    GradientDescentComponent,
+    BubblesortComponent
   ],
   imports: [
     BrowserModule,
