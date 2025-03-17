@@ -26,10 +26,23 @@ export class BubblesortComponent implements AfterViewInit{
  // Beim Laden schon die Standardwerte verarbeiten
   }
 
-  sortMode: "min" | "max" = "max"; // Standardwert ist "max"
+  sortMode: "min" | "max" = "min";
 
   onClick(): void {
+    
     console.log(this.inputs);
+    this.starting_values = this.inputs.map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));  // Filtert ungültige Zahlen raus (NaN)
+    console.log("Die Startwerte sind", this.starting_values);
+    this.chartService.updateChart(this.starting_values, 0, 0);
+
+    this.bubbleSortService.sort([...this.starting_values], this.sortMode);
+
+    for (let i = 0; i < this.starting_values.length; i++) {
+      setTimeout(() => {
+        this.finishes_values = this.bubbleSortService.getStep(i);
+        this.chartService.updateChart(this.finishes_values, 1, 3);
+      }, i * 1000);
+    }
   }
   
 
