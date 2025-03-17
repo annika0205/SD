@@ -3,11 +3,12 @@ import { OptimizingComponent } from "./optimizing/optimizing.component";
 import { ShortestWayComponent } from "./shortest-way/shortest-way.component";
 import { StartpageComponent } from "./startpage/startpage.component";
 import { SORTING_ROUTES } from "./sorting/sorting-routing.module";
+import { Optimisation_routes } from "./optimizing/optimizing-routing.module";
 import { AlgoExampleComponent } from "./algo-example/algo-example.component";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},
-    {path:'optimierungsalgorithmen', component: OptimizingComponent},
+    {path:'optimierungsalgorithmen', children: Optimisation_routes},
     {path:'kürzesterweg', component: ShortestWayComponent},
     {path:'', component: StartpageComponent},
     {path:'bubblesort', component: AlgoExampleComponent},
