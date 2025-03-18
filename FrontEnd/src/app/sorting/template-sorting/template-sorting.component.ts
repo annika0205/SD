@@ -8,6 +8,8 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 export class TemplateSortingComponent {
 
   @Input() description: string = "";
+  @Input() action_button: string = "";
+  @Input() predefinedText: string[] = [];
   @Output() sortClicked = new EventEmitter<void>();
   @Output() inputsEvent = new EventEmitter<string[]>();
 

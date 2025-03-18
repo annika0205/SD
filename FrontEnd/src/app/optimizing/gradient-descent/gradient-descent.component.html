@@ -1,4 +1,4 @@
-<app-template-sorting [description]="'Test'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+<app-template-sorting [description]="'Test'" [predefinedText] = "['x^4', 'x^3', 'x^2', 'x^1', 'x^0']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
   <canvas height="100vh" margin id="myChart"></canvas>
 </app-template-sorting>
 

@@ -6,9 +6,12 @@ import { ChartService } from '../../sorting/services/chart.service';
 @Component({
   selector: 'app-gradient-descent',
   templateUrl: './gradient-descent.component.html',
-  styleUrl: './gradient-descent.component.css'
+  styleUrls: ['./gradient-descent.component.css']
 })
 export class GradientDescentComponent implements AfterViewInit {
+  exponents = [4, 3, 2, 1, 0];
+  predefinedTexts = ['x^4', 'x^3', 'x^2', 'x', ''];
+  inputArray = Array(5).fill('');  // Initialize with 5 empty inputs
   inputs: string[] = ["-3", "0.8", "30"];
 
   constructor(
