@@ -1,1 +1,4 @@
-<canvas #canvas width="600" height="400"></canvas>
+<app-template-sorting [description]="'Test'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+  <canvas height="100vh" margin id="myChart"></canvas>
+</app-template-sorting>
+

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GradientDescentComponent } from './gradient-descent.component';
+import { ChartService } from '../../sorting/services/chart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,25 +9,18 @@ export class GradientDescentService {
     return x * x; // Beispiel f(x) = x²
   }
 
-  async gradientDescent(startX: number, alpha: number, steps: number, component: GradientDescentComponent, gradient: (x: number) => number) {
+  async gradientDescent(startX: number, alpha: number, steps: number, chartService: ChartService) {
     let x = startX;
     let points: {x: number, y: number}[] = [];
     
     for (let i = 0; i < steps; i++) {
-        let grad = gradient(x);
+        let grad = 2 * x;
         points.push({x: x, y: this.func(x)});
         
-        component.drawFunction();
-        // Zeichne Verlaufslinie
-        component.drawPath(points, 'rgba(255,0,0,0.5)');
-        // Zeichne aktuellen Punkt
-        component.drawPoint(x, this.func(x), 'red');
-        // Zeige Werte an
-        component.drawText(`x: ${x.toFixed(3)}, grad: ${grad.toFixed(3)}`, 10, 20);
+        chartService.updateGradientPath(points);
         
-        await component.sleep(300);
+        await new Promise(resolve => setTimeout(resolve, 300));
 
-        // Abbruch wenn Gradient sehr klein
         if (Math.abs(grad) < 0.01) break;
         
         x = x - alpha * grad;
