@@ -1,0 +1,23 @@
+<div class="min-h-screen bg-gray-900 text-gray-100 p-6 flex flex-col justify-center items-center">
+  <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 leading-[1.2]">
+    Algorithmus Visualizer
+  </h1>
+  
+  <div class="category-container">
+    <div *ngFor="let category of categories; let i = index"
+         class="category-box"
+         [ngClass]="[getCategoryClass(i), openCategory === i ? 'box-expanded' : '']"
+         (click)="toggleCategory(i)">
+      <h2 class="category-title text-white cursor-pointer">
+        {{ category.title }}
+      </h2>
+      <ul *ngIf="openCategory === i" class="algorithm-list">
+        <li *ngFor="let algo of category.algorithms"
+            class="algorithm-item mb-3">
+          <strong class="algorithm-name block">{{ algo.name }}</strong>
+          <p class="algorithm-description">{{ algo.description }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

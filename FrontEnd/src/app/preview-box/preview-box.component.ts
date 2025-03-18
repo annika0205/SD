@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
 
+interface AlgorithmItem {
+  items: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-preview-box',
   templateUrl: './preview-box.component.html',
@@ -7,12 +12,9 @@ import { Component, Input } from '@angular/core';
 })
 export class PreviewBoxComponent {
 
-//   algorithms=[
-//     'Bubblesort',
-//     'MergeSort',
-//     'Quicksort',
-//     'Selectionsort'
-// ]
+@Input() items: AlgorithmItem[] = [];
 
-@Input() items: string[] = [];
+getItemNames(): string[] {
+  return this.items.map(item => item.items);
+}
 }
