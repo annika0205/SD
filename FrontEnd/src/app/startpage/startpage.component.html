@@ -1,5 +1,105 @@
+<div class="search-wrapper">
+  <div class="search-container">
+    <input 
+      type="text" 
+      [value]="suchBegriff"
+      (input)="suchen($event)"
+      placeholder="Algorithmen oder Beschreibungen suchen..."
+      class="search-input"
+    >
+    
+    <!-- Suchergebnisse -->
+    <div class="search-results" *ngIf="suchBegriff && suchergebnisse.length > 0">
+      <div 
+        class="search-result-item" 
+        *ngFor="let ergebnis of suchergebnisse"
+        (click)="onErgebnisClick(ergebnis)"
+        [class.clickable]="true"
+      >
+        <div class="result-header">
+          <h4 class="algorithm-name">{{ergebnis.algorithmusName}}</h4>
+          <span class="category-tag">{{ergebnis.kategorie}}</span>
+        </div>
+        <p class="result-description">{{ergebnis.beschreibung}}</p>
+      </div>
+    </div>
+    
+    <!-- Keine Ergebnisse Nachricht -->
+    <div class="no-results" *ngIf="suchBegriff && suchergebnisse.length === 0">
+      <p>Keine Ergebnisse gefunden für "{{suchBegriff}}"</p>
+    </div>
+  </div>
+</div>
+
+<!-- Neues, moderneres Banner -->
+<div class="algo-banner">
+  <div class="banner-content">
+    <div class="banner-text">
+      <div class="welcome-header">
+        <h2>Willkommen, <span class="username">Nutzer</span>!</h2>
+       
+      </div>
+      <p class="quote">"Algorithmen sind die Bausteine digitaler Innovation"</p>
+      <div class="banner-stats">    
+      </div>
+    </div>
+    <div class="banner-image">
+      <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4158D0" />
+            <stop offset="100%" style="stop-color:#C850C0" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
+        <!-- Hintergrund-Muster -->
+        <path d="M0,100 Q100,50 200,100 T400,100" 
+              fill="none" 
+              stroke="rgba(255,255,255,0.1)" 
+              stroke-width="2"
+              class="wave"/>
+        
+        <!-- Haupt-Netzwerk -->
+        <g class="network" filter="url(#glow)">
+          <!-- Verbindungslinien mit Animation -->
+          <line x1="100" y1="150" x2="200" y2="80" class="network-line"/>
+          <line x1="200" y1="80" x2="300" y2="150" class="network-line"/>
+          <line x1="100" y1="150" x2="200" y2="220" class="network-line"/>
+          <line x1="200" y1="220" x2="300" y2="150" class="network-line"/>
+          <line x1="200" y1="80" x2="200" y2="220" class="network-line"/>
+          
+          <!-- Knoten mit Pulsation -->
+          <circle cx="100" cy="150" r="15" class="node main-node"/>
+          <circle cx="200" cy="80" r="15" class="node"/>
+          <circle cx="200" cy="220" r="15" class="node"/>
+          <circle cx="300" cy="150" r="15" class="node main-node"/>
+          
+          <!-- Daten-Punkte -->
+          <circle cx="150" cy="115" r="5" class="data-point"/>
+          <circle cx="250" cy="115" r="5" class="data-point"/>
+          <circle cx="150" cy="185" r="5" class="data-point"/>
+          <circle cx="250" cy="185" r="5" class="data-point"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
 <div class="container" >
-     <app-box *ngFor="let box of boxes; let index= index" [title]="box.title" [items]="box.items" (navigate)="onNavigate(index)" class="app-box" ></app-box>
+     <app-box *ngFor="let box of boxes; let index= index" 
+     [title]="box.title" 
+     [items]="box.algorithms" 
+     [class]="getCategoryClass(index)" 
+     (navigate)="onNavigate(index)" 
+     class="app-box category-container" >
+</app-box>
 </div>
 
 

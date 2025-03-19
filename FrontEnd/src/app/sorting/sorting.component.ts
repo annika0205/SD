@@ -6,6 +6,12 @@ import { MergeSortComponent } from './mergesort/mergesort.component';
 import { Router } from '@angular/router';
 import { StartpageComponent } from '../startpage/startpage.component';
 
+
+interface AlgorithmItem {
+  items: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-sorting',
   templateUrl: './sorting.component.html',
@@ -13,7 +19,7 @@ import { StartpageComponent } from '../startpage/startpage.component';
 })
 export class SortingComponent implements OnInit {
 
-@Input() items: string[] = [];
+  @Input() items: AlgorithmItem[] = []; // Änderung hier zu AlgorithmItem[]
 
 constructor(private router: Router) {}
 
@@ -26,8 +32,9 @@ constructor(private router: Router) {}
   navigateToAlgo(index: number) {
     const routes = [
       '/bubblesort',
-      '/insertionsort',
-      '/mergesort'
+      '/selectionsort',
+      '/mergesort',
+      '/quicksort'
     ];
 
     this.router.navigate([routes[index]]);

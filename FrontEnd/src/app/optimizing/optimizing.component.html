@@ -1,5 +1,16 @@
-<div>
+<!-- <div>
     <ul>
         <li *ngFor="let item of items, let index = index" [ngClass]="{'bg-gray': index % 2 === 1, 'clickableList': true}"  >{{ item }}</li>
+    </ul>
+</div> -->
+<div class="algorithm-container">
+    <h2>Optimierungsalgorithmen</h2>
+    <ul class="algorithm-list">
+        <li *ngFor="let item of items; let i = index" 
+            [ngClass]="{'bg-gray': i % 2 !== 0}"
+            (click)="navigateToAlgo(i)"> 
+            <span class="algorithm-name">{{ item.items }}</span>
+            <span class="description">{{ item.description }}</span>
+        </li>            
     </ul>
 </div>

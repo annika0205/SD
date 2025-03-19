@@ -1,6 +1,12 @@
 import { Component ,Input, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
+
+interface AlgorithmItem {
+  items: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-shortest-way',
   templateUrl: './shortest-way.component.html',
@@ -8,11 +14,21 @@ import { Router } from '@angular/router';
 })
 export class ShortestWayComponent implements OnInit{
 
-  @Input() items: string[] = [];
+  @Input() items: AlgorithmItem[] = []; // Änderung hier zu AlgorithmIte
 
   constructor(private router: Router) {}
     
       ngOnInit() {
         this.items = history.state.items || []; // Holt die Items aus dem Router-State
+      }
+      
+      navigateToAlgo(index: number) {
+        const routes = [
+          '/bubblesort',
+          '/insertionsort',
+          '/mergesort'
+        ];
+        
+        this.router.navigate([routes[index]]);
       }
 }

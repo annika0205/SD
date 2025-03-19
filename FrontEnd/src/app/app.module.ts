@@ -18,6 +18,7 @@ import { AlgoExampleComponent } from './algo-example/algo-example.component';
 import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
 import { GradientDescentComponent } from './optimizing/gradient-descent/gradient-descent.component';
 import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
+import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
 
 
 
@@ -36,7 +37,8 @@ import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
     AlgoExampleComponent,
     TemplateSortingComponent,
     GradientDescentComponent,
-    BubblesortComponent
+    BubblesortComponent,
+    StartpageV2Component
   ],
   imports: [
     BrowserModule,
