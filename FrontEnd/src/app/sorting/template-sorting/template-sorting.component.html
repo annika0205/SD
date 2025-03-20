@@ -2,19 +2,39 @@
   <div class="main-display">
       <ng-content></ng-content>
   </div>
-  
   <div class="input-section">
-    <div *ngFor="let input of inputs; let i = index" class="input-wrapper">
-      <input  
-        type="text"  
-        [placeholder]="'Eingabe ' + (i + 1) + '...'"  
-        [value]="input"  
-        (input)="handleInputChange(i, $event)"  
-      />
-      <span class="suffix-text">{{ predefinedText[i]}}</span>
+    <div class="input-group">
+      <div *ngFor="let input of inputs; let i = index" class="input-wrapper" [class.no-suffix]="!predefinedText[i]">
+        <input  
+          type="text"  
+          [placeholder]="'Eingabe ' + (i + 1) + '...'"  
+          [value]="input"  
+          (input)="handleInputChange(i, $event)"  
+        />
+        <span class="suffix-text">{{ predefinedText[i] }}</span>
+      </div>
     </div>
-    <button (click)="sortClicked.emit()">{{action_button}}</button>
-    <button>schrittweise {{action_button}}</button>
+  
+    <div class="button-group">
+      <button class="add-button" (click)="addInput()">+</button>
+      <button class="remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
+      <button (click)="sortClicked.emit()">{{action_button}}</button>
+      <button>schrittweise {{action_button}}</button>
+    </div>
+  </div>
+  
+  <div class="navigation">
+    <div class="nav-item prev" (click)="goToPreviousAlgo()">
+      <span class="arrow">←</span>
+      <span class="name">{{getPreviousAlgo()}}</span>
+    </div>
+    <div class="current">
+      <span class="name">{{getCurrentAlgo()}}</span>
+    </div>
+    <div class="nav-item next" (click)="goToNextAlgo()">
+      <span class="name">{{getNextAlgo()}}</span>
+      <span class="arrow">→</span>
+    </div>
   </div>
 
   <div class="sidebar" [class.open]="sidebarOpen">
