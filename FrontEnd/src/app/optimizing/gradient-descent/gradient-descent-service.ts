@@ -5,17 +5,14 @@ import { ChartService } from '../../sorting/services/chart.service';
   providedIn: 'root'
 })
 export class GradientDescentService {
-  func(x: number): number {
-    return x * x; // Beispiel f(x) = x²
-  }
 
-  async gradientDescent(startX: number, alpha: number, steps: number, chartService: ChartService) {
+  async gradientDescent(func:number[], gradient: number[], startX: number, alpha: number, steps: number, chartService: ChartService) {
     let x = startX;
     let points: {x: number, y: number}[] = [];
     
     for (let i = 0; i < steps; i++) {
         let grad = 2 * x;
-        points.push({x: x, y: this.func(x)});
+        points.push({x: x, y: func.reduce((acc, val, index) => acc + val * Math.pow(x, index), 0)});
         
         chartService.updateGradientPath(points);
         
@@ -26,4 +23,5 @@ export class GradientDescentService {
         x = x - alpha * grad;
     }
   }
+  
 }

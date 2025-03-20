@@ -26,7 +26,7 @@ export class GradientDescentComponent implements AfterViewInit {
 
   initializeChart() {
     const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
-    const yValues = xValues.map(x => this.gradientDescentService.func(x));
+    const yValues = xValues.map(x => this.function);
     this.chartService.createLineChart('myChart', xValues, yValues);
   }
 
@@ -34,15 +34,15 @@ export class GradientDescentComponent implements AfterViewInit {
     const startX = parseFloat(this.parameters[0]);
     const alpha = parseFloat(this.parameters[1]);
     const steps = parseInt(this.parameters[2], 10);
-    this.gradientDescentService.gradientDescent(startX, alpha, steps, this.chartService);
-  }
-
-  gradient(x: number): number[] {
     console.log(this.inputs);
     this.function = this.inputs.map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));
+    this.gradient();
+    this.gradientDescentService.gradientDescent(this.function, this.differential, startX, alpha, steps, this.chartService);
+  }
+
+  gradient(){
     for (let i = this.differential.length-1; i >0; i--){
       this.differential[i] = this.function[i+1] * this.differential.length-i;
     }
-    return this.differential;
   }
 }
