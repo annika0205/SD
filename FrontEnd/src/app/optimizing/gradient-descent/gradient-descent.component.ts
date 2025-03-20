@@ -9,10 +9,11 @@ import { ChartService } from '../../sorting/services/chart.service';
   styleUrls: ['./gradient-descent.component.css']
 })
 export class GradientDescentComponent implements AfterViewInit {
-  exponents = [4, 3, 2, 1, 0];
   predefinedTexts = ['x^4', 'x^3', 'x^2', 'x', ''];
-  inputArray = Array(5).fill('');  // Initialize with 5 empty inputs
-  inputs: string[] = ["-3", "0.8", "30"];
+  parameters: string[] = ["-3", "0.8", "30"];
+  inputs: string[] = ["", "", "", "", ""];
+  function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
+  differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
 
   constructor(
     private gradientDescentService: GradientDescentService,
@@ -25,18 +26,23 @@ export class GradientDescentComponent implements AfterViewInit {
 
   initializeChart() {
     const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
-    const yValues = xValues.map(x => this.gradientDescentService.func(x));
+    const yValues = xValues.map(x => this.function);
     this.chartService.createLineChart('myChart', xValues, yValues);
   }
 
   onClick() {
-    const startX = parseFloat(this.inputs[0]);
-    const alpha = parseFloat(this.inputs[1]);
-    const steps = parseInt(this.inputs[2], 10);
-    this.gradientDescentService.gradientDescent(startX, alpha, steps, this.chartService);
+    const startX = parseFloat(this.parameters[0]);
+    const alpha = parseFloat(this.parameters[1]);
+    const steps = parseInt(this.parameters[2], 10);
+    console.log(this.inputs);
+    this.function = this.inputs.map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));
+    this.gradient();
+    this.gradientDescentService.gradientDescent(this.function, this.differential, startX, alpha, steps, this.chartService);
   }
 
-  gradient(x: number): number {
-    return 2 * x;
+  gradient(){
+    for (let i = this.differential.length-1; i >0; i--){
+      this.differential[i] = this.function[i+1] * this.differential.length-i;
+    }
   }
 }
