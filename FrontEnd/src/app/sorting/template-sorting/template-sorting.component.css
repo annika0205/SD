@@ -1,4 +1,4 @@
-.container {
+.template-container {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 10vh);
@@ -6,7 +6,7 @@
   position: relative;
 }
   
-  .main-display {
+  .template-main-display {
     flex: 1;
     background: #ddd;
     align-items: center;
@@ -15,7 +15,7 @@
     font-weight: bold;
   }
   
-  .input-section {
+  .template-input-section {
     background: #eee;
     padding: 10px;
     text-align: center;
@@ -24,25 +24,17 @@
     justify-content: center;
   }
   
-  .input-section {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: #eee;
-    padding: 10px;
-  }
-  
-  .input-group {
+  .template-input-group {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     flex-wrap: nowrap; /* <-- Verhindert Zeilenumbruch */
     min-width: 0;
     overflow-x: auto;
+    width:calc(100%-350px);
   }
   
-  .input-wrapper {
+  .template-input-wrapper {
     display: flex;
     align-items: center;
     flex: 1 1 auto;
@@ -51,20 +43,20 @@
     gap: 5px;
   }
   
-  .input-wrapper input {
+  .template-input-wrapper input {
     flex: 1;
     min-width: 90px
   }
   
-  .input-wrapper .suffix-text {
+  .template-input-wrapper .suffix-text {
     white-space: nowrap;
   }
   
-  .input-wrapper.no-suffix .suffix-text {
+  .template-input-wrapper.no-suffix .suffix-text {
     display: none;
   }
   
-  .button-group {
+  .template-button-group {
     display: flex;
     gap: 10px;
     flex-shrink: 0; /* verhindert, dass sich die Buttons verkleinern */
@@ -72,7 +64,7 @@
   }
   
   
-  .sidebar {
+  .template-sidebar {
     position: fixed;
     top: 0;
     right: -250px;
@@ -87,11 +79,11 @@
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
   }
   
-  .sidebar.open {
+  .template-sidebar.open {
     right: 0;
   }
   
-  .sidebar-title {
+  .template-sidebar-title {
     position: absolute;
     left: -50px;
     top: 50%;
@@ -108,14 +100,14 @@
     text-orientation: mixed;
   }
   
-  .sidebar-content {
+  .template-sidebar-content {
     margin-top: 50px;
     text-align: center;
     font-size: 18px;
   }
   
-.add-button,
-.remove-button {
+.template-add-button,
+.template-remove-button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -130,32 +122,32 @@
   padding: 0;
 }
 
-.add-button {
+.template-add-button {
   background: #28a745;
 }
 
-.add-button:hover:not(:disabled) {
+.template-add-button:hover:not(:disabled) {
   background: #218838;
   transform: scale(1.05);
 }
 
-.remove-button {
+.template-remove-button {
   background: #dc3545;
 }
 
-.remove-button:hover:not(:disabled) {
+.template-remove-button:hover:not(:disabled) {
   background: #c82333;
   transform: scale(1.05);
 }
 
-.remove-button:disabled {
+.template-remove-button:disabled {
   background: #6c757d;
   cursor: not-allowed;
   opacity: 0.65;
   transform: none;
 }
 
-.navigation {
+.template-navigation {
   background:  #1a202c;
   padding: 12px 0;
   display: flex;
@@ -169,7 +161,7 @@
 }
 
 
-.example-nav-item {
+.template-nav-item {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -182,13 +174,13 @@
   background: #2a2d3e; /* Dunkelgrauer Hintergrund */
 }
 
-.nav-item:hover {
+.template-nav-item:hover {
   background: #3a3d4e;
   color: #ffffff;
 }
 
 
-.current {
+.template-current {
   position: relative;
   padding: 8px 25px;
   background: #273cb1; /* Hellerer grauer Hintergrund für aktives Item */
@@ -200,7 +192,7 @@
   text-align: center;
 }
 
-.current::before {
+.template-current::before {
   content: '';
   position: absolute;
   bottom: -3px;
@@ -212,13 +204,13 @@
   border-radius: 3px;
 }
 
-.arrow {
+.template-arrow {
   font-size: 1.2em;
   font-weight: bold;
   color: #a0a0a0; /* Hellgrau für Pfeile */
 }
 
-.name {
+.template-name {
   font-size: 0.9em;
   font-weight: 500;
 }

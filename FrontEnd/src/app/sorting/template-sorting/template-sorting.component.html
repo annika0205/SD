@@ -1,10 +1,10 @@
-<div class="container">
-  <div class="main-display">
+<div class="template-container">
+  <div class="template-main-display">
       <ng-content></ng-content>
   </div>
-  <div class="input-section">
-    <div class="input-group">
-      <div *ngFor="let input of inputs; let i = index" class="input-wrapper" [class.no-suffix]="!predefinedText[i]">
+  <div class="template-input-section">
+    <div class="template-input-group">
+      <div *ngFor="let input of inputs; let i = index" class="template-input-wrapper" [class.no-suffix]="!predefinedText[i]">
         <input  
           type="text"  
           [placeholder]="'Eingabe ' + (i + 1) + '...'"  
@@ -15,33 +15,33 @@
       </div>
     </div>
   
-    <div class="button-group">
-      <button class="add-button" (click)="addInput()">+</button>
-      <button class="remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
+    <div class="template-button-group">
+      <button class="template-add-button" (click)="addInput()" [disabled]="inputs.length >= 10">+</button>
+      <button class="template-remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
       <button (click)="sortClicked.emit()">{{action_button}}</button>
       <button>schrittweise {{action_button}}</button>
     </div>
   </div>
   
-  <div class="navigation">
-    <div class="nav-item prev" (click)="goToPreviousAlgo()">
-      <span class="arrow">←</span>
-      <span class="name">{{getPreviousAlgo()}}</span>
+  <div class="template-navigation">
+    <div class="template-nav-item prev" (click)="goToPreviousAlgo()">
+      <span class="template-arrow">←</span>
+      <span class="template-name">{{getPreviousAlgo()}}</span>
     </div>
-    <div class="current">
-      <span class="name">{{getCurrentAlgo()}}</span>
+    <div class="template-current">
+      <span class="template-name">{{getCurrentAlgo()}}</span>
     </div>
-    <div class="nav-item next" (click)="goToNextAlgo()">
-      <span class="name">{{getNextAlgo()}}</span>
-      <span class="arrow">→</span>
+    <div class="template-nav-item next" (click)="goToNextAlgo()">
+      <span class="template-name">{{getNextAlgo()}}</span>
+      <span class="template-arrow">→</span>
     </div>
   </div>
 
-  <div class="sidebar" [class.open]="sidebarOpen">
-    <div class="sidebar-title" (click)="toggleSidebar()">
+  <div class="template-sidebar" [class.open]="sidebarOpen">
+    <div class="template-sidebar-title" (click)="toggleSidebar()">
       Beschreibung
     </div>
-    <div class="sidebar-content">
+    <div class="template-sidebar-content">
       {{description}}
     </div>
   </div>
