@@ -31,7 +31,7 @@
     flex-wrap: nowrap; /* <-- Verhindert Zeilenumbruch */
     min-width: 0;
     overflow-x: auto;
-    width:calc(100%-350px);
+    width:calc(100% - 350px);
   }
   
   .template-input-wrapper {
@@ -39,13 +39,17 @@
     align-items: center;
     flex: 1 1 auto;
     min-width: 120px;
-    padding: 10px;
     gap: 5px;
   }
   
   .template-input-wrapper input {
     flex: 1;
-    min-width: 90px
+    min-width: 90px;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
   }
   
   .template-input-wrapper .suffix-text {
@@ -58,12 +62,15 @@
   
   .template-button-group {
     display: flex;
+    align-items: center;
     gap: 10px;
     flex-shrink: 0; /* verhindert, dass sich die Buttons verkleinern */
     width: 350px;
   }
   
-  
+  .ButtonAction {
+    height: 100%;
+  }
   .template-sidebar {
     position: fixed;
     top: 0;

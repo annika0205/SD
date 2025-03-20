@@ -18,7 +18,7 @@
     <div class="template-button-group">
       <button class="template-add-button" (click)="addInput()" [disabled]="inputs.length >= 10">+</button>
       <button class="template-remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
-      <button (click)="sortClicked.emit()">{{action_button}}</button>
+      <button class="ButtonAction" (click)="sortClicked.emit()">{{action_button}}</button>
       <button>schrittweise {{action_button}}</button>
     </div>
   </div>
