@@ -14,35 +14,66 @@ export class GradientDescentComponent implements AfterViewInit {
   inputs: string[] = ["", "", "", "", ""];
   function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
   differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
-
+  
   constructor(
     private gradientDescentService: GradientDescentService,
     private chartService: ChartService
   ) {}
-
+  
   ngAfterViewInit() {
     this.initializeChart();
   }
-
+  
   initializeChart() {
     const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
-    const yValues = xValues.map(x => this.function);
+    const yValues = this.calculateYValues(xValues, this.function);
     this.chartService.createLineChart('myChart', xValues, yValues);
   }
-
+  
+  calculateYValues(xValues: number[], coefficients: number[]): number[] {
+    return xValues.map(x => {
+      let result = 0;
+      for (let i = 0; i < coefficients.length; i++) {
+        result += coefficients[i] * Math.pow(x, coefficients.length - 1 - i);
+      }
+      return result;
+    });
+  }
+  
   onClick() {
+    this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
+    
+    this.gradient();
+    
     const startX = parseFloat(this.parameters[0]);
     const alpha = parseFloat(this.parameters[1]);
     const steps = parseInt(this.parameters[2], 10);
-    console.log(this.inputs);
-    this.function = this.inputs.map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));
-    this.gradient();
-    this.gradientDescentService.gradientDescent(this.function, this.differential, startX, alpha, steps, this.chartService);
+    
+    this.updateChart();
+    
+    this.gradientDescentService.gradientDescent(
+      this.function, 
+      this.differential, 
+      startX, 
+      alpha, 
+      steps, 
+      this.chartService
+    );
   }
-
-  gradient(){
-    for (let i = this.differential.length-1; i >0; i--){
-      this.differential[i] = this.function[i+1] * this.differential.length-i;
+  
+  updateChart() {
+    const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
+    const yValues = this.calculateYValues(xValues, this.function);
+    this.chartService.updateChart_xy(xValues, yValues);
+  }
+  
+  gradient() {
+    this.differential = new Array(this.function.length - 1).fill(0);
+    for (let i = 0; i < this.differential.length; i++) {
+      const power = this.function.length - 1 - i;
+      if (power > 0) {
+        this.differential[i] = this.function[i] * power;
+      }
     }
   }
 }

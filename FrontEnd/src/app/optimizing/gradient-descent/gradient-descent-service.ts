@@ -12,7 +12,7 @@ export class GradientDescentService {
     
     for (let i = 0; i < steps; i++) {
         let grad = 2 * x;
-        points.push({x: x, y: func.reduce((acc, val, index) => acc + val * Math.pow(x, index), 0)});
+        points.push({x: x, y: func.reduce((acc, val, index) => acc + val * Math.pow(x, func.length-1-index), 0)});
         
         chartService.updateGradientPath(points);
         

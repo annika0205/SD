@@ -122,4 +122,14 @@ export class ChartService {
     this.chart.update();
     
   }
+
+  updateChart_xy(xValues: number[], yValues: number[]): void {
+    const chart = this.chart;
+    if (chart) {
+      chart.data.labels = xValues;
+      chart.data.datasets[0].data = yValues;
+      chart.update();
+    }
+  }
+  
 }
