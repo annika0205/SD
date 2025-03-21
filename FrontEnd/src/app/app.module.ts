@@ -15,9 +15,12 @@ import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
 import { FormsModule } from '@angular/forms';
 import { AlgoExampleComponent } from './algo-example/algo-example.component';
-import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
+import { TemplateSortingComponent } from './sorting/template-sortingg/template-sorting.component';
 import { GradientDescentComponent } from './optimizing/gradient-descent/gradient-descent.component';
 import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
+import { AstarComponent } from './graphs/astar/astar.component';
+import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
+import { TemplateGraphsComponent } from './graphs/template-graphs/template-graphs.component';
 
 
 
@@ -36,7 +39,10 @@ import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
     AlgoExampleComponent,
     TemplateSortingComponent,
     GradientDescentComponent,
-    BubblesortComponent
+    BubblesortComponent,
+    AstarComponent,
+    DijkstraComponent,
+    TemplateGraphsComponent
   ],
   imports: [
     BrowserModule,
