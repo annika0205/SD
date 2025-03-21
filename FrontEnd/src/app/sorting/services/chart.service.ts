@@ -67,14 +67,17 @@ export class ChartService {
           data: yValues,
           borderColor: 'blue',
           fill: false,
-          pointRadius: 0
+          pointRadius: 0,
+          order: 2
         },
         {
           label: 'Gradient Descent',
           data: [],
           borderColor: 'red',
           fill: false,
-          pointRadius: 5
+          pointRadius: 5,
+          pointBackgroundColor: 'red',
+          order: 1
         }]
       },
       options: {
