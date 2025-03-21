@@ -5,7 +5,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { AppComponent } from './app.component';
 import { SortingComponent } from './sorting/sorting.component';
 import { OptimizingComponent } from './optimizing/optimizing.component';
-import { ShortestWayComponent } from './shortest-way/shortest-way.component';
+//import { ShortestWayComponent } from './shortest-way/shortest-way.component';
 import { HeaderComponent } from './header/header.component';
 import { PreviewBoxComponent } from './preview-box/preview-box.component';
 import { BoxComponent } from './box/box.component';
@@ -29,7 +29,7 @@ import { TemplateGraphsComponent } from './graphs/template-graphs/template-graph
     AppComponent,
     SortingComponent,
     OptimizingComponent,
-    ShortestWayComponent,
+   // ShortestWayComponent,
     HeaderComponent,
     PreviewBoxComponent,
     BoxComponent,

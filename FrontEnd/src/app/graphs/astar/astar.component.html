@@ -1,84 +1,142 @@
-<div class="container">
-    <h1>A* Algorithmus Visualisierung</h1>
-    
-    <div class="mode-selector">
-      <button (click)="setMode('grid')" [class.active]="mode === 'grid'">Grid-Ansicht</button>
-      <button (click)="setMode('graph')" [class.active]="mode === 'graph'">Graph-Ansicht</button>
-    </div>
-    
-    <div class="controls">
-      <button (click)="startAlgorithm()" [disabled]="isRunning">Start</button>
-      <button (click)="resetVisualization()">Zurücksetzen</button>
-      <button (click)="randomizeObstacles()" *ngIf="mode === 'grid'">Zufällige Hindernisse</button>
-      <button (click)="toggleDiagonals()" *ngIf="mode === 'grid'">Diagonalen {{ allowDiagonals ? 'deaktivieren' : 'aktivieren' }}</button>
-      <button (click)="addNode()" *ngIf="mode === 'graph'">Knoten hinzufügen</button>
-      <button (click)="toggleEdgeCreation()" *ngIf="mode === 'graph'">{{ creatingEdge ? 'Kantenauswahl beenden' : 'Kante hinzufügen' }}</button>
-    </div>
-    
-    <div class="visualization-container">
-      <div *ngIf="mode === 'grid'" class="grid-container">
-        <div class="grid" #gridContainer>
-          <div *ngFor="let row of grid; let i = index" class="row">
-            <div *ngFor="let cell of row; let j = index" 
-                 [class]="getCellClass(cell)"
-                 (click)="onCellClick(i, j)"
-                 (mouseover)="onCellHover(i, j, $event)">
-            </div>
-          </div>
+<!-- astar.component.html -->
+<div class="astar-container">
+  <div class="header">
+    <h1><i class="material-icons">route</i> A* Pathfinding Visualizer</h1>
+    <p class="subtitle">Eine interaktive Demonstration des A*-Algorithmus</p>
+  </div>
+  
+  <div class="main-content">
+    <div class="content-layout">
+      <div class="controls-section">
+      <div class="card">
+        <h2>Steuerung</h2>
+        
+        <div class="control-group">
+          <button class="btn primary" [disabled]="isRunning" (click)="startAStarAlgorithm()">
+            <i class="material-icons">play_arrow</i> Visualisieren
+          </button>
+          <button class="btn secondary" [disabled]="isRunning" (click)="resetPathfinding()">
+            <i class="material-icons">refresh</i> Zurücksetzen
+          </button>
+          <button class="btn secondary" [disabled]="isRunning" (click)="resetGrid()">
+            <i class="material-icons">grid_on</i> Neues Raster
+          </button>
         </div>
         
-        <div class="legend">
-          <div class="legend-item">
-            <div class="legend-color start"></div>
-            <span>Start</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color end"></div>
-            <span>Ziel</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color wall"></div>
-            <span>Hindernis</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color open"></div>
-            <span>Offene Liste</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color closed"></div>
-            <span>Geschlossene Liste</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color path"></div>
-            <span>Pfad</span>
+        <div class="control-group slider">
+          <label for="speed">
+            <i class="material-icons">speed</i> Geschwindigkeit: 
+            <span class="speed-value">{{210 - animationSpeed}}%</span>
+          </label>
+          <input 
+            type="range" 
+            id="speed" 
+            class="speed-slider"
+            min="10" 
+            max="200" 
+            [value]="210 - animationSpeed" 
+            (input)="handleSpeedChange($event)"
+            [disabled]="isRunning">
+        </div>
+        
+        <div class="control-group">
+          <label for="gridSize">
+            <i class="material-icons">aspect_ratio</i> Rastergröße:
+          </label>
+          <input 
+          type="number" 
+          id="gridSize" 
+          min="5" 
+          max="50" 
+          [value]="gridSize" 
+          (change)="handleGridSizeChange($event)"
+          [disabled]="isRunning">
+        </div>
+        
+        <div class="control-group" *ngIf="showHexOption">
+          <label>
+            <i class="material-icons">grid_3x3</i> Gittertyp:
+          </label>
+          <div class="slide-toggle-container">
+            <span class="switch-label">Quadratisch</span>
+            <label class="slide-toggle">
+              <input 
+                type="checkbox" 
+                [checked]="isHexGrid" 
+                (change)="setGridType(!isHexGrid)" 
+                [disabled]="isRunning">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="switch-label">Sechseckig</span>
           </div>
         </div>
       </div>
       
-      <div *ngIf="mode === 'graph'" class="graph-container">
-        <canvas #graphCanvas></canvas>
+      <div class="card">
+        <h2>Legende</h2>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color start"></div>
+            <div class="legend-item">
+              <div class="legend-color start"></div>
+              <span>Start</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color end"></div>
+              <span>Ziel</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color wall"></div>
+              <span>Hindernis</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color open"></div>
+              <span>Offene Liste (zu untersuchen)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color closed"></div>
+              <span>Geschlossene Liste (untersucht)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color path"></div>
+              <span>Optimaler Pfad</span>
+            </div>
+          </div>
+        </div>
         
-        <div class="graph-instructions" *ngIf="!isRunning">
-          <p>Klicken Sie auf die Fläche, um Knoten hinzuzufügen.</p>
-          <p>Wählen Sie "Kante hinzufügen" und klicken Sie auf zwei Knoten, um eine Kante zu erstellen.</p>
-          <p>Rechtsklick auf einen Knoten, um ihn als Start oder Ziel festzulegen.</p>
+        <div class="card">
+          <h2>Anleitung</h2>
+          <div class="instructions">
+            <ol>
+              <li>Ziehen Sie <span class="highlight-text start-text">Start</span> und <span class="highlight-text end-text">Ziel</span> an die gewünschte Position.</li>
+              <li>Klicken und ziehen Sie, um Hindernisse zu setzen/entfernen.</li>
+              <li>Stellen Sie die Geschwindigkeit ein und klicken Sie auf "Visualisieren".</li>
+            </ol>
+            <div class="algorithm-info">
+              <h3>Über A*</h3>
+              <p>A* ist ein informierter Suchalgorithmus, der einen kostenoptimierten Pfad vom Start zum Ziel findet.</p>
+              <p>Die Werte für jeden Knoten sind:</p>
+              <ul>
+                <li><strong>G:</strong> Kosten vom Start bis zu diesem Knoten</li>
+                <li><strong>H:</strong> Geschätzte Kosten von diesem Knoten zum Ziel (Heuristik)</li>
+                <li><strong>F = G + H:</strong> Gesamtkosten</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+      </div>
+      <div class="canvas-container card">
+        <canvas #canvas *ngIf="isBrowser"></canvas>
+        <div class="status" *ngIf="isRunning">
+          <div class="spinner"></div>
+          <span>Algorithmus läuft...</span>
+        </div>
+      </div>
     
-    <div class="algorithm-info">
-      <h3>Algorithmus-Informationen</h3>
-      <p>
-        Der A* Algorithmus ist ein informierter Suchalgorithmus, der den kürzesten Weg zwischen zwei Punkten findet.
-        Er kombiniert die Vorteile des Dijkstra-Algorithmus (garantiert kürzesten Weg) und der Greedy Best-First-Search (verwendet Heuristik).
-      </p>
-      <p>
-        <strong>Formel:</strong> f(n) = g(n) + h(n)
-      </p>
-      <p>
-        <strong>g(n):</strong> Tatsächliche Kosten vom Start zum aktuellen Knoten<br>
-        <strong>h(n):</strong> Heuristik (geschätzte Kosten vom aktuellen Knoten zum Ziel)<br>
-        <strong>f(n):</strong> Gesamtkosten
-      </p>
-    </div>
-  </div>
+    
+    <footer class="footer">
+      <p>© 2025 - A*-Algorithmus-Visualisierung | Erstellt von DoubleEdgedSwort</p>
+    </footer>
+  </div>     
