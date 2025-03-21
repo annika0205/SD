@@ -14,6 +14,7 @@ interface RouteItem {
 export class TemplateSortingComponent {
 
   @Input() description: string = "";
+  @Input() show_inputs: boolean = true;
   @Input() action_button: string = "";
   @Input() predefinedText: string[] = [];
   @Input() maxInputs: number = 10;

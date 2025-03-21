@@ -2,7 +2,7 @@
   <div class="template-main-display">
       <ng-content></ng-content>
   </div>
-  <div class="template-input-section">
+  <div class="template-input-section" *ngIf="show_inputs">
     <div class="template-input-group">
       <div *ngFor="let input of inputs; let i = index" class="template-input-wrapper" [class.no-suffix]="!predefinedText[i]">
         <input  
