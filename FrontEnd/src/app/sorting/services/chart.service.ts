@@ -66,7 +66,8 @@ export class ChartService {
           label: 'Function',
           data: yValues,
           borderColor: 'blue',
-          fill: false
+          fill: false,
+          pointRadius: 0
         },
         {
           label: 'Gradient Descent',
