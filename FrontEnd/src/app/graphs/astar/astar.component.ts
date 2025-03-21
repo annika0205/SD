@@ -652,6 +652,7 @@ export class AstarComponent implements OnInit, AfterViewInit {
     } else {
       this.canvasRef.nativeElement.width = this.gridSize * this.cellSize;
       this.canvasRef.nativeElement.height = this.gridSize * this.cellSize;
+      console.log(this.canvasRef.nativeElement.width)
     }
   }
 

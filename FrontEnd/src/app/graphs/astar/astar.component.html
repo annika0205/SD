@@ -1,142 +1,144 @@
-<!-- astar.component.html -->
-<div class="astar-container">
-  <div class="header">
-    <h1><i class="material-icons">route</i> A* Pathfinding Visualizer</h1>
-    <p class="subtitle">Eine interaktive Demonstration des A*-Algorithmus</p>
-  </div>
-  
-  <div class="main-content">
-    <div class="content-layout">
-      <div class="controls-section">
-      <div class="card">
-        <h2>Steuerung</h2>
-        
-        <div class="control-group">
-          <button class="btn primary" [disabled]="isRunning" (click)="startAStarAlgorithm()">
-            <i class="material-icons">play_arrow</i> Visualisieren
-          </button>
-          <button class="btn secondary" [disabled]="isRunning" (click)="resetPathfinding()">
-            <i class="material-icons">refresh</i> Zurücksetzen
-          </button>
-          <button class="btn secondary" [disabled]="isRunning" (click)="resetGrid()">
-            <i class="material-icons">grid_on</i> Neues Raster
-          </button>
-        </div>
-        
-        <div class="control-group slider">
-          <label for="speed">
-            <i class="material-icons">speed</i> Geschwindigkeit: 
-            <span class="speed-value">{{210 - animationSpeed}}%</span>
-          </label>
-          <input 
-            type="range" 
-            id="speed" 
-            class="speed-slider"
-            min="10" 
-            max="200" 
-            [value]="210 - animationSpeed" 
-            (input)="handleSpeedChange($event)"
-            [disabled]="isRunning">
-        </div>
-        
-        <div class="control-group">
-          <label for="gridSize">
-            <i class="material-icons">aspect_ratio</i> Rastergröße:
-          </label>
-          <input 
-          type="number" 
-          id="gridSize" 
-          min="5" 
-          max="50" 
-          [value]="gridSize" 
-          (change)="handleGridSizeChange($event)"
-          [disabled]="isRunning">
-        </div>
-        
-        <div class="control-group" *ngIf="showHexOption">
-          <label>
-            <i class="material-icons">grid_3x3</i> Gittertyp:
-          </label>
-          <div class="slide-toggle-container">
-            <span class="switch-label">Quadratisch</span>
-            <label class="slide-toggle">
+<app-template-sorting [description]="'Test'" [show_inputs]="false">
+  <div class="astar-container">
+    <div class="header">
+      <h1><i class="material-icons">route</i> A* Pathfinding Visualizer</h1>
+      <p class="subtitle">Eine interaktive Demonstration des A*-Algorithmus</p>
+    </div>
+    
+    <div class="main-content">
+      <div class="content-layout">
+        <div class="controls-section">
+          <div class="card">
+            <h2>Steuerung</h2>
+            
+            <div class="control-group">
+              <button class="btn primary" [disabled]="isRunning" (click)="startAStarAlgorithm()">
+                <i class="material-icons">play_arrow</i> Visualisieren
+              </button>
+              <button class="btn secondary" [disabled]="isRunning" (click)="resetPathfinding()">
+                <i class="material-icons">refresh</i> Zurücksetzen
+              </button>
+              <button class="btn secondary" [disabled]="isRunning" (click)="resetGrid()">
+                <i class="material-icons">grid_on</i> Neues Raster
+              </button>
+            </div>
+            
+            <div class="control-group slider">
+              <label for="speed">
+                <i class="material-icons">speed</i> Geschwindigkeit: 
+                <span class="speed-value">{{210 - animationSpeed}}%</span>
+              </label>
               <input 
-                type="checkbox" 
-                [checked]="isHexGrid" 
-                (change)="setGridType(!isHexGrid)" 
+                type="range" 
+                id="speed" 
+                class="speed-slider"
+                min="10" 
+                max="200" 
+                [value]="210 - animationSpeed" 
+                (input)="handleSpeedChange($event)"
                 [disabled]="isRunning">
-              <span class="toggle-slider"></span>
-            </label>
-            <span class="switch-label">Sechseckig</span>
+            </div>
+            
+            <div class="control-group">
+              <label for="gridSize">
+                <i class="material-icons">aspect_ratio</i> Rastergröße:
+              </label>
+              <input 
+              type="number" 
+              id="gridSize" 
+              min="5" 
+              max="50" 
+              [value]="gridSize" 
+              (change)="handleGridSizeChange($event)"
+              [disabled]="isRunning">
+            </div>
+            
+            <div class="control-group" *ngIf="showHexOption">
+              <label>
+                <i class="material-icons">grid_3x3</i> Gittertyp:
+              </label>
+              <div class="slide-toggle-container">
+                <span class="switch-label">Quadratisch</span>
+                <label class="slide-toggle">
+                  <input 
+                    type="checkbox" 
+                    [checked]="isHexGrid" 
+                    (change)="setGridType(!isHexGrid)" 
+                    [disabled]="isRunning">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="switch-label">Sechseckig</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <h2>Legende</h2>
+            <div class="legend">
+              <div class="legend-item">
+                <div class="legend-color start"></div>
+                <div class="legend-item">
+                  <div class="legend-color start"></div>
+                  <span>Start</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color end"></div>
+                  <span>Ziel</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color wall"></div>
+                  <span>Hindernis</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color open"></div>
+                  <span>Offene Liste (zu untersuchen)</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color closed"></div>
+                  <span>Geschlossene Liste (untersucht)</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color path"></div>
+                  <span>Optimaler Pfad</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h2>Anleitung</h2>
+              <div class="instructions">
+                <ol>
+                  <li>Ziehen Sie <span class="highlight-text start-text">Start</span> und <span class="highlight-text end-text">Ziel</span> an die gewünschte Position.</li>
+                  <li>Klicken und ziehen Sie, um Hindernisse zu setzen/entfernen.</li>
+                  <li>Stellen Sie die Geschwindigkeit ein und klicken Sie auf "Visualisieren".</li>
+                </ol>
+                <div class="algorithm-info">
+                  <h3>Über A*</h3>
+                  <p>A* ist ein informierter Suchalgorithmus, der einen kostenoptimierten Pfad vom Start zum Ziel findet.</p>
+                  <p>Die Werte für jeden Knoten sind:</p>
+                  <ul>
+                    <li><strong>G:</strong> Kosten vom Start bis zu diesem Knoten</li>
+                    <li><strong>H:</strong> Geschätzte Kosten von diesem Knoten zum Ziel (Heuristik)</li>
+                    <li><strong>F = G + H:</strong> Gesamtkosten</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="canvas-container card">
+          <canvas #canvas *ngIf="isBrowser"></canvas>
+          <div class="status" *ngIf="isRunning">
+            <div class="spinner"></div>
+            <span>Algorithmus läuft...</span>
           </div>
         </div>
       </div>
       
-      <div class="card">
-        <h2>Legende</h2>
-        <div class="legend">
-          <div class="legend-item">
-            <div class="legend-color start"></div>
-            <div class="legend-item">
-              <div class="legend-color start"></div>
-              <span>Start</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color end"></div>
-              <span>Ziel</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color wall"></div>
-              <span>Hindernis</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color open"></div>
-              <span>Offene Liste (zu untersuchen)</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color closed"></div>
-              <span>Geschlossene Liste (untersucht)</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-color path"></div>
-              <span>Optimaler Pfad</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card">
-          <h2>Anleitung</h2>
-          <div class="instructions">
-            <ol>
-              <li>Ziehen Sie <span class="highlight-text start-text">Start</span> und <span class="highlight-text end-text">Ziel</span> an die gewünschte Position.</li>
-              <li>Klicken und ziehen Sie, um Hindernisse zu setzen/entfernen.</li>
-              <li>Stellen Sie die Geschwindigkeit ein und klicken Sie auf "Visualisieren".</li>
-            </ol>
-            <div class="algorithm-info">
-              <h3>Über A*</h3>
-              <p>A* ist ein informierter Suchalgorithmus, der einen kostenoptimierten Pfad vom Start zum Ziel findet.</p>
-              <p>Die Werte für jeden Knoten sind:</p>
-              <ul>
-                <li><strong>G:</strong> Kosten vom Start bis zu diesem Knoten</li>
-                <li><strong>H:</strong> Geschätzte Kosten von diesem Knoten zum Ziel (Heuristik)</li>
-                <li><strong>F = G + H:</strong> Gesamtkosten</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <footer class="footer">
+        <p>© 2025 - A*-Algorithmus-Visualisierung | Erstellt von DoubleEdgedSwort</p>
+      </footer>
     </div>
-      </div>
-      <div class="canvas-container card">
-        <canvas #canvas *ngIf="isBrowser"></canvas>
-        <div class="status" *ngIf="isRunning">
-          <div class="spinner"></div>
-          <span>Algorithmus läuft...</span>
-        </div>
-      </div>
-    
-    
-    <footer class="footer">
-      <p>© 2025 - A*-Algorithmus-Visualisierung | Erstellt von DoubleEdgedSwort</p>
-    </footer>
-  </div>     
+  </div>
+</app-template-sorting>
