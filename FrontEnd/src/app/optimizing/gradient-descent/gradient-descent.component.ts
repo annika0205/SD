@@ -41,7 +41,9 @@ export class GradientDescentComponent implements AfterViewInit {
   }
   
   onClick() {
-    this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
+    if (!this.inputs.every(x => x=="")) {
+      this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
+    }
     
     this.gradient();
     
