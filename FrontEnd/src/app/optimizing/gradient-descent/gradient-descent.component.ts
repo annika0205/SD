@@ -1,86 +1,81 @@
 import { Component } from '@angular/core';
-import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 import { GradientDescentService } from './gradient-descent-service';
+import { ChartService } from '../../sorting/services/chart.service';
 
 @Component({
   selector: 'app-gradient-descent',
   templateUrl: './gradient-descent.component.html',
-  styleUrl: './gradient-descent.component.css'
+  styleUrls: ['./gradient-descent.component.css']
 })
 export class GradientDescentComponent implements AfterViewInit {
-  @ViewChild('canvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  ctx!: CanvasRenderingContext2D;
-
-  constructor(private gradientDescentService: GradientDescentService) {}
-
+  predefinedTexts = ['x^4', 'x^3', 'x^2', 'x', ''];
+  parameters: string[] = ["-3", "0.8", "30"];
+  inputs: string[] = ["", "", "", "", ""];
+  function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
+  differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
+  
+  constructor(
+    private gradientDescentService: GradientDescentService,
+    private chartService: ChartService
+  ) {}
+  
   ngAfterViewInit() {
-    this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
-    this.drawFunction();
-    this.gradientDescentService.gradientDescent(-3, 0.8, 30, this, this.gradient);
+    this.initializeChart();
   }
-
-  drawFunction() {
-    const ctx = this.ctx;
-    const width = this.canvasRef.nativeElement.width;
-    const height = this.canvasRef.nativeElement.height;
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.beginPath();
-    ctx.strokeStyle = 'blue';
-
-    for (let x = -3; x <= 3; x += 0.1) {
-      let screenX = this.scaleX(x, width);
-      let screenY = this.scaleY(this.gradientDescentService.func(x), height);
-      if (x === -3) ctx.moveTo(screenX, screenY);
-      else ctx.lineTo(screenX, screenY);
-    }
-    ctx.stroke();
+  
+  initializeChart() {
+    const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
+    const yValues = this.calculateYValues(xValues, this.function);
+    this.chartService.createLineChart('myChart', xValues, yValues);
   }
-
-  gradient(x: number): number {
-    return 2 * x; // Ableitung von f(x) = x² ist f'(x) = 2x
-  }
-
-  drawPoint(x: number, y: number, color: string) {
-    const ctx = this.ctx;
-    const screenX = this.scaleX(x, this.canvasRef.nativeElement.width);
-    const screenY = this.scaleY(y, this.canvasRef.nativeElement.height);
-    
-    ctx.beginPath();
-    ctx.arc(screenX, screenY, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
-  }
-
-  scaleX(x: number, width: number): number {
-    return (x + 3) * (width / 6);
-  }
-
-  scaleY(y: number, height: number): number {
-    return height - (y * (height / 10) + height / 2);
-  }
-
-  sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  drawPath(points: {x: number, y: number}[], color: string) {
-    const ctx = this.ctx;
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-    points.forEach((point, index) => {
-        const screenX = this.scaleX(point.x, this.canvasRef.nativeElement.width);
-        const screenY = this.scaleY(point.y, this.canvasRef.nativeElement.height);
-        if (index === 0) ctx.moveTo(screenX, screenY);
-        else ctx.lineTo(screenX, screenY);
+  
+  calculateYValues(xValues: number[], coefficients: number[]): number[] {
+    return xValues.map(x => {
+      let result = 0;
+      for (let i = 0; i < coefficients.length; i++) {
+        result += coefficients[i] * Math.pow(x, coefficients.length - 1 - i);
+      }
+      return result;
     });
-    ctx.stroke();
   }
-
-  drawText(text: string, x: number, y: number) {
-    const ctx = this.ctx;
-    ctx.fillStyle = 'black';
-    ctx.font = '14px Arial';
-    ctx.fillText(text, x, y);
+  
+  onClick() {
+    if (!this.inputs.every(x => x=="")) {
+      this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
+    }
+    
+    this.gradient();
+    
+    const startX = parseFloat(this.parameters[0]);
+    const alpha = parseFloat(this.parameters[1]);
+    const steps = parseInt(this.parameters[2], 10);
+    
+    this.updateChart();
+    
+    this.gradientDescentService.gradientDescent(
+      this.function, 
+      this.differential, 
+      startX, 
+      alpha, 
+      steps, 
+      this.chartService
+    );
+  }
+  
+  updateChart() {
+    const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
+    const yValues = this.calculateYValues(xValues, this.function);
+    this.chartService.updateChart_xy(xValues, yValues);
+  }
+  
+  gradient() {
+    this.differential = new Array(this.function.length - 1).fill(0);
+    for (let i = 0; i < this.differential.length; i++) {
+      const power = this.function.length - 1 - i;
+      if (power > 0) {
+        this.differential[i] = this.function[i] * power;
+      }
+    }
   }
 }

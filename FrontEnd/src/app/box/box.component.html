@@ -2,7 +2,35 @@
     <h2>{{title}}</h2>
     <app-preview-box [items]="items" class="preview-card"></app-preview-box>
 </div> -->
-<div class="standard-card" (click)="onBoxClick()">
-    <h2>{{title}}</h2>
-    <app-preview-box [items]="items" class="preview-card"></app-preview-box>
+<!-- <div class="standard-card" (click)="onBoxClick()">
+    <h2>
+        {{title}}
+        <span class="toggle-icon">{{ isCollapsed ? '▼' : '▲' }}</span>
+    </h2>
+    <app-preview-box [items]="items" class="preview-card algorithm-list"></app-preview-box>
+</div> -->
+<div class="algorithm-box standard-card" 
+     [class]="class" 
+     [class.expanded]="isExpanded"
+     (click)="onBoxClick()">
+    <div class="box-header" (click)="toggleExpand($event)">
+      <h2>{{ title }}
+        <span class="search-icon" (click)="onSearchClick($event)">
+          <i class="fas fa-search"></i>
+        </span>
+      </h2>
+    </div>
+    <div class="box-content" [class.expanded]="isExpanded">
+      <div class="preview-container preview-card" *ngIf="isExpanded">
+        <app-preview-box [items]="items"></app-preview-box>
+      </div>
+      <ul class="algorithm-list" *ngIf="!isExpanded">
+        <li *ngFor="let item of items; let i = index" 
+            [ngClass]="{'bg-gray': i % 2 !== 0}"
+            class="clickableList">
+          <span class="algorithm-name">{{ item.items }}</span>
+          <span class="description">{{ item.description }}</span>
+        </li>
+      </ul>
+    </div>
 </div>

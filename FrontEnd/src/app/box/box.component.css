@@ -1,0 +1,158 @@
+
+  /* .algorithm-box {
+    border-radius: 15px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    min-height: fit-content; 
+}
+
+.box-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.box-header h2 {
+    color: white;
+    text-decoration: underline;
+    text-align: center;
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+    margin: 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: inherit;
+    width: 100%;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.toggle-icon.rotated {
+    transform: rotate(180deg);
+}
+
+.box-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    opacity: 0;
+}
+
+.box-content.expanded {
+    max-height: 2000px;
+    opacity: 1;
+    transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+}
+
+.preview-container {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 15px 15px;
+}
+
+.algorithm-list {
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+}
+
+.algorithm-list li {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    color: white;
+}
+
+.algorithm-list li:last-child {
+    margin-bottom: 0;
+}
+
+.algorithm-list li:hover {
+    transform: scale(1.02);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.algorithm-list li.bg-gray {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.algorithm-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.5;
+    display: block;
+}
+
+
+
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.standard-card {
+  height: auto; 
+  min-height: fit-content; 
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  margin-left: 7px;
+  margin-right: 7px;
+  transition: all 0.3s ease; 
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.standard-card.expanded {
+  height: calc(100vh - 10vh - 64px);
+}
+
+.standard-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.clickableList {
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.clickableList:hover {
+    transform: scale(1.005);
+    background-color: rgba(0, 0, 0, 0.4);
+} */

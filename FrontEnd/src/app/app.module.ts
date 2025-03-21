@@ -21,6 +21,7 @@ import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
 import { AstarComponent } from './graphs/astar/astar.component';
 import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
 import { TemplateGraphsComponent } from './graphs/template-graphs/template-graphs.component';
+import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
 
 
 
@@ -42,7 +43,8 @@ import { TemplateGraphsComponent } from './graphs/template-graphs/template-graph
     BubblesortComponent,
     AstarComponent,
     DijkstraComponent,
-    TemplateGraphsComponent
+    TemplateGraphsComponent,
+    StartpageV2Component
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,37 @@
-.bg-gray {
-    background-color: lightgray;
-  }
-  
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.algorithm-item {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.algorithm-item:hover {
+  transform: scale(1.05);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bg-darker {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.algorithm-name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #d6bcfa;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.algorithm-description {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  display: block;
+}

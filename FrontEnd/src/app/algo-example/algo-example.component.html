@@ -1,24 +1,41 @@
-<div class="container">
-    <div class="main-display">Visualisierung des Algorithmus</div>
-    
-    <div class="input-section">
-      <input 
-        *ngFor="let input of inputs; let i = index" 
-        type="text" 
-        [placeholder]="'Eingabe ' + (i + 1) + '...'" 
-        [value]="input" 
-        (input)="handleInputChange(i, $event)" 
-      />
-      <button>Sortieren</button>
-      <button>schrittweise Sortieren</button>
-    </div>
+<div class="algo-example-container">
+  <div class="algo-example-main-display">Visualisierung des Algorithmus</div>
   
-    <div class="sidebar" [class.open]="sidebarOpen">
-      <div class="sidebar-title" (click)="toggleSidebar()">
-        Beschreibung
-      </div>
-      <div class="sidebar-content">
-        Algorithmus Beschreibung
-      </div>
+  <div class="algo-example-input-section">
+    <input 
+      *ngFor="let input of inputs; let i = index" 
+      class="algo-example-input"
+      type="text" 
+      [placeholder]="'Eingabe ' + (i + 1) + '...'" 
+      [value]="input" 
+      (input)="handleInputChange(i, $event)" 
+    />
+    <button class="algo-example-add-button" (click)="addInput()">+</button>
+    <button class="algo-example-remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
+    <button>Sortieren</button>
+    <button>schrittweise Sortieren</button>
+  </div>
+
+  <div class="algo-example-navigation">
+    <div class="algo-example-nav-item prev" (click)="goToPreviousAlgo()">
+      <span class="algo-example-arrow">←</span>
+      <span class="algo-example-name">{{getPreviousAlgo()}}</span>
+    </div>
+    <div class="algo-example-current">
+      <span class="algo-example-name">{{getCurrentAlgo()}}</span>
+    </div>
+    <div class="algo-example-nav-item next" (click)="goToNextAlgo()">
+      <span class="algo-example-name">{{getNextAlgo()}}</span>
+      <span class="algo-example-arrow">→</span>
     </div>
   </div>
+
+  <div class="algo-example-sidebar" [class.open]="sidebarOpen">
+    <div class="algo-example-sidebar-title" (click)="toggleSidebar()">
+      Beschreibung
+    </div>
+    <div class="algo-example-sidebar-content">
+      Algorithmus Beschreibung
+    </div>
+  </div>
+</div>

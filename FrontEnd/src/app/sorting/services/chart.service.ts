@@ -47,6 +47,63 @@ export class ChartService {
     });
   }
 
+  createLineChart(canvasId: string, xValues: number[], yValues: number[]): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) {
+      console.error('Canvas not found!');
+      return;
+    }
+
+    this.chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: xValues,
+        datasets: [{
+          label: 'Function',
+          data: yValues,
+          borderColor: 'blue',
+          fill: false,
+          pointRadius: 0,
+          order: 2
+        },
+        {
+          label: 'Gradient Descent',
+          data: [],
+          borderColor: 'red',
+          fill: false,
+          pointRadius: 5,
+          pointBackgroundColor: 'red',
+          order: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 0 // Disable all animations
+        },
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  }
+
+  updateGradientPath(points: {x: number, y: number}[]): void {
+    if (!isPlatformBrowser(this.platformId) || !this.chart) {
+      return;
+    }
+
+    this.chart.data.datasets[1].data = points;
+    this.chart.update();
+  }
+
   updateChart(data: number[], index1: number, index2: number): void {
     // Only execute in browser environment
     if (!isPlatformBrowser(this.platformId) || !this.chart) {
@@ -69,4 +126,14 @@ export class ChartService {
     this.chart.update();
     
   }
+
+  updateChart_xy(xValues: number[], yValues: number[]): void {
+    const chart = this.chart;
+    if (chart) {
+      chart.data.labels = xValues;
+      chart.data.datasets[0].data = yValues;
+      chart.update();
+    }
+  }
+  
 }

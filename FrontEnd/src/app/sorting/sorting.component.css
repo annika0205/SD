@@ -1,15 +1,104 @@
-/* <<<<<<< HEAD
-.list {
-font-size: 30px;
-margin-left: 20px;
-margin-right: 20px;
-transition: transform 0.3s ease;
 
-  &:hover {
-    transform: scale(1.008);
+  
+  h2 {
+    color: white;
+    /* text-decoration: underline; */
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 0;
+    background: inherit;
+    padding: 10px 0;
+    z-index: 1;
   }
+  
+  .algorithm-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .algorithm-list li {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 50px; /* Erhöht von 15px auf 30px */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    color: white;
 }
 
-.bg-gray {
-    background-color: lightgray;
-  } */
+/* Optional: Letztes Element soll keinen Abstand nach unten haben */
+.algorithm-list li:last-child {
+    margin-bottom: 0;
+}
+  
+  .algorithm-list li:hover {
+    transform: scale(1.02);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .algorithm-list li.bg-gray {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .algorithm-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.5;
+    display: block;
+  }
+  
+ 
+  .algorithm-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .algorithm-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  
+  .algorithm-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+  
+  .algorithm-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  
+  @media (max-width: 768px) {
+    :host {
+      padding: 10px;
+    }
+  
+    .algorithm-container {
+      height: calc(100vh - 20px);
+    }
+  
+    .algorithm-list {
+      width: 95%;
+    }
+  
+    .algorithm-name {
+      font-size: 1.2rem;
+    }
+  
+    .description {
+      font-size: 0.9rem;
+    }
+  }
+
+  
