@@ -14,7 +14,11 @@ export class GradientDescentComponent implements AfterViewInit {
   inputs: string[] = ["", "", "", "", ""];
   function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
   differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
+  //üblicherweise werte zwischen 10^-1 und 10^-4
+  alpha : number = 0.001;
   
+  //Alpha bestimmen
+  //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
   constructor(
     private gradientDescentService: GradientDescentService,
     private chartService: ChartService
@@ -40,14 +44,23 @@ export class GradientDescentComponent implements AfterViewInit {
     });
   }
   
+  validateAlpha() {
+    if (this.alpha < 0 || this.alpha > 1) {
+      this.alpha = 0.8;
+      console.log('Alpha must be between 0 and 1. Default value 0.8 is used.');
+    } 
+  }
+
   onClick() {
+    this.validateAlpha();
+
     if (!this.inputs.every(x => x=="")) {
       this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
     }
     
     
     const startX = parseFloat(this.parameters[0]);
-    const alpha = parseFloat(this.parameters[1]);
+ //   const alpha = parseFloat(this.parameters[1]);
     const steps = parseInt(this.parameters[2], 10);
     
     this.updateChart();
@@ -55,7 +68,7 @@ export class GradientDescentComponent implements AfterViewInit {
     this.gradientDescentService.gradientDescent(
       this.function, 
       startX, 
-      alpha, 
+      this.alpha, 
       steps, 
       this.chartService
     );

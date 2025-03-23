@@ -1,4 +1,14 @@
 <app-template-sorting [description]="'Test'" [predefinedText] = "['x^4', 'x^3', 'x^2', 'x^1', 'x^0']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+  <!-- überlegen wegen schrittweitensteuerung für < 0.01 -->
+   <!-- Button um line search zu aktivieren bzw zu deaktivieren hinzufügen   -->
+  <input 
+      type="number" 
+      placeholder="Schrittweite" 
+      name="alpha" 
+      [(ngModel)]="alpha"
+      (ngModelChange)="validateAlpha()"
+      min="0" max="1" step="0.01">
+  <span title="Bitte einen Wert zwischen 0 und 1 eingeben.">ℹ️</span>
   <canvas height="100vh" margin id="myChart"></canvas>
 </app-template-sorting>
 
