@@ -45,7 +45,6 @@ export class GradientDescentComponent implements AfterViewInit {
       this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
     }
     
-    this.gradient();
     
     const startX = parseFloat(this.parameters[0]);
     const alpha = parseFloat(this.parameters[1]);
@@ -55,7 +54,6 @@ export class GradientDescentComponent implements AfterViewInit {
     
     this.gradientDescentService.gradientDescent(
       this.function, 
-      this.differential, 
       startX, 
       alpha, 
       steps, 
@@ -69,13 +67,5 @@ export class GradientDescentComponent implements AfterViewInit {
     this.chartService.updateChart_xy(xValues, yValues);
   }
   
-  gradient() {
-    this.differential = new Array(this.function.length - 1).fill(0);
-    for (let i = 0; i < this.differential.length; i++) {
-      const power = this.function.length - 1 - i;
-      if (power > 0) {
-        this.differential[i] = this.function[i] * power;
-      }
-    }
-  }
+  
 }
