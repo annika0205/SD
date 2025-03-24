@@ -4,7 +4,8 @@
   <input 
       type="number" 
       placeholder="Schrittweite" 
-      name="alpha" 
+      name="alpha"
+      style="margin:10px;"
       [(ngModel)]="alpha"
       (ngModelChange)="validateAlpha()"
       min="0" max="1" step="0.01">
@@ -16,7 +17,9 @@
     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="setGraphMode('2D')" [checked]="graphMode === '2D'">
     <label class="btn btn-outline-primary" for="btnradio2">2D Graph</label>
   </div>
-  <div id="plot3d" style="height: 500px; width: 100%;" *ngIf="graphMode === '2D'"></div>
-  <canvas height="100vh" margin id="myChart" *ngIf="graphMode === '1D'"></canvas>
+  <div style="display: flex; justify-content: center; align-items: center; height: 70vh; width: 100%;">
+    <div id="plot3d" style="height: 70vh; width: 90%;" *ngIf="graphMode === '2D'"></div>
+    <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;"></canvas>
+  </div>
 </app-template-sorting>
 

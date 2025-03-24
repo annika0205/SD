@@ -180,15 +180,20 @@ export class ChartService {
         const layout = {
           title: '3D Function Plot',
           autosize: true,
-          margin: { l: 65, r: 50, b: 65, t: 90 },
+          margin: { l: 20, r: 20, b: 40, t: 40 },
           scene: {
             camera: {
               eye: { x: 1.87, y: 0.88, z: 0.64 }
             }
-          }
+          },
+          paper_bgcolor: "#ddd",
         };
 
-        Plotly.newPlot(divId, data, layout);
+        const config = {
+          displayModeBar: false
+        };
+
+        Plotly.newPlot(divId, data, layout, config);
       });
     }
   }
