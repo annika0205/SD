@@ -140,6 +140,13 @@ export class ChartService {
   create3DPlot(divId: string, xRange: number[], yRange: number[], f: (x: number, y: number) => number): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
+    // Check if the element exists before proceeding
+    const element = document.getElementById(divId);
+    if (!element) {
+      console.error(`DOM element with id '${divId}' doesn't exist on the page.`);
+      return;
+    }
+
     const xValues = xRange;
     const yValues = yRange;
     const zValues: number[][] = [];
@@ -162,7 +169,7 @@ export class ChartService {
           name: 'Surface'
         }, {
           type: 'scatter',
-          mode: 'lines+markers' as const,  // Fixed mode type
+          mode: 'lines+markers' as const,
           x: [],
           y: [],
           z: [],
@@ -194,12 +201,21 @@ export class ChartService {
         };
 
         Plotly.newPlot(divId, data, layout, config);
+      }).catch(error => {
+        console.error('Error loading Plotly or creating plot:', error);
       });
     }
   }
 
   updateGradient3DPath(divId: string, points: {x: number, y: number, z: number}[]): void {
     if (!isPlatformBrowser(this.platformId)) return;
+
+    // Check if the element exists before proceeding
+    const element = document.getElementById(divId);
+    if (!element) {
+      console.error(`DOM element with id '${divId}' doesn't exist on the page.`);
+      return;
+    }
 
     import('plotly.js-dist-min').then((Plotly) => {
       const update = {
@@ -209,6 +225,8 @@ export class ChartService {
       };
 
       Plotly.update(divId, update, {}, [1]); // Update nur die zweite Trace (Index 1)
+    }).catch(error => {
+      console.error('Error updating gradient path:', error);
     });
   }
 }

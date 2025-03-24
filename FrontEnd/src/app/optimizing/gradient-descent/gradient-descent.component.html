@@ -19,7 +19,9 @@
   </div>
   <div style="display: flex; justify-content: center; align-items: center; height: 70vh; width: 100%;">
     <div id="plot3d" style="height: 70vh; width: 90%;" *ngIf="graphMode === '2D'"></div>
-    <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;"></canvas>
+    <div *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;">
+      <canvas id="myChart"></canvas>
+    </div>
   </div>
 </app-template-sorting>
 
