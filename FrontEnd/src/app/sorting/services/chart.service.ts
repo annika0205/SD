@@ -1,6 +1,7 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
+import { Data } from 'plotly.js';
 
 Chart.register(...registerables);
 
@@ -135,5 +136,44 @@ export class ChartService {
       chart.update();
     }
   }
-  
+
+  create3DPlot(divId: string, xRange: number[], yRange: number[], f: (x: number, y: number) => number): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const xValues = xRange;
+    const yValues = yRange;
+    const zValues: number[][] = [];
+
+    for (let i = 0; i < xValues.length; i++) {
+      zValues[i] = [];
+      for (let j = 0; j < yValues.length; j++) {
+        zValues[i][j] = f(xValues[i], yValues[j]);
+      }
+    }
+
+    if (isPlatformBrowser(this.platformId)) {
+      import('plotly.js-dist-min').then((Plotly) => {
+        const data: Data[] = [{
+          type: 'contour' as const,
+          x: xValues,
+          y: yValues,
+          z: zValues,
+          colorscale: 'Viridis'
+        }];
+    
+        const layout = {
+          title: '3D Function Plot',
+          autosize: true,
+          margin: { l: 65, r: 50, b: 65, t: 90 },
+          scene: {
+            camera: {
+              eye: { x: 1.87, y: 0.88, z: 0.64 }
+            }
+          }
+        };
+    
+        Plotly.newPlot(divId, data, layout);
+      });
+    }
+  }
 }

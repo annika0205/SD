@@ -9,6 +9,14 @@
       (ngModelChange)="validateAlpha()"
       min="0" max="1" step="0.01">
   <span title="Bitte einen Wert zwischen 0 und 1 eingeben.">ℹ️</span>
-  <canvas height="100vh" margin id="myChart"></canvas>
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin-top: 10px;margin: 10px;">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="setGraphMode('1D')" [checked]="graphMode === '1D'">
+    <label class="btn btn-outline-primary" for="btnradio1">1D Graph</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="setGraphMode('2D')" [checked]="graphMode === '2D'">
+    <label class="btn btn-outline-primary" for="btnradio2">2D Graph</label>
+  </div>
+  <div id="plot3d" style="height: 500px; width: 100%;" *ngIf="graphMode === '2D'"></div>
+  <canvas height="100vh" margin id="myChart" *ngIf="graphMode === '1D'"></canvas>
 </app-template-sorting>
 

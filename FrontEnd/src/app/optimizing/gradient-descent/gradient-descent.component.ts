@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { GradientDescentService } from './gradient-descent-service';
-import { ChartService } from '../../sorting/services/chart.service';
+import { ChartService } from '../../sorting/services/chart.service'
+//gucken, welche Module wirklich benötigt werden von Plotly
 
 @Component({
   selector: 'app-gradient-descent',
@@ -16,17 +17,21 @@ export class GradientDescentComponent implements AfterViewInit {
   differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
   //üblicherweise werte zwischen 10^-1 und 10^-4
   alpha : number = 0.001;
+  graphMode: '1D' | '2D' = '1D';
   
   //Alpha bestimmen
   //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
   constructor(
     private gradientDescentService: GradientDescentService,
     private chartService: ChartService
+    
   ) {}
   
   ngAfterViewInit() {
     this.initializeChart();
+    this.initialize3DChart();
   }
+  
   
   initializeChart() {
     const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
@@ -34,6 +39,13 @@ export class GradientDescentComponent implements AfterViewInit {
     this.chartService.createLineChart('myChart', xValues, yValues);
   }
   
+  initialize3DChart() {
+    const xRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
+    const yRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
+    const paraboloid = (x: number, y: number) => x*x + y*y;
+    this.chartService.create3DPlot('plot3d', xRange, yRange, paraboloid);
+  }
+
   calculateYValues(xValues: number[], coefficients: number[]): number[] {
     return xValues.map(x => {
       let result = 0;
@@ -51,7 +63,17 @@ export class GradientDescentComponent implements AfterViewInit {
     } 
   }
 
+  setGraphMode(mode: '1D' | '2D') {
+    this.graphMode = mode;
+    if (mode === '1D') {
+      setTimeout(() => this.initializeChart(), 0);
+    } else {
+      setTimeout(() => this.initialize3DChart(), 0);
+    }
+  }
+
   onClick() {
+
     this.validateAlpha();
 
     if (!this.inputs.every(x => x=="")) {
