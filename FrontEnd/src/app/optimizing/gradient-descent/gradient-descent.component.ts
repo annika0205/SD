@@ -44,6 +44,25 @@ export class GradientDescentComponent implements AfterViewInit {
     const yRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
     const paraboloid = (x: number, y: number) => x*x + y*y;
     this.chartService.create3DPlot('plot3d', xRange, yRange, paraboloid);
+    
+    // Test path nach Plot-Initialisierung
+    this.testGradientPath();
+  }
+
+  testGradientPath() {
+    // Testpunkte für eine Spirale zum Minimum
+    const testPoints = Array.from({length: 10}, (_, i) => {
+      const t = (10 - i) / 2;  // Abnehmender Radius
+      return {
+        x: t * Math.cos(i),
+        y: t * Math.sin(i),
+        z: Math.pow(t * Math.cos(i), 2) + Math.pow(t * Math.sin(i), 2)  // z = x² + y²
+      };
+    });
+    
+    setTimeout(() => {
+      this.chartService.updateGradient3DPath('plot3d', testPoints);
+    }, 100);
   }
 
   calculateYValues(xValues: number[], coefficients: number[]): number[] {

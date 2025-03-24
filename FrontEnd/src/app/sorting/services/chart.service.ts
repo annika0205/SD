@@ -158,9 +158,25 @@ export class ChartService {
           x: xValues,
           y: yValues,
           z: zValues,
-          colorscale: 'Viridis'
+          colorscale: 'Viridis',
+          name: 'Surface'
+        }, {
+          type: 'scatter',
+          mode: 'lines+markers' as const,  // Fixed mode type
+          x: [],
+          y: [],
+          z: [],
+          marker: {
+            size: 8,
+            color: 'red'
+          },
+          line: {
+            color: 'red',
+            width: 2
+          },
+          name: 'Gradient Path'
         }];
-    
+
         const layout = {
           title: '3D Function Plot',
           autosize: true,
@@ -171,9 +187,23 @@ export class ChartService {
             }
           }
         };
-    
+
         Plotly.newPlot(divId, data, layout);
       });
     }
+  }
+
+  updateGradient3DPath(divId: string, points: {x: number, y: number, z: number}[]): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    import('plotly.js-dist-min').then((Plotly) => {
+      const update = {
+        x: [points.map(p => p.x)],
+        y: [points.map(p => p.y)],
+        z: [points.map(p => p.z)]
+      };
+
+      Plotly.update(divId, update, {}, [1]); // Update nur die zweite Trace (Index 1)
+    });
   }
 }
