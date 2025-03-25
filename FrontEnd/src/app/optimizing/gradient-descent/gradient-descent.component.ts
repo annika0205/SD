@@ -10,14 +10,18 @@ import { ChartService } from '../../sorting/services/chart.service'
   styleUrls: ['./gradient-descent.component.css']
 })
 export class GradientDescentComponent implements AfterViewInit {
-  predefinedTexts = ['x^4', 'x^3', 'x^2', 'x', ''];
+  predefinedTexts: string[] = [];
   parameters: string[] = ["-3", "0.8", "30"];
   inputs: string[] = ["", "", "", "", ""];
   function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
   differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
   //üblicherweise werte zwischen 10^-1 und 10^-4
   alpha : number = 0.001;
+  steps : number = 30;
+  termination: number = 0.1;
+  startX: number = -3;
   graphMode: '1D' | '2D' = '1D';
+  foundPoint: number | null = null;
   
   //Alpha bestimmen
   //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
@@ -25,7 +29,9 @@ export class GradientDescentComponent implements AfterViewInit {
     private gradientDescentService: GradientDescentService,
     private chartService: ChartService
     
-  ) {}
+  ) {
+    this.updatePredefinedTexts(5); // Initial 5 inputs
+  }
   
   ngAfterViewInit() {
     this.initializeChart();
@@ -65,14 +71,30 @@ export class GradientDescentComponent implements AfterViewInit {
 
   testGradientPath() {
     // Testpunkte für eine Spirale zum Minimum
-    const testPoints = Array.from({length: 10}, (_, i) => {
-      const t = (10 - i) / 2;  // Abnehmender Radius
-      return {
-        x: t * Math.cos(i),
-        y: t * Math.sin(i),
-        z: Math.pow(t * Math.cos(i), 2) + Math.pow(t * Math.sin(i), 2)  // z = x² + y²
-      };
-    });
+    //gefundener Punkt noch ausgeben lassen
+    
+    const testPoints = [
+      { x: -3.0000, y: -3.0000, z: Math.pow(-3.0000, 2) + Math.pow(-3.0000, 2) },
+      { x: -2.4000, y: -2.4000, z: Math.pow(-2.4000, 2) + Math.pow(-2.4000, 2) },
+      { x: -1.9200, y: -1.9200, z: Math.pow(-1.9200, 2) + Math.pow(-1.9200, 2) },
+      { x: -1.5360, y: -1.5360, z: Math.pow(-1.5360, 2) + Math.pow(-1.5360, 2) },
+      { x: -1.2288, y: -1.2288, z: Math.pow(-1.2288, 2) + Math.pow(-1.2288, 2) },
+      { x: -0.9830, y: -0.9830, z: Math.pow(-0.9830, 2) + Math.pow(-0.9830, 2) },
+      { x: -0.7864, y: -0.7864, z: Math.pow(-0.7864, 2) + Math.pow(-0.7864, 2) },
+      { x: -0.6291, y: -0.6291, z: Math.pow(-0.6291, 2) + Math.pow(-0.6291, 2) },
+      { x: -0.5033, y: -0.5033, z: Math.pow(-0.5033, 2) + Math.pow(-0.5033, 2) },
+      { x: -0.4027, y: -0.4027, z: Math.pow(-0.4027, 2) + Math.pow(-0.4027, 2) },
+      { x: -0.3221, y: -0.3221, z: Math.pow(-0.3221, 2) + Math.pow(-0.3221, 2) },
+      { x: -0.2577, y: -0.2577, z: Math.pow(-0.2577, 2) + Math.pow(-0.2577, 2) },
+      { x: -0.2062, y: -0.2062, z: Math.pow(-0.2062, 2) + Math.pow(-0.2062, 2) },
+      { x: -0.1649, y: -0.1649, z: Math.pow(-0.1649, 2) + Math.pow(-0.1649, 2) },
+      { x: -0.1319, y: -0.1319, z: Math.pow(-0.1319, 2) + Math.pow(-0.1319, 2) },
+      { x: -0.1056, y: -0.1056, z: Math.pow(-0.1056, 2) + Math.pow(-0.1056, 2) },
+      { x: -0.0844, y: -0.0844, z: Math.pow(-0.0844, 2) + Math.pow(-0.0844, 2) },
+      { x: -0.0676, y: -0.0676, z: Math.pow(-0.0676, 2) + Math.pow(-0.0676, 2) },
+      { x: -0.0540, y: -0.0540, z: Math.pow(-0.0540, 2) + Math.pow(-0.0540, 2) },
+      { x: -0.0432, y: -0.0432, z: Math.pow(-0.0432, 2) + Math.pow(-0.0432, 2) }
+    ];
     
     setTimeout(() => {
       this.chartService.updateGradient3DPath('plot3d', testPoints);
@@ -118,18 +140,19 @@ export class GradientDescentComponent implements AfterViewInit {
     }
     
     
-    const startX = parseFloat(this.parameters[0]);
+ //   const startX = parseFloat(this.parameters[0]);
  //   const alpha = parseFloat(this.parameters[1]);
-    const steps = parseInt(this.parameters[2], 10);
+ //   const steps = parseInt(this.parameters[2], 10);
     
     this.updateChart();
     
     this.gradientDescentService.gradientDescent(
       this.function, 
-      startX, 
+      this.startX, 
       this.alpha, 
-      steps, 
-      this.chartService
+      this.steps, 
+      this.chartService,
+      (point) => this.foundPoint = point
     );
   }
   
@@ -139,5 +162,22 @@ export class GradientDescentComponent implements AfterViewInit {
     this.chartService.updateChart_xy(xValues, yValues);
   }
   
+  updatePredefinedTexts(inputCount: number) {
+    this.predefinedTexts = Array(inputCount).fill('').map((_, i) => {
+      const power = inputCount - 1 - i;
+      if (power === 0) return 'x<sup>0</sup>';
+      if (power === 1) return 'x<sup>1</sup> +';
+      return `x<sup>${power}</sup> +`;
+    });
+  }
+
+  onInputCountChanged(newInputs: string[]) {
+    this.inputs = newInputs;
+    
+  }
   
+  onAddInput(inputs: string[]): void {
+    console.log('Input added in gradient descent component');
+    this.updatePredefinedTexts(inputs.length);
+  }
 }

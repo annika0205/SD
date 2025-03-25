@@ -20,6 +20,7 @@ export class TemplateSortingComponent {
   @Input() maxInputs: number = 10;
   @Output() sortClicked = new EventEmitter<void>();
   @Output() inputsEvent = new EventEmitter<string[]>();
+  @Output() addInputClicked = new EventEmitter<string[]>();
 
   algorithms: RouteItem[] = [
     { name: 'Bubblesort', route: 'bubble-sort' },
@@ -49,6 +50,8 @@ export class TemplateSortingComponent {
   addInput(): void {
     if (this.inputs.length < this.maxInputs) {
       this.inputs.push("");
+      this.addInputClicked.emit(this.inputs);  // Emit current inputs array
+      this.inputsEvent.emit(this.inputs);      // Also emit to keep both events in sync
     }
   }
 
