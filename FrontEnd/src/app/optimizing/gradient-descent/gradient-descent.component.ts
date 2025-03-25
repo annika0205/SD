@@ -29,7 +29,13 @@ export class GradientDescentComponent implements AfterViewInit {
   
   ngAfterViewInit() {
     this.initializeChart();
-    this.initialize3DChart();
+    // Only initialize 3D chart if in 2D mode
+    if (this.graphMode === '2D') {
+      // Use setTimeout to ensure the DOM is ready
+      setTimeout(() => {
+        this.initialize3DChart();
+      }, 100);
+    }
   }
   
   
@@ -40,13 +46,21 @@ export class GradientDescentComponent implements AfterViewInit {
   }
   
   initialize3DChart() {
+    // Check if the element exists first
+    if (!document.getElementById('plot3d')) {
+      console.warn('plot3d element not found in the DOM');
+      return;
+    }
+    
     const xRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
     const yRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
     const paraboloid = (x: number, y: number) => x*x + y*y;
     this.chartService.create3DPlot('plot3d', xRange, yRange, paraboloid);
     
-    // Test path nach Plot-Initialisierung
-    this.testGradientPath();
+    // Test path after Plot-Initialization with a delay
+    setTimeout(() => {
+      this.testGradientPath();
+    }, 200);
   }
 
   testGradientPath() {
@@ -84,11 +98,15 @@ export class GradientDescentComponent implements AfterViewInit {
 
   setGraphMode(mode: '1D' | '2D') {
     this.graphMode = mode;
-    if (mode === '1D') {
-      setTimeout(() => this.initializeChart(), 0);
-    } else {
-      setTimeout(() => this.initialize3DChart(), 0);
-    }
+    
+    // Use setTimeout to ensure the DOM is updated before trying to access elements
+    setTimeout(() => {
+      if (mode === '1D') {
+        this.initializeChart();
+      } else {
+        this.initialize3DChart();
+      }
+    }, 100);
   }
 
   onClick() {
