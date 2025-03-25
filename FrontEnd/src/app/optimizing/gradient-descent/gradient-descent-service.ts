@@ -18,7 +18,8 @@ export class GradientDescentService {
 
   }
   
-  async gradientDescent(func:number[], startX: number, alpha: number, steps: number, chartService: ChartService) {
+  async gradientDescent(func:number[], startX: number, alpha: number, steps: number, chartService: ChartService, 
+    onPointFound?: (point: number) => void) {  // Add callback parameter
     let x = startX;
     let points: {x: number, y: number}[] = [];
     this.gradient(func);
@@ -26,7 +27,7 @@ export class GradientDescentService {
     console.log('Gradient:', this.differential);
     //Abbruchbedingung für unsinnvolle Alpha-Werte einbauen 
     //Hinweis an Nutzer -> Verlinkung an Line Search?
-    for (let i = 0; i < steps; i++) {
+    for (let i = 0; i < steps+1; i++) {
         let x_alt = x;
         points.push({x: x, y: func.reduce((acc, val, index) => acc + val * Math.pow(x, func.length-1-index), 0)});
         
@@ -39,6 +40,7 @@ export class GradientDescentService {
         //Bedingung noch variabel machen
         if (Math.abs(grad) < 0.01) {
           console.log('Gradient is close to zero', grad);
+          onPointFound?.(x_alt); // Call callback with found point
           break;
         }
         
@@ -46,6 +48,7 @@ export class GradientDescentService {
         if (func.reduce((acc, val, index) => acc + val * Math.pow(x, func.length-1-index), 0) > func.reduce((acc, val, index) => acc + val * Math.pow(x_alt, func.length-1-index), 0)) {
           //schöner schreiben
           console.log('Function value increased. Ein Verfahren wie line search solle verwendet werden.');
+          onPointFound?.(x_alt); // Call callback with found point
           break;
           //alpha = alpha / 2;
           //console.log('Alpha halved to', alpha);
@@ -53,4 +56,4 @@ export class GradientDescentService {
         }
     }
   }
-} 
+}

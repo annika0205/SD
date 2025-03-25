@@ -1,25 +1,84 @@
-<app-template-sorting [description]="'Test'" [predefinedText] = "['x^4', 'x^3', 'x^2', 'x^1', 'x^0']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
-  <!-- überlegen wegen schrittweitensteuerung für < 0.01 -->
-   <!-- Button um line search zu aktivieren bzw zu deaktivieren hinzufügen   -->
-  <input 
-      type="number" 
-      placeholder="Schrittweite" 
-      name="alpha"
-      style="margin:10px;"
-      [(ngModel)]="alpha"
-      (ngModelChange)="validateAlpha()"
-      min="0" max="1" step="0.01">
-  <span title="Bitte einen Wert zwischen 0 und 1 eingeben.">ℹ️</span>
-  <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin-top: 10px;margin: 10px;">
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="setGraphMode('1D')" [checked]="graphMode === '1D'">
-    <label class="btn btn-outline-primary" for="btnradio1">1D Graph</label>
+<app-template-sorting 
+  [description]="'Test'" 
+  [predefinedText]="predefinedTexts" 
+  [action_button]="'Optimieren'"
+  (sortClicked)="onClick()" 
+  (inputsEvent)="onInputCountChanged($event)"
+  (addInputClicked)="onAddInput($event)">
+  <div style="display: flex; flex-direction: column; height: 50vh; width: 100%;">
+    <!-- Controls row with flex -->
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 10px; margin-bottom: 30px;">
+      <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="height: 38px;">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="setGraphMode('1D')" [checked]="graphMode === '1D'">
+        <label class="btn btn-outline-primary" for="btnradio1">1D Graph</label>
+    
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="setGraphMode('2D')" [checked]="graphMode === '2D'">
+        <label class="btn btn-outline-primary" for="btnradio2">2D Graph</label>
+      </div>
 
-    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="setGraphMode('2D')" [checked]="graphMode === '2D'">
-    <label class="btn btn-outline-primary" for="btnradio2">2D Graph</label>
-  </div>
-  <div style="display: flex; justify-content: center; align-items: center; height: 70vh; width: 100%;">
-    <div id="plot3d" style="height: 70vh; width: 90%;" *ngIf="graphMode === '2D'"></div>
-    <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;"></canvas>
+      <div class="input-group" style="width: 250px;">
+        <span class="input-group-text" style="width: 100px;">Schrittweite</span>
+        <input 
+          type="number" 
+          class="form-control"
+          style="min-width: 50px;"
+          placeholder="0.001" 
+          name="alpha"
+          [(ngModel)]="alpha"
+          (ngModelChange)="validateAlpha()"
+          min="0" max="1" step="0.01">
+        <span class="input-group-text" title="Bitte einen Wert zwischen 0 und 1 eingeben.">ℹ️</span>
+      </div>
+
+      <div class="input-group" style="width: 250px;">
+        <span class="input-group-text" style="width: 200;">Maximale Schrittanzahl</span>
+        <input 
+          type="number" 
+          class="form-control"
+          style="min-width: 50px;"
+          placeholder="20" 
+          name="steps"
+          [(ngModel)]="steps"
+          min="1" max="50" step="1">
+        
+      </div>
+
+      <div class="input-group" style="width: 300px;">
+        <span class="input-group-text" style="width: 150px;">Abbruchkriterium</span>
+        <input 
+          type="number" 
+          class="form-control"
+          style="min-width: 50px;"
+          placeholder="0.001" 
+          name="termination"
+          [(ngModel)]="termination"
+          min="0" max="1" step="0.01">
+        <span class="input-group-text" title="Wenn ||∇f|| diesen Wert unterschreitet ist die Optimierung beendet">ℹ️</span>
+      </div>
+
+      <div class="input-group" style="width: 250px;">
+        <span class="input-group-text" style="width: 150;" *ngIf="graphMode === '1D'">Startwert</span>
+        <span class="input-group-text" style="width: 150;" *ngIf="graphMode === '2D'">Startwerte</span>
+        <input 
+          type="number" 
+          class="form-control"
+          style="min-width: 50px;"
+          placeholder="-3" 
+          name="startX"
+          [(ngModel)]="startX"
+          min="1" max="50" step="1">
+          <span class="input-group-text" title="Gib die Startwerte so an :'x,y'" *ngIf="graphMode === '2D'">ℹ️</span>
+      </div>
+      
+    </div>
+    <div>
+      <p>Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
+    </div>
+    <!-- Graph container -->
+    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; height: 65vh; margin-top: 20px;">
+      <div id="plot3d" style="height: 60vh; width: 90%;" *ngIf="graphMode === '2D'"></div>
+      <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;"></canvas>
+    </div>
   </div>
 </app-template-sorting>
 
