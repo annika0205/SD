@@ -44,6 +44,7 @@ export class GradientDescentService {
         
         x = x_alt - alpha * grad;
         if (func.reduce((acc, val, index) => acc + val * Math.pow(x, func.length-1-index), 0) > func.reduce((acc, val, index) => acc + val * Math.pow(x_alt, func.length-1-index), 0)) {
+          //schöner schreiben
           console.log('Function value increased. Ein Verfahren wie line search solle verwendet werden.');
           break;
           //alpha = alpha / 2;

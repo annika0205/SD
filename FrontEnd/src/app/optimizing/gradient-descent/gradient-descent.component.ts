@@ -77,8 +77,8 @@ export class GradientDescentComponent implements AfterViewInit {
   
   validateAlpha() {
     if (this.alpha < 0 || this.alpha > 1) {
-      this.alpha = 0.8;
-      console.log('Alpha must be between 0 and 1. Default value 0.8 is used.');
+      this.alpha = 0.1;
+      console.log('Alpha must be between 0 and 1. Default value 0.1 is used.');
     } 
   }
 
