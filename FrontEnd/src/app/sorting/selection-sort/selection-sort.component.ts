@@ -48,9 +48,12 @@ export class SelectionSortComponent implements AfterViewInit {
     for (let i = 0; i < this.starting_values.length; i++) {
       setTimeout(() => {
         this.finishes_values = this.selectionSortService.getStep(i);
-        this.chartService.updateChart(this.finishes_values, 1, 3);
+        this.chartService.updateChart(this.finishes_values, 0, this.starting_values.length-i-1);
       }, i * 1000);
     }
+    setTimeout(() => {
+      this.chartService.updateChart(this.finishes_values, -1,-1);
+    }, this.starting_values.length*1000);
   }
 
   onSortModeChange(mode: "min" | "max"): void {
