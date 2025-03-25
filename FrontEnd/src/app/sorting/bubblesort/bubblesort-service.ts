@@ -14,9 +14,9 @@ export class BubbleSortService {
                 if ((order === 'min' && arr[j] > arr[j + 1]) || (order === 'max' && arr[j] < arr[j + 1])) {
                     [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
                 }
+                // Aktuellen Zustand speichern
+                this.steps.push(arr.slice());
             }
-            // Aktuellen Zustand speichern
-            this.steps.push(arr.slice());
             console.log(arr.slice());
         }
         return arr;

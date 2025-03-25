@@ -6,7 +6,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-bubblesort',
   templateUrl: './bubblesort.component.html',
-  styleUrl: './bubblesort.component.css',
+  styleUrls: ['./bubblesort.component.css'],
   providers: [BubbleSortService]
 })
 export class BubblesortComponent implements AfterViewInit {
