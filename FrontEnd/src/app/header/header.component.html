@@ -3,25 +3,19 @@
         <img class="logo" src="AlgoVision_logo_purple.png" (click)="navigateHome()">
     </a>
     <div class="login-container relative">
-        <img src="login_icon_colored.png" alt="Login Icon" class="login-icon cursor-pointer" (click)="toggleLoginForm()">
-        <!-- <form class="login-form absolute right-0 mt-2 p-4 bg-white border rounded shadow-lg" *ngIf="showLoginForm" (submit)="login()">
-            <input type="text" placeholder="Username" class="login-input mb-2" name="username" autocomplete="username" required>
-            <input type="password" placeholder="Password" class="login-input mb-2" name="password" autocomplete="current-password" required>
-
-             <div *ngIf="isRegistering">
-                <input type="password" placeholder="Confirm Password" class="login-input mb-2" name="confirmPassword" required>
-                <input type="email" placeholder="Email" class="login-input mb-2" name="email" autocomplete="email" required>
-            </div>
-
-            <button type="submit" class="login-button w-full mb-2">
-                {{ isRegistering ? 'Register' : 'Login' }}
-            </button>
-            
-            <button type="button" class="toggle-button w-full" (click)="toggleRegisterMode()">
-                {{ isRegistering ? 'Back to Login' : 'Create Account' }}
-            </button> -->
-
+        <!-- <img src="login_icon_colored.png" alt="Login Icon" class="login-icon cursor-pointer" (click)="toggleLoginForm()">
             <form *ngIf="showLoginForm" 
+              #authFormElement="ngForm"
+              (ngSubmit)="onSubmit()" 
+              class="login-form"> -->
+
+              <img src="login_icon_colored.png" 
+              alt="Login Icon" 
+              class="login-icon cursor-pointer" 
+              [title]="username ? 'Logout' : 'Login'"
+              (click)="username ? logout() : toggleLoginForm()">
+
+              <form *ngIf="showLoginForm && !username" 
               #authFormElement="ngForm"
               (ngSubmit)="onSubmit()" 
               class="login-form">
@@ -30,7 +24,6 @@
                 {{ errorMessage }}
             </div>
 
-            <!-- name Attribut hinzugefügt für jedes Eingabefeld -->
             <input type="text" 
                     class="login-input mb-2"
                    name="username"

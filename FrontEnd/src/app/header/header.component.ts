@@ -19,6 +19,7 @@ export class HeaderComponent {
   showLoginForm = false;
   isRegistering = false;
   errorMessage = '';
+  username: string | null = null;
 
   authForm: AuthForm = {
     username: '',
@@ -26,6 +27,12 @@ export class HeaderComponent {
     confirmPassword: '',
     email: ''
   };
+
+  ngOnInit() {
+    this.authService.user$.subscribe(user => {
+      this.username = user?.username || null;
+    });
+  }
 
   onSubmit() {
     if (this.isRegistering) {
@@ -70,6 +77,7 @@ export class HeaderComponent {
       next: () => {
         this.showLoginForm = false;
         this.errorMessage = '';
+        this.username = this.authForm.username;
       },
       error: (error) => {
         this.errorMessage = error.error.message || 'Login failed';
@@ -102,5 +110,12 @@ export class HeaderComponent {
         this.errorMessage = error.error.message || 'Registration failed';
       }
     });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.username = null;
+    this.showLoginForm = false;
+    this.router.navigate(['/']);
   }
 }

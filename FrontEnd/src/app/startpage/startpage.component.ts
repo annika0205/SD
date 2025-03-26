@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 interface SuchErgebnis {
   algorithmusName: string;  // Geändert von titel zu algorithmusName für mehr Klarheit
@@ -17,6 +18,7 @@ export class StartpageComponent {
 
   suchBegriff: string = '';
   suchergebnisse: SuchErgebnis[] = [];
+  username: string | null = null;
 
   boxes = [
     { title:'Sortieralgorithmen', 
@@ -53,7 +55,16 @@ export class StartpageComponent {
   };
 
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.authService.user$.subscribe(user => {
+      this.username = user?.username || null;
+    });
+  }
 
   getCategoryClass(index: number): string {
     switch(index) {

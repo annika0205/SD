@@ -36,8 +36,9 @@
   <div class="banner-content">
     <div class="banner-text">
       <div class="welcome-header">
-        <h2>Willkommen, <span class="username">Nutzer</span>!</h2>
-       
+        <!-- <h2>Willkommen, <span class="username">Nutzer</span>!</h2> -->
+        <span *ngIf="!username" style="font-size: 24px;">Willkommen bei AlgoVision</span>
+        <span *ngIf="username" style="font-size: 24px;">Willkommen bei AlgoVision, <strong>{{username}}</strong></span>
       </div>
       <p class="quote">"Algorithmen sind die Bausteine digitaler Innovation"</p>
       <div class="banner-stats">    
