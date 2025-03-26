@@ -23,9 +23,7 @@ export class OptimizingComponent implements OnInit {
 
     navigateToAlgo(index: number) {
       const routes = [
-        '/bubblesort',
-        '/insertionsort',
-        '/mergesort'
+        '/gradient-descent',
       ];
       
       this.router.navigate([routes[index]]);

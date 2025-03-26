@@ -24,9 +24,8 @@ export class ShortestWayComponent implements OnInit{
       
       navigateToAlgo(index: number) {
         const routes = [
-          '/bubblesort',
-          '/insertionsort',
-          '/mergesort'
+          '/dijkstra',
+          '/a*',
         ];
         
         this.router.navigate([routes[index]]);

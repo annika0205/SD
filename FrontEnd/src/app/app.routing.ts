@@ -15,7 +15,10 @@ const APP_ROUTES: Routes = [
     {path:'bubblesort', component: AlgoExampleComponent},
     {path:'selectionsort', component: AlgoExampleComponent},
     {path:'mergesort', component: AlgoExampleComponent},
-    {path:'quicksort', component: AlgoExampleComponent}
+    {path:'quicksort', component: AlgoExampleComponent},
+    {path:'gradient-descent', component: AlgoExampleComponent},
+    {path:'dijkstra', component: AlgoExampleComponent},
+    {path:'a*', component: AlgoExampleComponent}
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
