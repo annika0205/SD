@@ -1,13 +1,14 @@
 <app-template-sorting [description]="'Test'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
 
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+  <div style="display: flex; justify-content: center;">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin: 10px 0; width: fit-content;">
       <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="onSortModeChange('min')">
       <label class="btn btn-outline-primary" for="btnradio1">Min Sort</label>
-  
+
       <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="onSortModeChange('max')">
       <label class="btn btn-outline-primary" for="btnradio2">Max Sort</label>
-  
     </div>
+  </div>
     
     <div class="chart-container">
       <div class="chart-wrapper" style="position: relative; width: 100%; max-width: 800px;">
