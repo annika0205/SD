@@ -174,13 +174,31 @@ export class GradientDescentComponent implements AfterViewInit {
   }
   
   updatePredefinedTexts(inputCount: number) {
-    this.predefinedTexts = Array(inputCount).fill('').map((_, i) => {
-      const power = inputCount - 1 - i;
-      if (power === 0) return 'x<sup>0</sup>';
-      if (power === 1) return 'x<sup>1</sup> +';
-      return `x<sup>${power}</sup> +`;
-    });
+    this.predefinedTexts = [];
+    if (inputCount <= 0) {
+      return;
+    }
+  
+    this.predefinedTexts = ['1'];
+  
+    let termCount = 1;
+    let i = 1;
+  
+    while (termCount < inputCount) {
+      if (termCount < inputCount) {
+        this.predefinedTexts.push(`x<sup>${i}</sup>`);
+        termCount++;
+      }
+      if (termCount < inputCount) {
+        this.predefinedTexts.push(`y<sup>${i}</sup>`);
+        termCount++;
+      }
+      i++;
+    }
+
+    this.predefinedTexts = this.predefinedTexts.reverse()
   }
+  
 
   onInputCountChanged(newInputs: string[]) {
     this.inputs = newInputs;

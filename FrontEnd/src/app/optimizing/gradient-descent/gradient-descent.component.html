@@ -2,6 +2,7 @@
   [description]="'Test'" 
   [predefinedText]="predefinedTexts" 
   [action_button]="'Optimieren'"
+  [maxInputs]="9"
   (sortClicked)="onClick()" 
   (inputsEvent)="onInputCountChanged($event)"
   (addInputClicked)="onAddInput($event)">
@@ -76,15 +77,15 @@
       </div>
       
     </div>
-    <div style="display: flex; align-items: center; gap: 20px;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
       <p style="margin: 0;">Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
       <p style="margin: 0;">Gefundenes Alpha: {{ foundAlpha !== null ? foundAlpha.toFixed(4) : '-' }}</p>
       <p *ngIf="errorMessage" class="text-danger" style="margin: 0;">{{ errorMessage }}</p>
     </div>
     <!-- Graph container -->
-    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; height: 65vh; margin-top: 20px;">
-      <div id="plot3d" style="height: 60vh; width: 90%;" *ngIf="graphMode === '2D'"></div>
-      <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 70vh; width: 90%;"></canvas>
+    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; height: 50vh; margin-top: 20px;">
+      <div id="plot3d" style="height: 50vh; width: 80%;" *ngIf="graphMode === '2D'"></div>
+      <canvas id="myChart" *ngIf="graphMode === '1D'" style="height: 50vh; width: 80%;"></canvas>
     </div>
   </div>
 </app-template-sorting>
