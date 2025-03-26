@@ -191,4 +191,9 @@ export class GradientDescentComponent implements AfterViewInit {
     console.log('Input added in gradient descent component');
     this.updatePredefinedTexts(inputs.length);
   }
+
+  onRemoveInput(inputs: string[]): void {
+    console.log('Input removed in gradient descent component');
+    this.updatePredefinedTexts(inputs.length);
+  }
 }
