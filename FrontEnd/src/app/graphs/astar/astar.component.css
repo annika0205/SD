@@ -26,9 +26,9 @@
   --header-zwei: #432874; /* Dark purple from gradient */
   --button-color: rgba(255, 255, 255, 0.1); /* From provided CSS */
   --slider-color: rgba(255, 255, 255, 0.1); /* From provided CSS */
-  --legend-color: #3182ce; /* Blue from app-box:nth-child(2) */
+  --legend-color: #6b46c1; /* Blue from app-box:nth-child(2) */
   --stat-color: #6b46c1; /* Purple from app-box:nth-child(1) */
-  --row-color: #e53e3e; /* Red from app-box:nth-child(3) */
+  --row-color: #3182ce; /* Red from app-box:nth-child(3) */
 
   background-color: #1a202c;
   height: 100%;
@@ -114,7 +114,7 @@
 
 /* Sidebar mit Legende */
 .sidebar {
-  width: 180px; /* Etwas schmaler, damit die Statistik breiter sein kann */
+  width: 210px; /* Etwas schmaler, damit die Statistik breiter sein kann */
   flex-shrink: 0;
   max-height: 100%;
   overflow-y: visible; /* Kein Scrollen mehr in der Legende */
@@ -366,7 +366,7 @@ canvas .text {
   padding: 10px 12px;
   border-radius: 15px; /* Wie im bereitgestellten CSS */
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, var(--row-color), rgba(155, 44, 44, 0.8)); /* From app-box:nth-child(3) */
+  background: linear-gradient(135deg, var(--row-color),rgba(25, 65, 133, 0.8)); /* From app-box:nth-child(3) */
   gap: 0;
   min-height: 50px;
   position: absolute; /* Absolute Positionierung */
@@ -743,6 +743,7 @@ input:checked + .toggle-slider:before {
   background-color: rgba(0, 0, 0, 0.2); /* Wie im bereitgestellten CSS */
   border-left: 2px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  height: 12%;
 }
 
 .path-status-banner.success {
