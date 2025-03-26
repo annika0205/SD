@@ -31,7 +31,7 @@ export class ChartService {
         labels: labels,
         datasets: [
           {
-            label: "HierSuchen",
+            label: "Werte",
             backgroundColor: 'rgb(47, 142, 205)',
             data: data
           }

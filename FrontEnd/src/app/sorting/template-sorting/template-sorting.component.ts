@@ -21,6 +21,7 @@ export class TemplateSortingComponent {
   @Output() sortClicked = new EventEmitter<void>();
   @Output() inputsEvent = new EventEmitter<string[]>();
   @Output() addInputClicked = new EventEmitter<string[]>();
+  @Output() removeInputClicked = new EventEmitter<string[]>();
 
   algorithms: RouteItem[] = [
     { name: 'Bubblesort', route: 'bubble-sort' },
@@ -58,6 +59,8 @@ export class TemplateSortingComponent {
   removeInput(): void {
     if (this.inputs.length > 3) {
       this.inputs.pop();
+      this.removeInputClicked.emit(this.inputs);
+      this.inputsEvent.emit(this.inputs);
     }
   }
 
