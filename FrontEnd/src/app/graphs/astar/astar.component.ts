@@ -9,6 +9,9 @@ interface Node {
   f: number; // F-Wert (G + H)
   g: number; // G-Wert (Distanz vom Start)
   h: number; // H-Wert (Heuristik zum Ziel)
+  isOnPath: boolean;
+  isVisited: boolean;
+  isInOpenSet: boolean;
   walkable: boolean; // Ist begehbar (keine Wand)
   closed: boolean; // In geschlossener Liste
   parent: Node | null; // Elternknoten für Pfadrekonstruktion
@@ -16,6 +19,7 @@ interface Node {
   isEnd: boolean; // Ist Endknoten
   isPath: boolean; // Ist Teil des gefundenen Pfades
   isOpen: boolean; // In offener Liste
+  
 }
 
 @Component({
@@ -42,11 +46,20 @@ export class AstarComponent implements OnInit, AfterViewInit {
   isDrawingWalls: boolean = false;
   animationSpeed: number = 50;
   animationInterval: any = null;
+  statisticsVisible: boolean = false;
   
   // UI-Steuerung
   showHexOption: boolean = true;
   isBrowser: boolean = false;
   ctx!: CanvasRenderingContext2D;
+  
+  // Neue Eigenschaften für die Statistiken
+  pathFound: boolean = false;
+  executionTime: number = 0;
+  visitedNodesCount: number = 0;
+  pathLength: number = 0;
+  calculationsCount: number = 0;
+  startTime: number = 0;
   
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -62,6 +75,9 @@ export class AstarComponent implements OnInit, AfterViewInit {
     if (this.isBrowser && this.canvasRef) {
       this.setupCanvas();
     }
+  }
+  showStatistics(): boolean {
+    return this.statisticsVisible;
   }
   
   setupCanvas(): void {
@@ -139,7 +155,10 @@ export class AstarComponent implements OnInit, AfterViewInit {
             isStart: false,
             isEnd: false,
             isPath: false,
-            isOpen: false
+            isOpen: false,
+            isOnPath:false,
+            isVisited:false,
+            isInOpenSet:false,
           };
         }
       }
@@ -176,7 +195,10 @@ export class AstarComponent implements OnInit, AfterViewInit {
             isStart: false,
             isEnd: false,
             isPath: false,
-            isOpen: false
+            isOpen: false,
+            isOnPath:false,
+            isVisited:false,
+            isInOpenSet:false,
           };
         }
       }
@@ -196,7 +218,7 @@ export class AstarComponent implements OnInit, AfterViewInit {
   private drawGrid(): void {
     if (!this.ctx) return;
     
-    this.ctx.fillStyle = '#f0f0f0';
+    this.ctx.fillStyle = '#ffffff';
     this.ctx.fillRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     
     if (this.isHexGrid) {
@@ -218,21 +240,7 @@ export class AstarComponent implements OnInit, AfterViewInit {
         this.ctx.strokeStyle = '#E0E0E0';
         this.ctx.strokeRect(cellX, cellY, this.cellSize, this.cellSize);
         
-        // F-, G-, H-Werte anzeigen für nicht-Start/End/Wall-Knoten
-        if (!node.isStart && !node.isEnd && node.walkable && (node.isOpen || node.closed)) {
-          const fontSize = Math.floor(this.cellSize / 6);
-          this.ctx.font = `${fontSize}px Arial`;
-          this.ctx.fillStyle = 'black';
-          
-          // F-Wert oben mittig
-          this.ctx.fillText(`F:${Math.floor(node.f)}`, cellX + this.cellSize / 2 - fontSize, cellY + fontSize);
-          
-          // G-Wert unten links
-          this.ctx.fillText(`G:${Math.floor(node.g)}`, cellX + 2, cellY + this.cellSize - 2);
-          
-          // H-Wert unten rechts
-          this.ctx.fillText(`H:${Math.floor(node.h)}`, cellX + this.cellSize - fontSize * 2, cellY + this.cellSize - 2);
-        }
+      
       }
     }
   }
@@ -251,21 +259,7 @@ export class AstarComponent implements OnInit, AfterViewInit {
           this.setCellColor(node);
           this.drawHexagon(x, y);
           
-          // F-, G-, H-Werte für Hex-Knoten anzeigen
-          if (!node.isStart && !node.isEnd && node.walkable && (node.isOpen || node.closed)) {
-            const fontSize = Math.floor(this.cellSize / 6);
-            this.ctx.font = `${fontSize}px Arial`;
-            this.ctx.fillStyle = 'black';
-            
-            // F-Wert mittig
-            this.ctx.fillText(`F:${Math.floor(node.f)}`, x - fontSize, y);
-            
-            // G-Wert unten links
-            this.ctx.fillText(`G:${Math.floor(node.g)}`, x - fontSize * 1.5, y + fontSize * 1.5);
-            
-            // H-Wert unten rechts
-            this.ctx.fillText(`H:${Math.floor(node.h)}`, x + fontSize * 0.5, y + fontSize * 1.5);
-          }
+          
         }
       }
     }
@@ -322,10 +316,20 @@ export class AstarComponent implements OnInit, AfterViewInit {
 
   private getNodeFromMousePosition(e: MouseEvent): Node | null {
     const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    
+    // Berechne das Seitenverhältnis zwischen Canvas-Größe und angezeigter Größe
+    const scaleX = this.canvasRef.nativeElement.width / rect.width;
+    const scaleY = this.canvasRef.nativeElement.height / rect.height;
+    
+    // Berechne skalierte Mausposition
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
     
     if (this.isHexGrid) {
+      // Hexgrid-Berechnung bleibt weitgehend unverändert
+      const canvasCenterX = this.canvasRef.nativeElement.width / 2;
+      const canvasCenterY = this.canvasRef.nativeElement.height / 2;
+      
       const [q, r] = this.pixelToHex(mouseX, mouseY);
       const radius = Math.floor(this.gridSize / 2);
       const gridQ = q + radius;
@@ -335,8 +339,19 @@ export class AstarComponent implements OnInit, AfterViewInit {
         return this.grid[gridQ][gridR];
       }
     } else {
-      const col = Math.floor(mouseX / this.cellSize);
-      const row = Math.floor(mouseY / this.cellSize);
+      // Spezielle Korrektur für große Zellgrößen (>= 39px)
+      let col, row;
+      
+      if (this.cellSize >= 39) {
+        // Angepasste Berechnung für große Zellen
+        // Berücksichtigt mögliche Fehler bei der Rundung/Skalierung
+        col = Math.floor((mouseX + 0.5) / this.cellSize);
+        row = Math.floor((mouseY + 0.5) / this.cellSize);
+      } else {
+        // Standardberechnung für kleinere Zellen
+        col = Math.floor(mouseX / this.cellSize);
+        row = Math.floor(mouseY / this.cellSize);
+      }
       
       if (col >= 0 && col < this.gridSize && row >= 0 && row < this.gridSize) {
         return this.grid[col][row];
@@ -345,6 +360,7 @@ export class AstarComponent implements OnInit, AfterViewInit {
     
     return null;
   }
+  
 
   private pixelToHex(x: number, y: number): [number, number] {
     const size = this.cellSize / 2;
@@ -428,10 +444,16 @@ export class AstarComponent implements OnInit, AfterViewInit {
   }
 
   startAStarAlgorithm(): void {
+
     if (this.isRunning || !this.startNode || !this.endNode) return;
     
     this.resetPathfinding();
     this.isRunning = true;
+    this.pathFound = false; // Zurücksetzen des pathFound-Status
+    
+    // Startzeit erfassen
+    this.startTime = performance.now();
+    this.calculationsCount = 0;
     
     this.openList = [this.startNode];
     this.startNode.g = 0;
@@ -445,9 +467,14 @@ export class AstarComponent implements OnInit, AfterViewInit {
   }
 
   private aStarStep(): void {
+    // Erhöhung des Berechnungszählers
+    this.calculationsCount++;
+    
     if (!this.startNode || !this.endNode) return;
     if (this.openList.length === 0) {
       this.finishAlgorithm(false);
+      this.statisticsVisible = true;
+
       return;
     }
     
@@ -460,10 +487,13 @@ export class AstarComponent implements OnInit, AfterViewInit {
     const currentNode = this.openList[currentIndex];
     
     if (currentNode === this.endNode) {
+      this.pathFound = true;
       this.tracePath();
       this.finishAlgorithm(true);
+      this.statisticsVisible = true;
       return;
     }
+ 
     
     this.openList.splice(currentIndex, 1);
     currentNode.closed = true;
@@ -587,13 +617,53 @@ export class AstarComponent implements OnInit, AfterViewInit {
       this.animationInterval = null;
     }
     this.isRunning = false;
-    this.drawGrid();
     
+    // Statistiken aktualisieren, wenn erfolgreich
+    
+      // Endzeit erfassen und Ausführungszeit berechnen
+      const endTime = performance.now();
+      this.executionTime = endTime - this.startTime;
+      
+      // Besuchte Knoten zählen (geschlossene Liste)
+      this.visitedNodesCount = this.countVisitedNodes();
+      
+      // Pfadlänge berechnen
+      this.pathLength = this.calculatePathLength();
     if (success) {
+      this.pathFound = true;
       console.log('Pfad gefunden!');
     } else {
+      this.pathFound = false;
       console.log('Kein Pfad gefunden!');
     }
+    
+    this.drawGrid();
+  }
+
+  // Neue Hilfsmethode: Anzahl besuchter Knoten zählen
+  private countVisitedNodes(): number {
+    let count = 0;
+    for (let i = 0; i < this.grid.length; i++) {
+      for (let j = 0; j < this.grid[i].length; j++) {
+        if (this.grid[i][j] && this.grid[i][j].closed) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  // Neue Hilfsmethode: Pfadlänge berechnen
+  private calculatePathLength(): number {
+    let length = 0;
+    let current = this.endNode;
+    
+    while (current && current !== this.startNode) {
+      length++;
+      current = current.parent;
+    }
+    
+    return length;
   }
 
   resetPathfinding(): void {
@@ -601,7 +671,9 @@ export class AstarComponent implements OnInit, AfterViewInit {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
     }
+    this.statisticsVisible = false;
     this.isRunning = false;
+    this.pathFound = false; // Statistik-Panel ausblenden
     
     for (let i = 0; i < this.grid.length; i++) {
       for (let j = 0; j < this.grid[i].length; j++) {
@@ -627,7 +699,10 @@ export class AstarComponent implements OnInit, AfterViewInit {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
     }
+    this.statisticsVisible = false;
+    
     this.isRunning = false;
+    this.pathFound = false; // Statistik-Panel ausblenden
     this.initializeGrid();
     this.drawGrid();
   }
@@ -650,16 +725,25 @@ export class AstarComponent implements OnInit, AfterViewInit {
       this.canvasRef.nativeElement.width = width + this.cellSize;
       this.canvasRef.nativeElement.height = height + this.cellSize;
     } else {
-      this.canvasRef.nativeElement.width = this.gridSize * this.cellSize;
-      this.canvasRef.nativeElement.height = this.gridSize * this.cellSize;
-      console.log(this.canvasRef.nativeElement.width)
+      // Stellen Sie sicher, dass die Canvas-Größe ein exaktes Vielfaches der Zellgröße ist
+      // Dies hilft, Rundungsprobleme zu vermeiden
+      const gridPixelSize = this.gridSize * this.cellSize;
+      this.canvasRef.nativeElement.width = gridPixelSize;
+      this.canvasRef.nativeElement.height = gridPixelSize;
     }
   }
 
   handleGridSizeChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const newSize = parseInt(target.value, 10);
-    this.gridSize = Math.min(40, Math.max(5, newSize));
+    this.gridSize = Math.min(50, Math.max(5, newSize));
+    
+    // Berechne Zellgröße basierend auf Grid-Größe
+    // Verhindere zu große Zellen, die Probleme verursachen können
+    this.cellSize = Math.max(15, Math.min(38, Math.floor(1000 / this.gridSize)));
+    
+    console.log(`Grid size: ${this.gridSize}, Cell size: ${this.cellSize}`);
+    
     this.updateCanvasSize();
     this.resetGrid();
   }
@@ -681,4 +765,424 @@ export class AstarComponent implements OnInit, AfterViewInit {
     // Diese Methode können Sie implementieren, um zwischen orthogonalen 
     // und diagonalen Bewegungen zu wechseln
   }
+  
+  createRandomGrid(): void {
+    if (this.isRunning) return;
+    this.statisticsVisible = false;
+    
+    // Zurücksetzen und Löschen des bestehenden Grids
+    this.resetPathfinding();
+    this.openList = [];
+    this.pathFound = false;
+    
+    if (this.isHexGrid) {
+      this.createRandomHexGrid();
+    } else {
+      this.createRandomSquareGrid();
+    }
+    
+    // Grid neu zeichnen
+    this.drawGrid();
+  }
+  
+  /**
+   * Erzeugt ein zufälliges quadratisches Grid
+   */
+  private createRandomSquareGrid(): void {
+    // Zurücksetzen aller Knoten
+    for (let x = 0; x < this.gridSize; x++) {
+      for (let y = 0; y < this.gridSize; y++) {
+        if (this.grid[x] && this.grid[x][y]) {
+          const node = this.grid[x][y];
+          node.isStart = false;
+          node.isEnd = false;
+          node.walkable = true;
+          node.f = 0;
+          node.g = 0;
+          node.h = 0;
+          node.parent = null;
+          node.isPath = false;
+          node.isOpen = false;
+          node.closed = false;
+        }
+      }
+    }
+    
+    // Prozentsatz der Hindernisse
+    const obstaclePercentage = 0.25;
+    const minStartEndDistance = Math.floor(this.gridSize / 3);
+    
+    // Zufällige Position für Start
+    const margin = 2;
+    const startX = margin + Math.floor(Math.random() * (this.gridSize - 2 * margin));
+    const startY = margin + Math.floor(Math.random() * (this.gridSize - 2 * margin));
+    
+    this.startNode = this.grid[startX][startY];
+    this.startNode.isStart = true;
+    
+    // Zufällige Position für Ziel mit Mindestabstand
+    let endX, endY;
+    let isValidEndPosition = false;
+    let attempts = 0;
+    const maxAttempts = 100;
+    
+    do {
+      endX = margin + Math.floor(Math.random() * (this.gridSize - 2 * margin));
+      endY = margin + Math.floor(Math.random() * (this.gridSize - 2 * margin));
+      
+      const manhattanDistance = Math.abs(startX - endX) + Math.abs(startY - endY);
+      isValidEndPosition = (manhattanDistance >= minStartEndDistance);
+      attempts++;
+    } while (!isValidEndPosition && attempts < maxAttempts);
+    
+    this.endNode = this.grid[endX][endY];
+    this.endNode.isEnd = true;
+    
+    // Zufällige Hindernisse platzieren
+    for (let x = 0; x < this.gridSize; x++) {
+      for (let y = 0; y < this.gridSize; y++) {
+        if ((this.grid[x][y] === this.startNode) || (this.grid[x][y] === this.endNode)) {
+          continue;
+        }
+        
+        if (Math.random() < obstaclePercentage) {
+          this.grid[x][y].walkable = false;
+        }
+      }
+    }
+  }
+  
+  /**
+   * Erzeugt ein zufälliges hexagonales Grid
+   */
+  private createRandomHexGrid(): void {
+    const radius = Math.floor(this.gridSize / 2);
+    
+    // Zurücksetzen aller Knoten im Hex-Grid
+    for (let q = -radius; q <= radius; q++) {
+      const r1 = Math.max(-radius, -q - radius);
+      const r2 = Math.min(radius, -q + radius);
+      for (let r = r1; r <= r2; r++) {
+        const gridQ = q + radius;
+        const gridR = r + radius;
+        
+        if (this.grid[gridQ] && this.grid[gridQ][gridR]) {
+          const node = this.grid[gridQ][gridR];
+          node.isStart = false;
+          node.isEnd = false;
+          node.walkable = true;
+          node.f = 0;
+          node.g = 0;
+          node.h = 0;
+          node.parent = null;
+          node.isPath = false;
+          node.isOpen = false;
+          node.closed = false;
+        }
+      }
+    }
+    
+    // Prozentsatz der Hindernisse
+    const obstaclePercentage = 0.25;
+    const minHexDistance = Math.floor(radius / 2);
+    
+    // Erzeugen einer Liste gültiger Koordinaten
+    const validCoords: [number, number][] = [];
+    for (let q = -radius; q <= radius; q++) {
+      const r1 = Math.max(-radius, -q - radius);
+      const r2 = Math.min(radius, -q + radius);
+      for (let r = r1; r <= r2; r++) {
+        validCoords.push([q, r]);
+      }
+    }
+    
+    // Keine gültigen Koordinaten? Abbrechen
+    if (validCoords.length === 0) {
+      console.error("Keine gültigen Hex-Koordinaten gefunden!");
+      return;
+    }
+    
+    // Zufällige Position für Start
+    const startIdx = Math.floor(Math.random() * validCoords.length);
+    const [startQ, startR] = validCoords[startIdx];
+    const gridStartQ = startQ + radius;
+    const gridStartR = startR + radius;
+    
+    if (this.grid[gridStartQ] && this.grid[gridStartQ][gridStartR]) {
+      this.startNode = this.grid[gridStartQ][gridStartR];
+      this.startNode.isStart = true;
+    } else {
+      console.error("Ungültige Start-Koordinaten!");
+      return;
+    }
+    
+    // Finde gültige End-Position mit Mindestabstand
+    let endIdx;
+    let endQ, endR, gridEndQ, gridEndR;
+    let isValidEndPosition = false;
+    let attempts = 0;
+    const maxAttempts = 100;
+    
+    do {
+      endIdx = Math.floor(Math.random() * validCoords.length);
+      [endQ, endR] = validCoords[endIdx];
+      
+      // Berechne hexagonale Distanz
+      const hexDistance = Math.max(
+        Math.abs(startQ - endQ),
+        Math.abs(startR - endR),
+        Math.abs((-startQ - startR) - (-endQ - endR))
+      );
+      
+      isValidEndPosition = (hexDistance >= minHexDistance);
+      attempts++;
+      
+    } while (!isValidEndPosition && attempts < maxAttempts);
+    
+    gridEndQ = endQ + radius;
+    gridEndR = endR + radius;
+    
+    if (this.grid[gridEndQ] && this.grid[gridEndQ][gridEndR]) {
+      this.endNode = this.grid[gridEndQ][gridEndR];
+      this.endNode.isEnd = true;
+    } else {
+      console.error("Ungültige End-Koordinaten!");
+      return;
+    }
+    
+    // Zufällige Hindernisse platzieren
+    for (let q = -radius; q <= radius; q++) {
+      const r1 = Math.max(-radius, -q - radius);
+      const r2 = Math.min(radius, -q + radius);
+      for (let r = r1; r <= r2; r++) {
+        const gridQ = q + radius;
+        const gridR = r + radius;
+        
+        // Überprüfen Sie, ob es sich nicht um den Start- oder Endknoten handelt
+        if (this.grid[gridQ] && this.grid[gridQ][gridR]) {
+          const node = this.grid[gridQ][gridR];
+          if (node === this.startNode || node === this.endNode) {
+            continue;
+          }
+          
+          // Mit einer gewissen Wahrscheinlichkeit als Hindernis markieren
+          if (Math.random() < obstaclePercentage) {
+            node.walkable = false;
+          }
+        }
+      }
+    }
+    
+    // Etwas Platz um Start und Ziel freihalten
+    this.clearAroundHexNode(this.startNode, 1);
+    this.clearAroundHexNode(this.endNode, 1);
+  }
+  
+  /**
+   * Entfernt Hindernisse um einen Hex-Knoten herum
+   */
+  private clearAroundHexNode(node: Node, radius: number = 1): void {
+    if (!node || !this.isHexGrid) return;
+    
+    const gridRadius = Math.floor(this.gridSize / 2);
+    const directions = [
+      [0, 0],  // Der Knoten selbst
+      [1, 0],  // Rechts
+      [1, -1], // Rechts oben
+      [0, 1],  // Links unten
+      [-1, 1], // Links
+      [-1, 0], // Links oben
+      [0, -1]  // Rechts unten
+    ];
+    
+    for (const [dq, dr] of directions) {
+      const nq = node.q + dq;
+      const nr = node.r + dr;
+      
+      // Überprüfen, ob die Koordinaten im gültigen Bereich liegen
+      if (Math.abs(nq) <= gridRadius && 
+          Math.abs(nr) <= gridRadius && 
+          Math.abs(-nq - nr) <= gridRadius) {
+        
+        const gridQ = nq + gridRadius;
+        const gridR = nr + gridRadius;
+        
+        if (this.grid[gridQ] && this.grid[gridQ][gridR]) {
+          this.grid[gridQ][gridR].walkable = true;
+        }
+      }
+    }
+  }
+  
+  /**
+   * Stellt sicher, dass genügend Platz um Start- und Zielknoten frei bleibt.
+   * Diese Methode kann genutzt werden, um Hindernisse um wichtige Knoten zu entfernen.
+   */
+  private clearAroundNode(node: Node, radius: number = 1): void {
+    if (!node) return;
+    
+    if (this.isHexGrid) {
+      const gridRadius = Math.floor(this.gridSize / 2);
+      
+      for (let q = -radius; q <= radius; q++) {
+        for (let r = Math.max(-radius, -q-radius); r <= Math.min(radius, -q+radius); r++) {
+          const neighborQ = node.q + q;
+          const neighborR = node.r + r;
+          
+          if (Math.abs(neighborQ) <= gridRadius && 
+              Math.abs(neighborR) <= gridRadius && 
+              Math.abs(-neighborQ - neighborR) <= gridRadius) {
+            const gridQ = neighborQ + gridRadius;
+            const gridR = neighborR + gridRadius;
+            
+            if (this.grid[gridQ] && this.grid[gridQ][gridR]) {
+              this.grid[gridQ][gridR].walkable = true;
+            }
+          }
+        }
+      }
+    } else {
+      for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+          const nx = node.x + dx;
+          const ny = node.y + dy;
+          
+          if (nx >= 0 && nx < this.gridSize && ny >= 0 && ny < this.gridSize) {
+            this.grid[nx][ny].walkable = true;
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Optimiert die Performance beim Finden des Knotens mit dem niedrigsten F-Wert
+   * in der offenen Liste durch Verwendung eines Min-Heaps.
+   */
+  private findNodeWithLowestFScore(): Node {
+    let lowestIndex = 0;
+    for (let i = 1; i < this.openList.length; i++) {
+      if (this.openList[i].f < this.openList[lowestIndex].f) {
+        lowestIndex = i;
+      }
+    }
+    return this.openList[lowestIndex];
+  }
+  
+  /**
+   * Hilfsmethode zur Berechnung der Ausführungsgeschwindigkeit
+   */
+  private calculateStepsPerSecond(): number {
+    if (this.executionTime <= 0) return 0;
+    return Math.round(this.calculationsCount / (this.executionTime / 1000));
+  }
+  
+  /**
+   * Erzeugt eine visuelle Darstellung des Fortschritts des Algorithmus
+   */
+  private visualizeProgress(): void {
+    // Anzahl der untersuchten Knoten / Gesamtanzahl der Knoten
+    let totalNodes = 0;
+    let visitedCount = 0;
+    
+    for (let i = 0; i < this.grid.length; i++) {
+      for (let j = 0; j < this.grid[i].length; j++) {
+        if (this.grid[i][j]) {
+          totalNodes++;
+          if (this.grid[i][j].closed || this.grid[i][j].isOpen) {
+            visitedCount++;
+          }
+        }
+      }
+    }
+    
+    const progressPercentage = totalNodes > 0 ? (visitedCount / totalNodes) * 100 : 0;
+    console.log(`Suchfortschritt: ${progressPercentage.toFixed(1)}% (${visitedCount}/${totalNodes} Knoten)`);
+  }
+  
+  /**
+   * Überprüft, ob ein Pfad zwischen Start und Ziel existiert (erreichbar ist)
+   */
+  checkPathExists(): boolean {
+    if (!this.startNode || !this.endNode) return false;
+    
+    // Implementierung eines einfachen Flood-Fill-Algorithmus zur Erreichbarkeitsprüfung
+    const visited: boolean[][] = Array(this.gridSize).fill(false).map(() => Array(this.gridSize).fill(false));
+    const queue: Node[] = [this.startNode];
+    
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      
+      if (current === this.endNode) {
+        return true; // Pfad gefunden
+      }
+      
+      const x = current.x;
+      const y = current.y;
+      
+      if (visited[x][y]) continue;
+      visited[x][y] = true;
+      
+      // Nachbarn hinzufügen
+      const neighbors = this.getNeighbors(current);
+      for (const neighbor of neighbors) {
+        if (!visited[neighbor.x][neighbor.y]) {
+          queue.push(neighbor);
+        }
+      }
+    }
+    
+    return false; // Kein Pfad gefunden
+  }
+  getGridCellsCount(): number {
+    if (this.isHexGrid) {
+      // Für Hex-Grid: Berechne die tatsächliche Anzahl der Hexagone
+      let count = 0;
+      const radius = Math.floor(this.gridSize / 2);
+      
+      for (let q = -radius; q <= radius; q++) {
+        const r1 = Math.max(-radius, -q - radius);
+        const r2 = Math.min(radius, -q + radius);
+        count += (r2 - r1 + 1);
+      }
+      
+      return count;
+    } else {
+      // Für quadratisches Grid: Einfach gridSize²
+      return this.gridSize * this.gridSize;
+    }
+  }
+  getObstaclesCount(): number {
+    let count = 0;
+    
+    if (this.isHexGrid) {
+      const radius = Math.floor(this.gridSize / 2);
+      
+      for (let q = -radius; q <= radius; q++) {
+        const r1 = Math.max(-radius, -q - radius);
+        const r2 = Math.min(radius, -q + radius);
+        
+        for (let r = r1; r <= r2; r++) {
+          const gridQ = q + radius;
+          const gridR = r + radius;
+          
+          if (this.grid[gridQ] && this.grid[gridQ][gridR] && 
+              !this.grid[gridQ][gridR].walkable) {
+            count++;
+          }
+        }
+      }
+    } else {
+      for (let x = 0; x < this.gridSize; x++) {
+        for (let y = 0; y < this.gridSize; y++) {
+          if (this.grid[x] && this.grid[x][y] && !this.grid[x][y].walkable) {
+            count++;
+          }
+        }
+      }
+    }
+    
+    return count;
+  }
+  
 }
