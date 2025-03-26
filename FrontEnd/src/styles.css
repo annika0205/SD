@@ -200,13 +200,13 @@ body {
 /* Layout Container */
 .container {
   display: flex;
-  gap: 20px; /* Erhöhter gap zwischen den Karten */
+  gap: 20px; 
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   justify-content: space-between;
   flex: 0 0 100%;
   flex-direction: row;
-  padding: 0 40px; /* Neuer Abstand links und rechts */
+  padding: 0 40px; 
   box-sizing: border-box;
   margin-top: 1%;
   
@@ -237,7 +237,6 @@ body {
 
 .box-header h2 {
   color: white;
-  /* text-decoration: underline; */
   text-align: center;
   font-size: 1.8rem;
   display: flex;
@@ -259,24 +258,24 @@ body {
   padding: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.1);  /* Leicht sichtbarer Hintergrund */
+  background-color: rgba(255, 255, 255, 0.1);  
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 15px;  /* Abstand zum Titel */
+  margin-left: 15px; 
 }
 
 
 .search-icon:hover {
-  background-color: rgba(255, 255, 255, 0.2);  /* Hellerer Hintergrund beim Hover */
-  transform: scale(1.1);  /* Leichte Vergrößerung beim Hover */
+  background-color: rgba(255, 255, 255, 0.2);  
+  transform: scale(1.1); 
 }
 
 .search-icon:active {
   transform: scale(0.95);
-  background-color: rgba(255, 255, 255, 0.15);  /* Feedback beim Klicken */
+  background-color: rgba(255, 255, 255, 0.15); 
 }
 
 /* Box Content und Preview Styles */
