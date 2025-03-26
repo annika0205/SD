@@ -1,0 +1,48 @@
+<div class="template-container">
+  <div class="template-main-display">
+      <ng-content></ng-content>
+  </div>
+  <div class="template-input-section" *ngIf="show_inputs">
+    <div class="template-input-group">
+      <div *ngFor="let input of inputs; let i = index" class="template-input-wrapper" [class.no-suffix]="!predefinedText[i]">
+        <input  
+          type="text"  
+          [placeholder]="'Eingabe ' + (i + 1) + '...'"  
+          [value]="input"  
+          (input)="handleInputChange(i, $event)"  
+        />
+        <span class="suffix-text" [innerHTML]="predefinedText[i]"></span>
+      </div>
+    </div>
+  
+    <div class="template-button-group">
+      <button class="template-add-button" (click)="addInput()" [disabled]="inputs.length >= 10">+</button>
+      <button class="template-remove-button" (click)="removeInput()" [disabled]="inputs.length <= 3">-</button>
+      <button class="ButtonAction" (click)="sortClicked.emit()">{{action_button}}</button>
+      <button>schrittweise {{action_button}}</button>
+    </div>
+  </div>
+  
+  <div class="template-navigation">
+    <div class="template-nav-item prev" (click)="goToPreviousAlgo()">
+      <span class="template-arrow">←</span>
+      <span class="template-name">{{getPreviousAlgo()}}</span>
+    </div>
+    <div class="template-current">
+      <span class="template-name">{{getCurrentAlgo()}}</span>
+    </div>
+    <div class="template-nav-item next" (click)="goToNextAlgo()">
+      <span class="template-name">{{getNextAlgo()}}</span>
+      <span class="template-arrow">→</span>
+    </div>
+  </div>
+
+  <div class="template-sidebar" [class.open]="sidebarOpen">
+    <div class="template-sidebar-title" (click)="toggleSidebar()">
+      Beschreibung
+    </div>
+    <div class="template-sidebar-content">
+      {{description}}
+    </div>
+  </div>
+</div>

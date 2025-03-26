@@ -1,0 +1,6 @@
+#myChart {
+    width: 800px;
+    height: 400px;
+    display: block; /* Verhindert, dass es durch ein Blockverhalten skaliert */
+    margin: 0 auto; /* Zentriert das Canvas */
+  }

@@ -1,14 +1,15 @@
 import { Routes, RouterModule } from "@angular/router";
-import { SortingComponent } from "./sorting/sorting.component";
 import { OptimizingComponent } from "./optimizing/optimizing.component";
 import { ShortestWayComponent } from "./shortest-way/shortest-way.component";
 import { StartpageComponent } from "./startpage/startpage.component";
+import { SORTING_ROUTES } from "./sorting/sorting-routing.module";
+import { Optimisation_routes } from "./optimizing/optimizing-routing.module";
 import { AlgoExampleComponent } from "./algo-example/algo-example.component";
 import { StartpageV2Component } from "./startpage-v2/startpage-v2.component";
 
 const APP_ROUTES: Routes = [
-    {path:'sortieralgorithmen', component: SortingComponent},
-    {path:'optimierungsalgorithmen', component: OptimizingComponent},
+    {path:'sortieralgorithmen', children: SORTING_ROUTES},
+    {path:'optimierungsalgorithmen', children: Optimisation_routes},
     {path:'kürzesterweg', component: ShortestWayComponent},
     {path:'', component: StartpageComponent},
     {path:'home', component: StartpageV2Component},
@@ -22,3 +23,5 @@ const APP_ROUTES: Routes = [
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
+
+    /* noch machen: { path: '**', component: PageNotFoundComponent } */
