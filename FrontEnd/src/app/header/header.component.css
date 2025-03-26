@@ -21,7 +21,7 @@ header{
  }
 
  .logo:hover {
-    background-color: rgba(45, 14, 218, 0.171);
+    background-color:  rgba(168, 85, 247, 0.1);
 }
 
 .header-container {
@@ -35,7 +35,33 @@ header{
     display: flex;
 }
 
+.icon-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+}
+
+.icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55px;
+    height: 55px;
+    background-color: rgba(168, 85, 247, 0.1); 
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.icon-wrapper:hover::before {
+    opacity: 1;
+}
+
 .login-icon {
+    position: relative;
+    z-index: 1;
     width: 50px;
     height: 50px;
 }

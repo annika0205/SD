@@ -67,6 +67,14 @@ export class StartpageComponent {
   }
 
   getCategoryClass(index: number): string {
+    
+    let baseClasses = 'category-box';
+    if (!this.username && index > 0) {
+      baseClasses += ' disabled-category';
+    }
+    
+    return baseClasses;
+
     switch(index) {
       case 0: return 'category-sorting';
       case 1: return 'category-search';
@@ -76,6 +84,10 @@ export class StartpageComponent {
   }
 
   onNavigate(index: number) {
+    if (!this.username && index > 0) {
+      return;
+    }
+    
     const routes = [
       '/sortieralgorithmen',
       '/optimierungsalgorithmen',
@@ -84,6 +96,7 @@ export class StartpageComponent {
    
     this.router.navigate([routes[index]], { state: { items: this.boxes[index].algorithms } });
   }
+
 
   suchen(event: Event) {
     this.suchBegriff = (event.target as HTMLInputElement).value;

@@ -100,6 +100,9 @@
      [class]="getCategoryClass(index)" 
      (navigate)="onNavigate(index)" 
      class="app-box category-container" >
+     <div *ngIf="!username && index > 0" class="login-required-overlay">
+      Login erforderlich
+  </div>
 </app-box>
 </div>
 
