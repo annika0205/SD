@@ -136,6 +136,7 @@ export class GradientDescentComponent implements AfterViewInit {
         this.initialize3DChart();
       }
     }, 100);
+    this.updatePredefinedTexts(this.inputs.length)
   }
 
   onClick() {
@@ -179,25 +180,34 @@ export class GradientDescentComponent implements AfterViewInit {
       return;
     }
   
-    this.predefinedTexts = ['1'];
-  
-    let termCount = 1;
+    let terms: string[] = [];
+    let termCount = 0;
     let i = 1;
   
-    while (termCount < inputCount) {
-      if (termCount < inputCount) {
-        this.predefinedTexts.push(`x<sup>${i}</sup>`);
-        termCount++;
+    if (this.graphMode === '2D') {
+      while (termCount < inputCount - 1) {
+        if (termCount < inputCount - 1) {
+          terms.push(`x<sup>${i}</sup>`);
+          termCount++;
+        }
+        if (termCount < inputCount - 1) {
+          terms.push(`y<sup>${i}</sup>`);
+          termCount++;
+        }
+        i++;
       }
-      if (termCount < inputCount) {
-        this.predefinedTexts.push(`y<sup>${i}</sup>`);
+    } else {
+      while (termCount < inputCount - 1) {
+        terms.push(`x<sup>${i}</sup>`);
         termCount++;
+        i++;
       }
-      i++;
     }
-
-    this.predefinedTexts = this.predefinedTexts.reverse()
+  
+    this.predefinedTexts = terms.reverse();
+    this.predefinedTexts.push("1");
   }
+  
   
 
   onInputCountChanged(newInputs: string[]) {
