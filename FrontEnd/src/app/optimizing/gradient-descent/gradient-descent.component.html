@@ -69,10 +69,17 @@
           min="1" max="50" step="1">
           <span class="input-group-text" title="Gib die Startwerte so an :'x,y'" *ngIf="graphMode === '2D'">ℹ️</span>
       </div>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" (change)="toggleMode($event)">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Line Search</label>
+      </div>
       
     </div>
-    <div>
-      <p>Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <p style="margin: 0;">Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
+      <p style="margin: 0;">Gefundenes Alpha: {{ foundAlpha !== null ? foundAlpha.toFixed(4) : '-' }}</p>
+      <p *ngIf="errorMessage" class="text-danger" style="margin: 0;">{{ errorMessage }}</p>
     </div>
     <!-- Graph container -->
     <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; height: 65vh; margin-top: 20px;">

@@ -19,13 +19,12 @@ export class GradientDescentService {
   }
   
   async gradientDescent(func:number[], startX: number, alpha: number, steps: number, chartService: ChartService, 
-    onPointFound?: (point: number) => void) {  // Add callback parameter
+    onPointFound?: (point: number) => void, onError?: (message: string) => void, useLineSearch: boolean = false, onAlphaFound?: (alpha: number) => void) {  // Add callback parameter
     let x = startX;
     let points: {x: number, y: number}[] = [];
     this.gradient(func);
     console.log('Function:', func);
     console.log('Gradient:', this.differential);
-    //Abbruchbedingung für unsinnvolle Alpha-Werte einbauen 
     //Hinweis an Nutzer -> Verlinkung an Line Search?
     for (let i = 0; i < steps+1; i++) {
         let x_alt = x;
@@ -44,16 +43,50 @@ export class GradientDescentService {
           break;
         }
         
-        x = x_alt - alpha * grad;
-        if (func.reduce((acc, val, index) => acc + val * Math.pow(x, func.length-1-index), 0) > func.reduce((acc, val, index) => acc + val * Math.pow(x_alt, func.length-1-index), 0)) {
-          //schöner schreiben
-          console.log('Function value increased. Ein Verfahren wie line search solle verwendet werden.');
-          onPointFound?.(x_alt); // Call callback with found point
-          break;
-          //alpha = alpha / 2;
-          //console.log('Alpha halved to', alpha);
-          //x = x_alt - alpha * grad;
+        let nextX = x_alt - alpha * grad;
+        let currentValue = func.reduce((acc, val, index) => 
+          acc + val * Math.pow(x_alt, func.length-1-index), 0);
+        let nextValue = func.reduce((acc, val, index) => 
+          acc + val * Math.pow(nextX, func.length-1-index), 0);
+
+        if (nextValue > currentValue) {
+          if (useLineSearch) {
+            // Implement backtracking line search
+            let rho = 0.5; // Default backtracking parameter
+            let tempAlpha = alpha;
+            let maxAttempts = 10; // Prevent infinite loops
+            let attempts = 0;
+
+            while (nextValue > currentValue && attempts < maxAttempts) {
+              tempAlpha *= rho;
+              nextX = x_alt - tempAlpha * grad;
+              nextValue = func.reduce((acc, val, index) => 
+                acc + val * Math.pow(nextX, func.length-1-index), 0);
+              attempts++;
+            }
+
+            if (attempts === maxAttempts) {
+              onError?.('Line search konnte keine geeignete Schrittweite finden.');
+              break;
+            }
+            
+            x = nextX;
+            alpha = tempAlpha; // Update alpha for next iteration
+            onAlphaFound?.(tempAlpha); // Report found alpha
+          } else {
+            onError?.('Alpha wurde schlecht gewählt. Versuche line search oder wähle ein anderes alpha');
+            break;
+          }
+        } else {
+          x = nextX;
+          onAlphaFound?.(alpha); // Report current alpha
+        }
+
+        // Wenn wir am Ende der Schleife sind und nicht abgebrochen haben
+        if (i === steps) {
+          onPointFound?.(x_alt);
         }
     }
+    
   }
 }

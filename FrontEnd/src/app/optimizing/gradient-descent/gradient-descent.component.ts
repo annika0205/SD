@@ -22,7 +22,10 @@ export class GradientDescentComponent implements AfterViewInit {
   startX: number = -3;
   graphMode: '1D' | '2D' = '1D';
   foundPoint: number | null = null;
-  
+  errorMessage: string | null = null;  // neue Property
+  useLineSearch: boolean = false;
+  foundAlpha: number | null = null;
+
   //Alpha bestimmen
   //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
   constructor(
@@ -44,7 +47,11 @@ export class GradientDescentComponent implements AfterViewInit {
     }
   }
   
-  
+  toggleMode(event: any) {
+    this.useLineSearch = event.target.checked;
+    console.log("Line Search " + (this.useLineSearch ? "aktiviert" : "deaktiviert"));
+  }
+
   initializeChart() {
     const xValues = Array.from({length: 61}, (_, i) => -3 + (i * 0.1));
     const yValues = this.calculateYValues(xValues, this.function);
@@ -132,7 +139,8 @@ export class GradientDescentComponent implements AfterViewInit {
   }
 
   onClick() {
-
+    this.errorMessage = null;  // Reset error message
+    this.foundAlpha = null;  // Reset found alpha
     this.validateAlpha();
 
     if (!this.inputs.every(x => x=="")) {
@@ -152,7 +160,10 @@ export class GradientDescentComponent implements AfterViewInit {
       this.alpha, 
       this.steps, 
       this.chartService,
-      (point) => this.foundPoint = point
+      (point) => this.foundPoint = point,
+      (error) => this.errorMessage = error,  // neuer callback
+      this.useLineSearch,  // Add this parameter
+      (alpha) => this.foundAlpha = alpha  // New callback for alpha
     );
   }
   
