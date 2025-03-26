@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PreviewBoxComponent } from '../preview-box/preview-box.component';
+import { Routes, RouterModule } from "@angular/router";
+import { SelectionSortComponent } from './selection-sort/selection-sort.component';
+import { MergeSortComponent } from './mergesort/mergesort.component';
 import { Router } from '@angular/router';
 import { StartpageComponent } from '../startpage/startpage.component';
 
@@ -38,3 +41,4 @@ constructor(private router: Router) {}
   }
   
 }
+

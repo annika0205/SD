@@ -1,0 +1,17 @@
+<app-template-sorting [description]="'Test'" [action_button]="'Sortieren'" [predefinedText]="['','','','','','','','','','']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin-top: 10px;margin: 10px;">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="onSortModeChange('min')">
+    <label class="btn btn-outline-primary" for="btnradio1">Min Sort</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="onSortModeChange('max')">
+    <label class="btn btn-outline-primary" for="btnradio2">Max Sort</label>
+
+  </div>
+  
+  <div class="chart-container">
+    <div class="chart-wrapper" style="position: relative; width: 100%; max-width: 800px;">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+</app-template-sorting>

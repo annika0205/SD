@@ -1,0 +1,223 @@
+.template-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 10vh);
+  overflow: hidden;
+  position: relative;
+}
+  
+  .template-main-display {
+    flex: 1;
+    background: #ddd;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .template-input-section {
+    background: #eee;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .template-input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap; /* <-- Verhindert Zeilenumbruch */
+    min-width: 0;
+    overflow-x: auto;
+    width:calc(100% - 350px);
+  }
+  
+  .template-input-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 120px;
+    gap: 5px;
+  }
+  
+  .template-input-wrapper input {
+    flex: 1;
+    min-width: 90px;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .template-input-wrapper .suffix-text {
+    white-space: nowrap;
+  }
+  
+  .template-input-wrapper.no-suffix .suffix-text {
+    display: none;
+  }
+  
+  .template-button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0; /* verhindert, dass sich die Buttons verkleinern */
+    width: 350px;
+  }
+  
+  .ButtonAction {
+    height: 100%;
+  }
+  .template-sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background: #bbb;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    align-items: center;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .template-sidebar.open {
+    right: 0;
+  }
+  
+  .template-sidebar-title {
+    position: absolute;
+    left: -50px;
+    top: 50%;
+    background: #444;
+    color: white;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 10px 0 0 10px;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  
+  .template-sidebar-content {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 18px;
+  }
+  
+.template-add-button,
+.template-remove-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.template-add-button {
+  background: #28a745;
+}
+
+.template-add-button:hover:not(:disabled) {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+.template-remove-button {
+  background: #dc3545;
+}
+
+.template-remove-button:hover:not(:disabled) {
+  background: #c82333;
+  transform: scale(1.05);
+}
+
+.template-remove-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.template-navigation {
+  background:  #1a202c;
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-top: 1px solid #2d3456;
+  border-bottom: 1px solid #2d3456;
+}
+
+
+.template-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  color: #a0a0a0; /* Hellgrau für inaktive Items */
+  min-width: 120px;
+  background: #2a2d3e; /* Dunkelgrauer Hintergrund */
+}
+
+.template-nav-item:hover {
+  background: #3a3d4e;
+  color: #ffffff;
+}
+
+
+.template-current {
+  position: relative;
+  padding: 8px 25px;
+  background: #273cb1; /* Hellerer grauer Hintergrund für aktives Item */
+  color: #ffffff; /* Weiß für aktiven Text */
+  border-radius: 25px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  min-width: 120px;
+  text-align: center;
+}
+
+.template-current::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 3px;
+  background: #5a5d6e; /* Hellerer Unterstrich */
+  border-radius: 3px;
+}
+
+.template-arrow {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #a0a0a0; /* Hellgrau für Pfeile */
+}
+
+.template-name {
+  font-size: 0.9em;
+  font-weight: 500;
+}
