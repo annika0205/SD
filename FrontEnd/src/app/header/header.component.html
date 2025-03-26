@@ -9,13 +9,20 @@
               (ngSubmit)="onSubmit()" 
               class="login-form"> -->
 
-              <img src="login_icon_colored.png" 
+              <!-- <img src="login_icon_colored.png" 
               alt="Login Icon" 
               class="login-icon cursor-pointer" 
               [title]="username ? 'Logout' : 'Login'"
-              (click)="username ? logout() : toggleLoginForm()">
+              (click)="username ? logout() : toggleLoginForm()"> -->
 
-              <form *ngIf="showLoginForm && !username" 
+              <div class="icon-wrapper">
+                <img src="login_icon_colored.png" 
+                    alt="Login Icon" 
+                    class="login-icon cursor-pointer" 
+                    (click)="toggleLoginForm()">
+            </div>
+
+              <!-- <form *ngIf="showLoginForm && !username" 
               #authFormElement="ngForm"
               (ngSubmit)="onSubmit()" 
               class="login-form">
@@ -64,6 +71,70 @@
                     (click)="toggleRegisterMode()">
                 {{ isRegistering ? 'Back to Login' : 'Create Account' }}
             </button>
+        </form> -->
+
+        
+        <form *ngIf="showLoginForm" 
+              #authFormElement="ngForm"
+              (ngSubmit)="onSubmit()" 
+              class="login-form">
+            
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
+            <div *ngIf="!username">
+                <!-- Login/Register Form -->
+                <input type="text" 
+                       class="login-input mb-2"
+                       name="username"
+                       [(ngModel)]="authForm.username" 
+                       placeholder="Username" 
+                       required>
+
+                <input type="password" 
+                       class="login-input mb-2"
+                       name="password"
+                       [(ngModel)]="authForm.password" 
+                       placeholder="Password" 
+                       required>
+
+                <div *ngIf="isRegistering">
+                    <input type="password" 
+                           class="login-input mb-2"
+                           name="confirmPassword"
+                           [(ngModel)]="authForm.confirmPassword" 
+                           placeholder="Confirm Password" 
+                           required>
+
+                           <input type="email" 
+                           class="login-input mb-2"
+                           name="email"
+                           [(ngModel)]="authForm.email" 
+                           placeholder="Email" 
+                           required>
+                </div>
+
+                <button type="submit"
+                        class="login-button w-full mb-2">
+                    {{ isRegistering ? 'Register' : 'Login' }}
+                </button>
+
+                <button type="button" 
+                        class="toggle-button w-full"
+                        (click)="toggleRegisterMode()">
+                    {{ isRegistering ? 'Back to Login' : 'Create Account' }}
+                </button>
+            </div>
+
+            <div *ngIf="username">
+                <p class="mb-4 text-center">Logged in as: {{username}}</p>
+                <button type="button"
+                        class="login-button w-full"
+                        (click)="logout()">
+                    Logout
+                </button>
+            </div>
         </form>
     </div>
 </header>
