@@ -1,4 +1,4 @@
-<app-template-sorting [description]="'Test'" [action_button]="'Sortieren'" [predefinedText]="['','','','','','','','','','']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+<app-template-sorting [description]="'Selectionsort geht so vor, dass wiederholt das kleinste (oder größte) Element im unsortierten Bereich gesucht wird uns mit dem ersten Element des unsortierten Bereichs getauscht wird. Das wird solange wiederholt bis das Array sortiert ist.\n\n- Zeitkomplexität: O(n^2)\n- in place\n- instabil'" [action_button]="'Sortieren'" [predefinedText]="['','','','','','','','','','']" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
 
   <div style="display: flex; justify-content: center;">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin: 10px 0; width: fit-content;">

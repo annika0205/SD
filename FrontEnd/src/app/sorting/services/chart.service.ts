@@ -31,8 +31,8 @@ export class ChartService {
         labels: labels,
         datasets: [
           {
-            label: "Werte",
-            backgroundColor: 'rgb(47, 142, 205)',
+            label: "unsortierte Werte",
+            backgroundColor: 'rgb(23, 65, 128)',
             data: data
           }
         ]
@@ -113,7 +113,7 @@ export class ChartService {
     
     this.chart.data.labels = data;
     this.chart.data.datasets[0].data = data;
-    this.chart.data.datasets[0].backgroundColor = 'rgb(6, 50, 114)'
+    this.chart.data.datasets[0].backgroundColor = 'rgb(23, 65, 128)'
     const backgroundColors = data.map((_, index) => {
       // Setze die Farbe für die Balken zwischen index1 und index2
       if (index >= index1 && index <= index2) {
@@ -121,7 +121,26 @@ export class ChartService {
       }
       return 'rgba(0, 0, 0, 0.1)';  // Beispiel für eine andere Farbe
     });
-    
+    this.chart.options.plugins = {
+      legend: {
+          labels: {
+              generateLabels: (chart) => [
+                  {
+                      text: "unsortierte Werte",
+                      fillStyle: 'rgb(6, 50, 114)',
+                      strokeStyle: 'rgb(6, 50, 114)',
+                      lineWidth: 2
+                  },
+                  {
+                      text: "sortierte Werte",
+                      fillStyle: 'rgba(0, 0, 0, 0.1)',
+                      strokeStyle: 'rgba(0, 0, 0, 0.1)',
+                      lineWidth: 2
+                  }
+              ]
+          }
+      }
+  };
     // Wende die Hintergrundfarben auf das Dataset an
     this.chart.data.datasets[0].backgroundColor = backgroundColors;
     this.chart.update();

@@ -19,7 +19,7 @@ export class GradientDescentService {
   }
   
   async gradientDescent(func:number[], startX: number, alpha: number, steps: number, chartService: ChartService, 
-    onPointFound?: (point: number) => void, onError?: (message: string) => void, useLineSearch: boolean = false, onAlphaFound?: (alpha: number) => void) {  // Add callback parameter
+    onPointFound?: (point: number) => void, onError?: (message: string) => void, useLineSearch: boolean = false, onAlphaFound?: (alpha: number) => void, termination: number=0.01) {  // Add callback parameter
     let x = startX;
     let points: {x: number, y: number}[] = [];
     this.gradient(func);
@@ -37,7 +37,7 @@ export class GradientDescentService {
         let grad = this.differential.reduce((acc, val, index) => acc + val * Math.pow(x, this.differential.length-1-index), 0);
         console.log('Step:', i, 'x:', x, 'Gradient:', grad);
         //Bedingung noch variabel machen
-        if (Math.abs(grad) < 0.01) {
+        if (Math.abs(grad) < termination) {
           console.log('Gradient is close to zero', grad);
           onPointFound?.(x_alt); // Call callback with found point
           break;

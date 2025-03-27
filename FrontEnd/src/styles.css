@@ -731,3 +731,24 @@ body {
     max-width: 300px;
   }
 }
+
+.btn-outline-primary {
+  color: #0956a3 !important; /* Dunkleres Blau für die Schrift */
+  border-color: #0956a3 !important; /* Dunklerer Rand */
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus,
+input[type="radio"]:checked + label.btn-outline-primary {
+  background-color: #0956a3 !important;
+  color: white !important;
+  border-color: #0956a3 !important;
+}
+
+/* Nicht ausgewählte Buttons bekommen dunklere Schrift + Rand */
+.btn-check:not(:checked) + .btn-outline-primary {
+  color: #0956a3 !important;
+  border-color: #0956a3 !important;
+}
+

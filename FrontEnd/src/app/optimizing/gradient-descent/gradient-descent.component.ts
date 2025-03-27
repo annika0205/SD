@@ -25,6 +25,7 @@ export class GradientDescentComponent implements AfterViewInit {
   errorMessage: string | null = null;  // neue Property
   useLineSearch: boolean = false;
   foundAlpha: number | null = null;
+  gradientAtPoint: number | null = null;
 
   //Alpha bestimmen
   //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
@@ -142,6 +143,7 @@ export class GradientDescentComponent implements AfterViewInit {
   onClick() {
     this.errorMessage = null;  // Reset error message
     this.foundAlpha = null;  // Reset found alpha
+    this.gradientAtPoint = null;
     this.validateAlpha();
 
     if (!this.inputs.every(x => x=="")) {
@@ -161,10 +163,14 @@ export class GradientDescentComponent implements AfterViewInit {
       this.alpha, 
       this.steps, 
       this.chartService,
-      (point) => this.foundPoint = point,
+      (point) => {
+        this.foundPoint = point;
+        this.gradientAtPoint = this.calculateGradient(point);
+      },
       (error) => this.errorMessage = error,  // neuer callback
       this.useLineSearch,  // Add this parameter
-      (alpha) => this.foundAlpha = alpha  // New callback for alpha
+      (alpha) => this.foundAlpha = alpha,  // New callback for alpha
+      this.termination
     );
   }
   
@@ -187,25 +193,25 @@ export class GradientDescentComponent implements AfterViewInit {
     if (this.graphMode === '2D') {
       while (termCount < inputCount - 1) {
         if (termCount < inputCount - 1) {
-          terms.push(`x<sup>${i}</sup>`);
+          terms.push(`x<sup>${i}</sup> +`);
           termCount++;
         }
         if (termCount < inputCount - 1) {
-          terms.push(`y<sup>${i}</sup>`);
+          terms.push(`y<sup>${i}</sup> +`);
           termCount++;
         }
         i++;
       }
     } else {
       while (termCount < inputCount - 1) {
-        terms.push(`x<sup>${i}</sup>`);
+        terms.push(`x<sup>${i}</sup> +`);
         termCount++;
         i++;
       }
     }
   
     this.predefinedTexts = terms.reverse();
-    this.predefinedTexts.push("1");
+    this.predefinedTexts.push(`x<sup>0</sup>`);
   }
   
   
@@ -223,5 +229,10 @@ export class GradientDescentComponent implements AfterViewInit {
   onRemoveInput(inputs: string[]): void {
     console.log('Input removed in gradient descent component');
     this.updatePredefinedTexts(inputs.length);
+  }
+
+  calculateGradient(x: number): number {
+    return this.differential.reduce((acc, val, index) => 
+      acc + val * Math.pow(x, this.differential.length-1-index), 0);
   }
 }
