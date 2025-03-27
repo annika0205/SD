@@ -1,1 +1,262 @@
 <p>dijkstra works!</p>
+Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2025-03-27 14:21:10
+Current User's Login: DoubleEdgedSwort
+
+<app-template-sorting [description]="'Erklärung für Dijkstra'" [show_inputs]="false">
+  <div class="dijkstra-container">
+
+
+    <div class="main-content">
+      <!-- Steuerung als einzelne Zeile oben -->
+
+
+      <!-- Zwei-Spalten-Layout: Legende links, Grid rechts -->
+      <div class="grid-layout">
+        <!-- Linke Spalte: Aufgehübschte Legende -->
+        <div class="sidebar">
+          <div class="card legend-card">
+            <h2 class="legend-title">Legende</h2>
+            <div class="enhanced-legend">
+              <div class="legend-item">
+                <div class="legend-color start"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Start</span>
+                  <span class="legend-desc">Startposition</span>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color end"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Ziel</span>
+                  <span class="legend-desc">Zielposition</span>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color wall"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Hindernis</span>
+                  <span class="legend-desc">Blockiert den Pfad</span>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color open"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Offene Liste</span>
+                  <span class="legend-desc">Zu untersuchende Knoten</span>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color closed"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Geschlossene Liste</span>
+                  <span class="legend-desc">Bereits untersuchte Knoten</span>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color path"></div>
+                <div class="legend-text">
+                  <span class="legend-label">Optimaler Pfad</span>
+                  <span class="legend-desc">Gefundener kürzester Weg</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bedienhinweis -->
+            <div class="info-container">
+              <div class="info-icon">i</div>
+              <div class="usage-hint">
+                Ziehen Sie Start/Ziel und zeichnen Sie Hindernisse
+              </div>
+            </div>
+          </div>
+        </div>
+        
+ <!-- Rechte Spalte: Grid und Statistik -->
+<div class="results-container" [class.path-found]="pathFound">
+  <!-- Canvas Container -->
+  <div class="canvas-container">
+    <div class="canvas-wrapper card">
+      <canvas #canvas *ngIf="isBrowser"></canvas>
+    </div>
+  </div>
+  
+  <!-- Statistik-Panel (erscheint rechts neben dem Canvas, wenn ein Pfad gefunden wurde) -->
+<!-- Statistik-Panel wird immer angezeigt, auch wenn kein Pfad gefunden wurde -->
+<div class="statistics-panel" [class.hidden]="!showStatistics()">
+  <div class="statistics-header">
+    <h3><i class="material-icons">analytics</i> Pfad-Statistiken</h3>
+  </div>
+  
+  <div class="statistics-content">
+    <!-- Status-Banner für Pfad-Information -->
+    <div class="path-status-banner" 
+         [class.success]="pathFound && pathLength > 0" 
+         [class.failure]="!pathFound && openList.length === 0"
+         [class.searching]="!pathFound && openList.length > 0">
+      <div class="path-status-icon">
+        <i class="material-icons">
+          {{ pathFound && pathLength > 0 ? 'check_circle' : 
+             (!pathFound && openList.length === 0 ? 'error' : 'search') }}
+        </i>
+      </div>
+      <div class="path-status-message">
+        {{ pathFound && pathLength > 0 ? 'Pfad gefunden!' : 
+           (!pathFound && openList.length === 0 ? 'Kein Pfad möglich!' : 'Bereit zur Pfadsuche...') }}
+      </div>
+    </div>
+    
+    <!-- Grid-Informationen -->
+    <div class="stat-section">
+      <h4 class="stat-section-title">Grid-Informationen</h4>
+      <div class="stat-group">
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">grid_on</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ isHexGrid ? 'Hexagon' : 'Quadrat' }}</div>
+            <div class="stat-label">Grid-Form</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">aspect_ratio</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ getGridCellsCount() }}</div>
+            <div class="stat-label">Anzahl Zellen</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">block</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ getObstaclesCount() }}</div>
+            <div class="stat-label">Hindernisse</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pfad-Informationen -->
+    <div class="stat-section">
+      <h4 class="stat-section-title">Algorithmus-Leistung</h4>
+      <div class="stat-group">
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">timer</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ (pathFound || (!pathFound && openList.length === 0)) ? (executionTime | number:'1.3-3') : '-' }} {{ (pathFound || (!pathFound && openList.length === 0)) ? 'ms' : '' }}</div>
+            <div class="stat-label">Berechnungszeit</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">search</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ (pathFound || (!pathFound && openList.length === 0)) ? visitedNodesCount : '-' }}</div>
+            <div class="stat-label">Besuchte Knoten</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">route</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ pathFound ? pathLength : '0' }}</div>
+            <div class="stat-label">Pfadlänge</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">memory</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ (pathFound || (!pathFound && openList.length === 0)) ? calculationsCount : '-' }}</div>
+            <div class="stat-label">Berechnungen</div>
+          </div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-icon"><i class="material-icons">speed</i></div>
+          <div class="stat-data">
+            <div class="stat-value">{{ (pathFound || (!pathFound && openList.length === 0)) ? (calculationsCount / (executionTime / 1000) | number:'1.0-0') : '-' }}</div>
+            <div class="stat-label">Schritte/Sekunde</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+  </div>
+      </div>
+      <div class="card controls-row">
+        <div class="controls-group action-buttons">
+          <button class="btn primary" [disabled]="isRunning" (click)="startDijkstraAlgorithm()">
+            <i class="material-icons">play_arrow</i> <span>Visualisieren</span>
+          </button>
+          
+          <button class="btn secondary" [disabled]="isRunning" (click)="resetPathfinding()">
+            <i class="material-icons">refresh</i> <span>Zurücksetzen</span>
+          </button>
+          
+          <button class="btn secondary" [disabled]="isRunning" (click)="resetGrid()">
+            <i class="material-icons">grid_on</i> <span>Neues Raster</span>
+          </button>
+          
+          <button class="btn secondary random-btn" [disabled]="isRunning" (click)="createRandomGrid()">
+            <i class="material-icons">shuffle</i> <span>Zufällig</span>
+          </button>
+        </div>
+        
+        <div class="controls-group settings">
+          <div class="slider-control">
+            <label for="speed">
+              <i class="material-icons">speed</i>
+              <span>Geschw.:</span>
+            </label>
+            <input 
+              type="range" 
+              id="speed" 
+              class="speed-slider"
+              min="10" 
+              max="200" 
+              [value]="210 - animationSpeed" 
+              (input)="handleSpeedChange($event)"
+              [disabled]="isRunning">
+            <span class="speed-value">{{210 - animationSpeed}}%</span>
+          </div>
+          
+          <div class="size-control">
+            <label for="gridSize">
+              <i class="material-icons">aspect_ratio</i>
+              <span>Größe:</span>
+            </label>
+            <input 
+              type="number" 
+              id="gridSize" 
+              min="5" 
+              max="50" 
+              [value]="gridSize" 
+              (change)="handleGridSizeChange($event)"
+              [disabled]="isRunning">
+          </div>
+          
+          <div class="grid-type-control" *ngIf="showHexOption">
+            <label>
+              <i class="material-icons">grid_3x3</i>
+              <span>Typ:</span>
+            </label>
+            <div class="slide-toggle-container">
+              <label class="slide-toggle">
+                <input 
+                  type="checkbox" 
+                  [checked]="isHexGrid" 
+                  (change)="setGridType(!isHexGrid)" 
+                  [disabled]="isRunning">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="switch-label">{{ isHexGrid ? 'Hex' : 'Quadrat' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-template-sorting>
