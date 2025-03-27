@@ -7,15 +7,21 @@
   (inputsEvent)="onInputCountChanged($event)"
   (addInputClicked)="onAddInput($event)"
   (removeInputClicked)="onRemoveInput($event)">
-  <div style="display: flex; flex-direction: column; height: 50vh; width: 100%;">
+  <div style="display: flex; flex-direction: column; height: 50vh; width: 100%">
     <!-- Controls row with flex -->
-    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 10px; margin-bottom: 30px;">
+    <div class="balken" style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 10px; margin-bottom: 30px;">
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="height: 38px;">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked (change)="setGraphMode('1D')" [checked]="graphMode === '1D'">
-        <label class="btn btn-outline-primary" for="btnradio1">1D Graph</label>
+        <label class="btn" [ngClass]="graphMode === '1D' ? 'btn-outline-primary' : ''" for="btnradio1" 
+          [style.background-color]="graphMode === '1D' ? '' : 'white'"
+          [style.color]="graphMode === '1D' ? '' : 'black'"
+          [style.border-color]="graphMode === '1D' ? '' : '#ced4da'">1D Graph</label>
     
         <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" (change)="setGraphMode('2D')" [checked]="graphMode === '2D'">
-        <label class="btn btn-outline-primary" for="btnradio2">2D Graph</label>
+        <label class="btn" [ngClass]="graphMode === '2D' ? 'btn-outline-primary' : ''" for="btnradio2" 
+          [style.background-color]="graphMode === '2D' ? '' : 'white'"
+          [style.color]="graphMode === '2D' ? '' : 'black'"
+          [style.border-color]="graphMode === '2D' ? '' : '#ced4da'">2D Graph</label>
       </div>
 
       <div class="input-group" style="width: 250px;">
@@ -74,7 +80,7 @@
 
       <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" (change)="toggleMode($event)">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Line Search</label>
+        <label class="form-check-label" for="flexSwitchCheckDefault" style="color: white;">Line Search</label>
       </div>
       
     </div>
