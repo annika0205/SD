@@ -237,7 +237,7 @@ export class DijkstraComponent implements OnInit, AfterViewInit {
         
         this.setCellColor(node);
         this.ctx.fillRect(cellX, cellY, this.cellSize, this.cellSize);
-        this.ctx.strokeStyle = '#E0E0E0';
+        this.ctx.strokeStyle = '#999999';
         this.ctx.strokeRect(cellX, cellY, this.cellSize, this.cellSize);
       }
     }
@@ -275,7 +275,7 @@ export class DijkstraComponent implements OnInit, AfterViewInit {
     } else if (node.isOpen) {
       this.ctx.fillStyle = 'rgba(76, 175, 80, 0.3)'; // Grün mit Transparenz
     } else {
-      this.ctx.fillStyle = '#FFFFFF'; // Weiß
+      this.ctx.fillStyle = '#ddd'; // Weiß
     }
   }
 
@@ -296,7 +296,7 @@ export class DijkstraComponent implements OnInit, AfterViewInit {
     this.ctx.closePath();
     
     this.ctx.fill();
-    this.ctx.strokeStyle = '#E0E0E0';
+    this.ctx.strokeStyle = '#999999';
     this.ctx.stroke();
   }
 
