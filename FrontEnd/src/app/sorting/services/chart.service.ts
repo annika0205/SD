@@ -101,7 +101,11 @@ export class ChartService {
       return;
     }
 
-    this.chart.data.datasets[1].data = points;
+    // Convert the points to the format expected by Chart.js
+    const chartPoints = points.map(p => ({x: p.x, y: p.y}));
+    
+    // Update the second dataset (index 1) with the new points
+    this.chart.data.datasets[1].data = chartPoints;
     this.chart.update();
   }
 

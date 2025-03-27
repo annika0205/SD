@@ -85,8 +85,18 @@
       
     </div>
     <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-      <p style="margin: 0;">Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
-      <p style="margin: 0;">Gradient am Punkt: {{ gradientAtPoint !== null ? gradientAtPoint.toFixed(4) : '-' }}</p>
+      <!-- 1D case -->
+      <ng-container *ngIf="graphMode === '1D'">
+        <p style="margin: 0;">Gefundener Punkt: {{ foundPoint !== null ? foundPoint.toFixed(4) : '-' }}</p>
+        <p style="margin: 0;">Gradient am Punkt: {{ gradientAtPoint !== null ? gradientAtPoint.toFixed(4) : '-' }}</p>
+      </ng-container>
+      
+      <!-- 2D case -->
+      <ng-container *ngIf="graphMode === '2D'">
+        <p style="margin: 0;">Gefundener Punkt: {{ foundPoint2D !== null ? '(' + foundPoint2D.x.toFixed(4) + ', ' + foundPoint2D.y.toFixed(4) + ')' : '-' }}</p>
+        <p style="margin: 0;">Gradient am Punkt: {{ gradientAtPoint2D !== null ? '(' + gradientAtPoint2D.x.toFixed(4) + ', ' + gradientAtPoint2D.y.toFixed(4) + ')' : '-' }}</p>
+      </ng-container>
+      
       <p style="margin: 0;" *ngIf="useLineSearch">Gefundenes Alpha: {{ foundAlpha !== null ? foundAlpha.toFixed(4) : '-' }}</p>
       <p *ngIf="errorMessage" class="text-danger" style="margin: 0;">{{ errorMessage }}</p>
     </div>

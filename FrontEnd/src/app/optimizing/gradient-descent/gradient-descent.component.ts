@@ -22,10 +22,12 @@ export class GradientDescentComponent implements AfterViewInit {
   startX: number = -3;
   graphMode: '1D' | '2D' = '1D';
   foundPoint: number | null = null;
+  foundPoint2D: {x: number, y: number} | null = null;
   errorMessage: string | null = null;  // neue Property
   useLineSearch: boolean = false;
   foundAlpha: number | null = null;
   gradientAtPoint: number | null = null;
+  gradientAtPoint2D: {x: number, y: number} | null = null;
 
   //Alpha bestimmen
   //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
@@ -144,6 +146,9 @@ export class GradientDescentComponent implements AfterViewInit {
     this.errorMessage = null;  // Reset error message
     this.foundAlpha = null;  // Reset found alpha
     this.gradientAtPoint = null;
+    this.foundPoint = null;
+    this.foundPoint2D = null;
+    this.gradientAtPoint2D = null;
     this.validateAlpha();
 
     if (!this.inputs.every(x => x=="")) {
@@ -157,21 +162,33 @@ export class GradientDescentComponent implements AfterViewInit {
     
     this.updateChart();
     
-    this.gradientDescentService.gradientDescent(
-      this.function, 
-      this.startX, 
-      this.alpha, 
-      this.steps, 
-      this.chartService,
-      (point) => {
-        this.foundPoint = point;
-        this.gradientAtPoint = this.calculateGradient(point);
-      },
-      (error) => this.errorMessage = error,  // neuer callback
-      this.useLineSearch,  // Add this parameter
-      (alpha) => this.foundAlpha = alpha,  // New callback for alpha
-      this.termination
-    );
+    if (this.graphMode === '1D') {
+      this.gradientDescentService.gradientDescent(
+        this.function, 
+        this.startX, 
+        this.alpha, 
+        this.steps, 
+        this.chartService,
+        (point) => {
+          this.foundPoint = point;
+          this.gradientAtPoint = this.calculateGradient(point);
+        },
+        (error) => this.errorMessage = error,  // neuer callback
+        this.useLineSearch,  // Add this parameter
+        (alpha) => this.foundAlpha = alpha,  // New callback for alpha
+        this.termination
+      );
+    } else {
+      // For 2D case - using dummy data for now
+      // In a real implementation, you would call a 2D version of gradient descent
+      setTimeout(() => {
+        this.foundPoint2D = {x: -0.0432, y: -0.0432};
+        this.gradientAtPoint2D = {x: -2*0.0432, y: -2*0.0432};
+        
+        // This is where you would call your actual 2D gradient descent
+        this.testGradientPath();
+      }, 500);
+    }
   }
   
   updateChart() {
