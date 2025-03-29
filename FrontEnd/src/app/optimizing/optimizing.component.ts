@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface AlgorithmItem {
   items: string;
@@ -15,7 +15,7 @@ export class OptimizingComponent implements OnInit {
 
   @Input() items: AlgorithmItem[] = []; // Änderung hier zu AlgorithmIte
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
   
     ngOnInit() {
       this.items = history.state.items || []; // Holt die Items aus dem Router-State
@@ -23,11 +23,9 @@ export class OptimizingComponent implements OnInit {
 
     navigateToAlgo(index: number) {
       const routes = [
-        '/bubblesort',
-        '/insertionsort',
-        '/mergesort'
+        'gradientdescent',
       ];
       
-      this.router.navigate([routes[index]]);
+      this.router.navigate([routes[index]], { relativeTo: this.route });
     }
 }

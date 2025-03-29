@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface SuchErgebnis {
   algorithmusName: string;  // Geändert von titel zu algorithmusName für mehr Klarheit
@@ -55,7 +55,7 @@ export class StartpageComponent {
   };
 
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   getCategoryClass(index: number): string {
     switch(index) {
