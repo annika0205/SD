@@ -28,7 +28,7 @@
         <li *ngFor="let item of items; let i = index" 
             [ngClass]="{'bg-gray': i % 2 !== 0}"
             class="clickableList"
-            (click)="navigateToAlgorithm(item.items, $event)">
+            (click)="onClickAlgo(i, $event)">
           <span class="algorithm-name">{{ item.items }}</span>
           <span class="description">{{ item.description }}</span>
         </li>

@@ -98,6 +98,16 @@ export class StartpageComponent {
     this.router.navigate([routes[index]], { state: { items: this.boxes[index].algorithms } });
   }
 
+  onNavigateToAlgo(index: number) {
+    const routes = [
+      'bubblesort',
+      'selectionsort',
+      'mergesort',
+      'quicksort'
+    ];
+    //[routes[index]]
+    this.router.navigate([routes[0]], { relativeTo: this.route });
+  }
 
   suchen(event: Event) {
     this.suchBegriff = (event.target as HTMLInputElement).value;

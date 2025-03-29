@@ -99,6 +99,7 @@
      [items]="box.algorithms" 
      [class]="getCategoryClass(index)" 
      (navigate)="onNavigate(index)" 
+     (navigateToAlgo)="onNavigateToAlgo($event)"
      class="app-box category-container" >
      <div *ngIf="!username && index > 0" class="login-required-overlay">
       Login erforderlich

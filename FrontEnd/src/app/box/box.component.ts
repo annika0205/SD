@@ -16,7 +16,7 @@ export class BoxComponent {
   @Input() title: string = '';
   @Input() items: AlgorithmItem[] = [];
   @Output() navigate = new EventEmitter<void>();
-
+  @Output() navigateToAlgo = new EventEmitter<number>();
   @HostBinding('class')
   @Input()
   class: string = '';
@@ -39,34 +39,13 @@ export class BoxComponent {
   onSearchClick(event: Event) {
     event.stopPropagation(); // Verhindert, dass der Click die Box aufklappt
     this.navigate.emit();
+
   }
 
-  navigateToAlgorithm(algorithmName: string, event: Event) {
-    
-    try {
-      alert('Click detected!'); // This will show visually if the method is called
-      console.log('Click event:', event);
-      console.log('Algorithm name:', algorithmName);
-      event.stopPropagation();
-      
-      const routes: { [key: string]: string } = {
-          'Bubblesort': '/bubblesort',
-          'Mergesort': '/mergesort',
-          'Quicksort': '/quicksort',
-          'Selectionsort': '/selectionsort',
-          'Gradient-Descent': '/gradient-descent',
-          'Dijkstra': '/dijkstra',
-          'A*': '/a-star'
-      };
-
-      if (routes[algorithmName]) {
-          console.log('Navigating to:', routes[algorithmName]);
-          this.router.navigate([routes[algorithmName]]);
-      } else {
-          console.error('Route not found for:', algorithmName);
-      }
-  } catch (error) {
-      console.error('Error in navigateToAlgorithm:', error);
+  onClickAlgo(index: number, event: Event) {
+    event.stopPropagation();
+    this.navigateToAlgo.emit(index);
+    console.log("Algorithmus angeklickt")
   }
-  }
+  
 }
