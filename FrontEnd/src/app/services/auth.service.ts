@@ -80,9 +80,5 @@ export class AuthService {
   }
 
   private loadUser(): void {
-    // Optional: Hier könntest du Benutzerinformationen vom Backend laden
-    // this.http.get<User>(`${this.apiUrl}/me`).subscribe(
-    //   user => this.userSubject.next(user)
-    // );
   }
 }

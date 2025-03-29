@@ -23,12 +23,10 @@ export class TemplateSortingComponent {
   @Output() addInputClicked = new EventEmitter<string[]>();
 
   algorithms: RouteItem[] = [
-    { name: 'Bubblesort', route: 'bubble-sort' },
-    { name: 'Selection Sort', route: 'selection-sort' },
-    { name: 'Insertion Sort', route: 'insertion-sort' },
-    { name: 'Quick Sort', route: 'quick-sort' },
-    { name: 'Merge Sort', route: 'merge-sort' },
-    { name: 'Heap Sort', route: 'heap-sort' }
+    { name: 'Bubblesort', route: 'bubblesort' },
+    { name: 'Selection Sort', route: 'selectionsort' },
+    { name: 'Quick Sort', route: 'quicksort' },
+    { name: 'Merge Sort', route: 'mergesort' },
   ];
   currentAlgoIndex = 0;
 
