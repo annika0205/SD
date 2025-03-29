@@ -218,8 +218,8 @@ export class DijkstraComponent implements OnInit, AfterViewInit {
   private drawGrid(): void {
     if (!this.ctx) return;
     
-    this.ctx.fillStyle = 'transparent'
-    //this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+    //this.ctx.fillStyle = 'transparent'
+    this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     this.ctx.fillRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     
     if (this.isHexGrid) {
