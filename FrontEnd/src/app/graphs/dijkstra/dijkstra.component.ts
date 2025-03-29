@@ -219,7 +219,8 @@ export class DijkstraComponent implements OnInit, AfterViewInit {
     if (!this.ctx) return;
     
     this.ctx.fillStyle = '#ffffff';
-    this.ctx.fillRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+   this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+
     
     if (this.isHexGrid) {
       this.drawHexGrid();
