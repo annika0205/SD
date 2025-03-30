@@ -7,6 +7,8 @@ import { Optimisation_routes } from "./optimizing/optimizing-routing.module";
 import { AlgoExampleComponent } from "./algo-example/algo-example.component";
 import { StartpageV2Component } from "./startpage-v2/startpage-v2.component";
 import { SortingComponent } from "./sorting/sorting.component";
+import { AstarComponent } from "./graphs/astar/astar.component";
+import { DijkstraComponent } from "./graphs/dijkstra/dijkstra.component";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},
@@ -21,8 +23,8 @@ const APP_ROUTES: Routes = [
     {path:'mergesort', component: AlgoExampleComponent},
     {path:'quicksort', component: AlgoExampleComponent},
     {path:'gradient-descent', component: AlgoExampleComponent},
-    {path:'dijkstra', component: AlgoExampleComponent},
-    {path:'a*', component: AlgoExampleComponent}
+    {path:'dijkstra', component: DijkstraComponent},
+    {path:'astar', component: AstarComponent}
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

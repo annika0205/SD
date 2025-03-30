@@ -20,6 +20,8 @@ import { GradientDescentComponent } from './optimizing/gradient-descent/gradient
 import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
 import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
 import { AppServerModule } from './app.module.server';
+import { AstarComponent } from './graphs/astar/astar.component';
+import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { AppServerModule } from './app.module.server';
     TemplateSortingComponent,
     GradientDescentComponent,
     BubblesortComponent,
-    StartpageV2Component
+    StartpageV2Component,
+    AstarComponent,
+    DijkstraComponent
   ],
   imports: [
     BrowserModule,
