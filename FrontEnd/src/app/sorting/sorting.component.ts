@@ -28,9 +28,9 @@ constructor(private router: Router, private route: ActivatedRoute) {}
   navigateToAlgo(index: number) {
     const routes = [
       'bubblesort',
-      'selectionsort',
       'mergesort',
-      'quicksort'
+      'quicksort',
+      'selectionsort'
     ];
 
     this.router.navigate([routes[index]], { relativeTo: this.route });
