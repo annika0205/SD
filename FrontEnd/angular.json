@@ -26,7 +26,7 @@
             "outputPath": "dist/sd-projekt",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "externalDependencies": ["cors", "express", "plotly.js-dist-min"],
+            "externalDependencies": ["cors", "express"],
             "polyfills": [
               "zone.js"
             ],
