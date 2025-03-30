@@ -5,6 +5,6 @@ import { ShortestWayComponent } from "./shortest-way.component";
 
 export const Shortest_Way_Routes: Routes = [
   {path:'', component: ShortestWayComponent},
-  {path:'selectionsort', component: AstarComponent},
-  {path:'mergesort', component: DijkstraComponent}
+  {path:'astar', component: AstarComponent},
+  {path:'dijkstra', component: DijkstraComponent}
 ];

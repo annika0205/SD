@@ -49,7 +49,7 @@ export class StartpageComponent {
     'Selectionsort': 'sortieralgorithmen/selectionsort',
     'Mergesort': 'sortieralgorithmen/mergesort',
     'Quicksort': 'sortieralgorithmen/quicksort',
-    'Gradient-Descent': 'optimierungsalgorithmen/gradient-descent',
+    'Gradient-Descent': 'optimierungsalgorithmen/gradientdescent',
     'Dijkstra': 'kürzesterweg/dijkstra',
     'A*': 'kürzesterweg/astar'
   };
