@@ -45,13 +45,13 @@ export class StartpageComponent {
   ];
 
   private algorithmusRouten: { [key: string]: string } = {
-    'Bubblesort': 'bubblesort',
-    'Selectionsort': 'selectionsort',
-    'Mergesort': 'mergesort',
-    'Quicksort': 'quicksort',
-    'Gradient-Descent': 'gradient-descent',
+    'Bubblesort': 'sortieralgorithmen/bubblesort',
+    'Selectionsort': 'sortieralgorithmen/selection-sort',
+    'Mergesort': 'sortieralgorithmen/mergesort',
+    'Quicksort': 'sortieralgorithmen/quicksort',
+    'Gradient-Descent': 'optimierungsalgorithmen/gradientdescent',
     'Dijkstra': 'dijkstra',
-    'A*': 'a*'
+    'A*': 'astar'
   };
 
 
