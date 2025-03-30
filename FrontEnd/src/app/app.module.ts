@@ -22,6 +22,7 @@ import { AstarComponent } from './graphs/astar/astar.component';
 import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
 import { TemplateGraphsComponent } from './graphs/template-graphs/template-graphs.component';
 import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
+import { QuickSortComponent } from './sorting/quicksort/quicksort.component';
 
 
 
@@ -32,6 +33,7 @@ import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
     OptimizingComponent,
    // ShortestWayComponent,
     HeaderComponent,
+    QuickSortComponent,
     PreviewBoxComponent,
     BoxComponent,
     StartpageComponent,
