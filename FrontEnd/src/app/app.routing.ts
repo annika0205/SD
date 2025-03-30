@@ -9,6 +9,7 @@ import { AstarComponent}from "./graphs/astar/astar.component";
 import { DijkstraComponent } from "./graphs/dijkstra/dijkstra.component";
 import { TemplateGraphsComponent } from "./graphs/template-graphs/template-graphs.component";
 import { StartpageV2Component } from "./startpage-v2/startpage-v2.component";
+import { MergeSortComponent } from "./sorting/mergesort/mergesort.component";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},
@@ -22,7 +23,7 @@ const APP_ROUTES: Routes = [
     {path:'dijkstra',component: DijkstraComponent},
     {path:'template',component:TemplateGraphsComponent},
     {path:'selectionsort', component: AlgoExampleComponent},
-    {path:'mergesort', component: AlgoExampleComponent},
+    {path:'mergesort', component: MergeSortComponent},
     {path:'quicksort', component: AlgoExampleComponent}
 ];
 

@@ -1,3 +1,116 @@
-<div>
-    <canvas id="myChart"></canvas>
-</div>
+<app-template-sorting [description]="'Erklärung für Dijkstra'" [show_inputs]="false">
+  <div class="main-container">
+    <!-- Mergesort visualization area with fixed height -->
+    <div class="mergesort-container">
+      <div class="visualization-area">
+        <!-- Original Array Display -->
+        <div class="array-section" *ngIf="originalArray.length > 0">
+          <h3 class="section-title">Original:</h3>
+          <div class="array-row">
+            <div class="array-element" *ngFor="let num of originalArray">{{ num }}</div>
+          </div>
+        </div>
+
+        <!-- Sort Steps Display -->
+        <div class="steps-container">
+          <!-- Group each step type together to maintain a clear sequence -->
+          <ng-container *ngFor="let step of displayedSteps; let i = index">
+            <!-- Each step in its own section for column layout -->
+            <div class="step-section">
+              <!-- Split Step -->
+              <div *ngIf="step.type === 'split'" class="step-content">
+                <h3 class="section-title">Teilen:</h3>
+                <div class="step-data">
+                  <div class="array-row">
+                    <div class="array-element" 
+                         *ngFor="let num of step.array; let j = index"
+                         [class.highlighted]="j >= step.left && j <= step.right"
+                         [class.left-half]="j >= step.left && j <= step.mid"
+                         [class.right-half]="j > step.mid && j <= step.right"
+                         [class.faded]="j < step.left || j > step.right">
+                      {{ num }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Before Merge Step -->
+              <div *ngIf="step.type === 'merge-before'" class="step-content">
+                <h3 class="section-title">Vor Zusammenführung:</h3>
+                <div class="step-data">
+                  <div class="subarrays">
+                    <!-- Left array now positioned horizontally -->
+                    <div class="array-row">
+                      <div class="array-element left-half" *ngFor="let num of step.leftArray">{{ num }}</div>
+                    </div>
+                    
+                    <!-- Separator between arrays -->
+                    <div class="array-separator">+</div>
+                    
+                    <!-- Right array now positioned horizontally -->
+                    <div class="array-row">
+                      <div class="array-element right-half" *ngFor="let num of step.rightArray">{{ num }}</div>
+                    </div>
+                  </div>
+                  <div class="merge-arrow">↓</div>
+                </div>
+              </div>
+
+              <!-- After Merge Step -->
+              <div *ngIf="step.type === 'merge-after'" class="step-content">
+                <h3 class="section-title">Nach Zusammenführung:</h3>
+                <div class="step-data">
+                  <div class="array-row">
+                    <div class="array-element merged" 
+                         *ngFor="let num of step.array; let j = index"
+                         [class.highlighted]="j >= step.left && j <= step.right"
+                         [class.faded]="j < step.left || j > step.right">
+                      {{ num }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Fixed controls row at bottom of main, above the imported footer -->
+    <div class="controls-container">
+      <div class="controls-row">
+        <!-- 1. Input fields -->
+        <div class="inputs-group">
+          <input 
+            *ngFor="let inputValue of inputValues; let i = index"
+            type="text"
+            [value]="inputValue"
+            (input)="onNumberInput($event, i)"
+            placeholder="#"
+            [disabled]="inputsDisabled"
+          >
+        </div>
+        
+        <!-- 2. Add input field button -->
+        <button class="control-button add-button" (click)="addInputField()" [disabled]="inputsDisabled">
+          +
+        </button>
+        
+        <!-- 3. Remove input field button -->
+        <button class="control-button remove-button" (click)="removeInputField()" [disabled]="inputsDisabled">
+          -
+        </button>
+        
+        <!-- 4. Next step button -->
+        <button class="control-button step-button" (click)="nextStep()" [disabled]="allStepsShown">
+          Ein Schritt
+        </button>
+        
+        <!-- 5. All steps button -->
+        <button class="control-button all-steps-button" (click)="showAllSteps()" [disabled]="allStepsShown">
+          Alle Schritte
+        </button>
+      </div>
+    </div>
+  </div>
+</app-template-sorting>
