@@ -5,15 +5,15 @@ import { StartpageComponent } from "./startpage/startpage.component";
 import { SORTING_ROUTES } from "./sorting/sorting-routing.module";
 import { Optimisation_routes } from "./optimizing/optimizing-routing.module";
 import { SortingComponent } from "./sorting/sorting.component";
-import { AstarComponent } from "./graphs/astar/astar.component";
-import { DijkstraComponent } from "./graphs/dijkstra/dijkstra.component";
+import { DijkstraComponent } from "./shortest-way/dijkstra/dijkstra.component";
 import { MergeSortComponent } from "./sorting/mergesort/mergesort.component";
 import { QuickSortComponent } from "./sorting/quicksort/quicksort.component";
+import { Shortest_Way_Routes } from "./shortest-way/shortest-way-routing.module";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},
     {path:'optimierungsalgorithmen', children: Optimisation_routes},
-    {path:'kürzesterweg', component: ShortestWayComponent},
+    {path:'kürzesterweg', children: Shortest_Way_Routes},
     {path:'', component: StartpageComponent},
 ];
 
