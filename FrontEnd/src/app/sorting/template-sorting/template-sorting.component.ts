@@ -44,8 +44,12 @@ export class TemplateSortingComponent {
 
   handleInputChange(index: number, event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.inputs[index] = target.value;
-    this.inputsEvent.emit(this.inputs)
+    this.inputs[index] = target.value; // Aktualisiere nur den Wert
+    this.inputsEvent.emit([...this.inputs]); // Emitte eine Kopie des Arrays, um Änderungen zu signalisieren
+  }
+
+  trackByIndex(index: number, item: any): number {
+    return index;
   }
 
   addInput(): void {

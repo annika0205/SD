@@ -5,6 +5,10 @@ import { StartpageComponent } from "./startpage/startpage.component";
 import { SORTING_ROUTES } from "./sorting/sorting-routing.module";
 import { Optimisation_routes } from "./optimizing/optimizing-routing.module";
 import { SortingComponent } from "./sorting/sorting.component";
+import { AstarComponent } from "./graphs/astar/astar.component";
+import { DijkstraComponent } from "./graphs/dijkstra/dijkstra.component";
+import { MergeSortComponent } from "./sorting/mergesort/mergesort.component";
+import { QuickSortComponent } from "./sorting/quicksort/quicksort.component";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},

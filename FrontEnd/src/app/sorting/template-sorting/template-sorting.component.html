@@ -4,7 +4,7 @@
   </div>
   <div class="template-input-section" *ngIf="show_inputs">
     <div class="template-input-group">
-      <div *ngFor="let input of inputs; let i = index" class="template-input-wrapper" [class.no-suffix]="!predefinedText[i]">
+      <div *ngFor="let input of inputs; let i = index; trackBy: trackByIndex" class="template-input-wrapper" [class.no-suffix]="!predefinedText[i]">
         <input  
           type="text"  
           [placeholder]="'Eingabe ' + (i + 1) + '...'"  

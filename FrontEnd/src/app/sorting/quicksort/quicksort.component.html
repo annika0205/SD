@@ -1,0 +1,72 @@
+<app-template-sorting [description]="'Erklärung für Dijkstra'" [show_inputs]="false">
+    <div class="container">
+        <div class="visualization-container">
+          <div class="array-container">
+            <!-- Original Array -->
+            <div class="array-step" *ngIf="originalArray.length > 0">
+              <div class="step-label">Original:</div>
+              <div class="array-visual-container">
+                <div class="array-visual">
+                  <div class="array-item" *ngFor="let num of originalArray">{{ num }}</div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Steps -->
+            <div *ngFor="let step of steps; let stepIndex = index" class="array-step">
+              <div class="step-label">
+                {{ step.type === 'select-pivot' ? 'Pivot Wählen:' : 
+                   step.type === 'partition' ? 'Partitionieren:' : 
+                   step.type === 'move-pivot' ? 'Pivot Positionieren:' : 'Rekursiver Aufruf:' }}
+              </div>
+      
+              <div class="array-visual-container">
+                <div class="array-visual">
+                  <div class="array-item" 
+                      *ngFor="let num of step.array; let i = index"
+                      [style.backgroundColor]="getStepColor(i, step)"
+                      [style.opacity]="(i < step.left || i > step.right) ? '0.5' : '1'"
+                      [class.pivot]="isPivot(i, step)">
+                    {{ num }}
+                  </div>
+                </div>
+      
+                <!-- Show a description for partition step -->
+                <div class="step-description" *ngIf="step.type === 'partition'">
+                  <div class="description-text">Pivot: {{ step.array[step.pivotIndex] }}</div>
+                  <div class="description-text">Kleinere Elemente: [{{ step.lessThan?.join(', ') || '' }}]</div>
+                  <div class="description-text">Größere Elemente: [{{ step.greaterThan?.join(', ') || '' }}]</div>
+                </div>
+      
+                <!-- Show arrow for move pivot step -->
+                <div class="step-description" *ngIf="step.type === 'move-pivot'">
+                  <div class="description-text">Pivot an finaler Position: {{ step.pivotIndex }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Controls container - matches MergeSort layout -->
+        <div class="controls-container">
+          <div class="input-container">
+            <button class="small-button" (click)="removeInput()" [disabled]="isDisabled || inputValues.length <= 3">-</button>
+            <input 
+              *ngFor="let inputValue of inputValues; let i = index" 
+              type="text" 
+              [value]="inputValue" 
+              (input)="onNumberInput($event, i)"
+              placeholder="#"
+              [disabled]="isDisabled"
+            >
+            <button class="small-button" (click)="addInput()" [disabled]="isDisabled || inputValues.length >= 10">+</button>
+          </div>
+      
+          <div class="button-container">
+            <button (click)="generateRandomNumbers()" [disabled]="isDisabled">Zufallszahlen</button>
+            <button (click)="startSorting()" [disabled]="isDisabled">Sortieren</button>
+            <button (click)="resetVisualization()" [disabled]="isDisabled">Zurücksetzen</button>
+          </div>
+        </div>
+      </div>
+</app-template-sorting>
