@@ -10,7 +10,6 @@ export const SORTING_ROUTES: Routes = [
   {path:'', component: SortingComponent},
   {path:'selection-sort', component: SelectionSortComponent},
   {path:'mergesort', component: MergeSortComponent},
-  {path:'stable', component: StableComponent},
   {path:'bubblesort', component: BubblesortComponent},
 ];
 

@@ -39,7 +39,6 @@ export class BoxComponent {
   onSearchClick(event: Event) {
     event.stopPropagation(); // Verhindert, dass der Click die Box aufklappt
     this.navigate.emit();
-
   }
 
   onClickAlgo(index: number, event: Event) {

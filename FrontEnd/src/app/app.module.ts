@@ -14,11 +14,9 @@ import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
 import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
-import { AlgoExampleComponent } from './algo-example/algo-example.component';
 import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
 import { GradientDescentComponent } from './optimizing/gradient-descent/gradient-descent.component';
 import { BubblesortComponent } from './sorting/bubblesort/bubblesort.component';
-import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
 import { AppServerModule } from './app.module.server';
 
 
@@ -34,11 +32,9 @@ import { AppServerModule } from './app.module.server';
     StartpageComponent,
     SelectionSortComponent,
     MergeSortComponent,
-    AlgoExampleComponent,
     TemplateSortingComponent,
     GradientDescentComponent,
     BubblesortComponent,
-    StartpageV2Component
   ],
   imports: [
     BrowserModule,
