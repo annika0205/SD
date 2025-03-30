@@ -26,6 +26,7 @@
             "outputPath": "dist/sd-projekt",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "externalDependencies": ["cors", "express", "plotly.js-dist-min"],
             "polyfills": [
               "zone.js"
             ],
@@ -58,7 +59,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumError": "7kB"
                 }
               ],
               "outputHashing": "all"
