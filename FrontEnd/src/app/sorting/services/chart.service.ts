@@ -152,11 +152,10 @@ export class ChartService {
   }
 
   updateChart_xy(xValues: number[], yValues: number[]): void {
-    const chart = this.chart;
-    if (chart) {
-      chart.data.labels = xValues;
-      chart.data.datasets[0].data = yValues;
-      chart.update();
+    if (this.chart) {
+      this.chart.data.labels = xValues;
+      this.chart.data.datasets[0].data = yValues;
+      this.chart.update();
     }
   }
 
@@ -174,56 +173,80 @@ export class ChartService {
     const yValues = yRange;
     const zValues: number[][] = [];
 
-    for (let i = 0; i < xValues.length; i++) {
+    // Berechne zValues korrekt
+    for (let i = 0; i < yValues.length; i++) {
       zValues[i] = [];
-      for (let j = 0; j < yValues.length; j++) {
-        zValues[i][j] = f(xValues[i], yValues[j]);
+      for (let j = 0; j < xValues.length; j++) {
+        zValues[i][j] = f(xValues[j], yValues[i]); // Reihenfolge korrigiert: x und y
       }
     }
 
     if (isPlatformBrowser(this.platformId)) {
       import('plotly.js-dist-min').then((Plotly) => {
-        const data: Data[] = [{
-          type: 'contour' as const,
-          x: xValues,
-          y: yValues,
-          z: zValues,
-          colorscale: 'Viridis',
-          name: 'Surface'
-        }, {
-          type: 'scatter',
-          mode: 'lines+markers' as const,
-          x: [],
-          y: [],
-          z: [],
-          marker: {
-            size: 8,
-            color: 'red'
-          },
-          line: {
-            color: 'red',
-            width: 2
-          },
-          name: 'Gradient Path'
-        }];
+        // Check if there's already a plot rendered in this element by looking for Plotly attributes
+        const plotExists = element.classList.contains('js-plotly-plot') || 
+                         (element as any)._fullLayout !== undefined;
+        
+        if (plotExists) {
+          // Update the existing plot with new data
+          const update = {
+            x: [xValues],
+            y: [yValues],
+            z: [zValues]
+          };
 
-        const layout = {
-          title: '3D Function Plot',
-          autosize: true,
-          margin: { l: 20, r: 20, b: 40, t: 40 },
-          scene: {
-            camera: {
-              eye: { x: 1.87, y: 0.88, z: 0.64 }
-            }
-          },
-          paper_bgcolor: "#ddd",
-        };
+          Plotly.update(divId, update, {}, [0]); // Update the surface (index 0)
+          
+          // Also clear any existing path
+          Plotly.update(divId, {
+            x: [[]],
+            y: [[]],
+            z: [[]]
+          }, {}, [1]); // Clear the path (index 1)
+        } else {
+          // Create a new plot
+          const data: Data[] = [{
+            type: 'contour' as const,
+            x: xValues,
+            y: yValues,
+            z: zValues,
+            colorscale: 'Viridis',
+            name: 'Surface'
+          }, {
+            type: 'scatter',
+            mode: 'lines+markers' as const,
+            x: [],
+            y: [],
+            z: [],
+            marker: {
+              size: 8,
+              color: 'red'
+            },
+            line: {
+              color: 'red',
+              width: 2
+            },
+            name: 'Gradient Path'
+          }];
 
-        const config = {
-          displayModeBar: false
-        };
+          const layout = {
+            title: '3D Function Plot',
+            autosize: true,
+            margin: { l: 20, r: 20, b: 40, t: 40 },
+            scene: {
+              camera: {
+                eye: { x: 1.87, y: 0.88, z: 0.64 }
+              }
+            },
+            paper_bgcolor: "#ddd",
+          };
 
-        Plotly.newPlot(divId, data, layout, config);
+          const config = {
+            displayModeBar: false
+          };
+
+          Plotly.newPlot(divId, data, layout, config);
+        }
       }).catch(error => {
         console.error('Error loading Plotly or creating plot:', error);
       });

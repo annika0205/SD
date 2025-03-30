@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { GradientDescentService } from './gradient-descent-service';
 import { ChartService } from '../../sorting/services/chart.service'
-//gucken, welche Module wirklich benötigt werden von Plotly
 
 @Component({
   selector: 'app-gradient-descent',
@@ -12,34 +11,36 @@ import { ChartService } from '../../sorting/services/chart.service'
 export class GradientDescentComponent implements AfterViewInit {
   predefinedTexts: string[] = [];
   parameters: string[] = ["-3", "0.8", "30"];
-  inputs: string[] = ["", "", "", "", ""];
-  function: number[] = [0, 0, 1, 0, 0]; //x^2 als startfunktion
-  differential: number[] = [0, 0, 2, 0]; //2x als Startableitung
-  //üblicherweise werte zwischen 10^-1 und 10^-4
-  alpha : number = 0.001;
-  steps : number = 30;
+  inputs: string[] = ["", "", "", "", "", "", ""];  // 7 inputs for quadratic function in 2D
+  function: number[] = [0, 0, 1, 0, 0]; // x^2 as default function for 1D
+  differential: number[] = [0, 0, 2, 0]; // 2x as default derivative for 1D case
+  alpha: number = 0.001;
+  steps: number = 30;
   termination: number = 0.1;
   startX: number = -3;
+  startY: number = -3;  // Add startY for 2D mode
   graphMode: '1D' | '2D' = '1D';
   foundPoint: number | null = null;
   foundPoint2D: {x: number, y: number} | null = null;
-  errorMessage: string | null = null;  // neue Property
+  errorMessage: string | null = null;
   useLineSearch: boolean = false;
   foundAlpha: number | null = null;
   gradientAtPoint: number | null = null;
   gradientAtPoint2D: {x: number, y: number} | null = null;
 
-  //Alpha bestimmen
-  //Backtraking: Alpha wird so lange halbiert, bis f(x1)<f(x0) gilt
   constructor(
     private gradientDescentService: GradientDescentService,
     private chartService: ChartService
-    
   ) {
-    this.updatePredefinedTexts(5); // Initial 5 inputs
+    this.updatePredefinedTexts(5);
   }
   
   ngAfterViewInit() {
+    if (this.graphMode === '1D') {
+      this.function = [0, 0, 1, 0, 0]; // Ensure x^2 is default for 1D
+    } else {
+      this.function = [1, 1, 0, 0, 0]; // x^2 + y^2 as default for 2D
+    }
     this.initializeChart();
     // Only initialize 3D chart if in 2D mode
     if (this.graphMode === '2D') {
@@ -70,19 +71,16 @@ export class GradientDescentComponent implements AfterViewInit {
     
     const xRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
     const yRange = Array.from({length: 50}, (_, i) => -5 + (i * 0.2));
-    const paraboloid = (x: number, y: number) => x*x + y*y;
-    this.chartService.create3DPlot('plot3d', xRange, yRange, paraboloid);
-    
-    // Test path after Plot-Initialization with a delay
-    setTimeout(() => {
-      this.testGradientPath();
-    }, 200);
-  }
 
+    let [x, y, c] = this.seperateFunction2D(this.function);
+    const func = (pos_x: number, pos_y: number) => this.evalFunction2D(pos_x, pos_y, x, y, c);
+    
+    // Create or update the 3D plot
+    this.chartService.create3DPlot('plot3d', xRange, yRange, func);
+  }
+  
   testGradientPath() {
     // Testpunkte für eine Spirale zum Minimum
-    //gefundener Punkt noch ausgeben lassen
-    
     const testPoints = [
       { x: -3.0000, y: -3.0000, z: Math.pow(-3.0000, 2) + Math.pow(-3.0000, 2) },
       { x: -2.4000, y: -2.4000, z: Math.pow(-2.4000, 2) + Math.pow(-2.4000, 2) },
@@ -131,6 +129,15 @@ export class GradientDescentComponent implements AfterViewInit {
   setGraphMode(mode: '1D' | '2D') {
     this.graphMode = mode;
     
+    // Set default function based on mode
+    if (mode === '1D') {
+      this.function = [0, 0, 1, 0, 0]; // x^2 as default for 1D
+      this.inputs = ["", "", "1", "", ""]; // Set inputs to match x^2
+    } else {
+      this.function = [1, 1, 0, 0, 0]; // x^2 + y^2 as default for 2D
+      this.inputs = ["1", "1", "", "", ""]; // Set inputs to match x^2 + y^2
+    }
+    
     // Use setTimeout to ensure the DOM is updated before trying to access elements
     setTimeout(() => {
       if (mode === '1D') {
@@ -139,7 +146,7 @@ export class GradientDescentComponent implements AfterViewInit {
         this.initialize3DChart();
       }
     }, 100);
-    this.updatePredefinedTexts(this.inputs.length)
+    this.updatePredefinedTexts(this.inputs.length);
   }
 
   onClick() {
@@ -155,14 +162,9 @@ export class GradientDescentComponent implements AfterViewInit {
       this.function = this.inputs.map(num => parseInt(num.trim(), 10) || 0);
     }
     
-    
- //   const startX = parseFloat(this.parameters[0]);
- //   const alpha = parseFloat(this.parameters[1]);
- //   const steps = parseInt(this.parameters[2], 10);
-    
-    this.updateChart();
-    
     if (this.graphMode === '1D') {
+      this.updateChart();
+      
       this.gradientDescentService.gradientDescent(
         this.function, 
         this.startX, 
@@ -173,21 +175,33 @@ export class GradientDescentComponent implements AfterViewInit {
           this.foundPoint = point;
           this.gradientAtPoint = this.calculateGradient(point);
         },
-        (error) => this.errorMessage = error,  // neuer callback
-        this.useLineSearch,  // Add this parameter
-        (alpha) => this.foundAlpha = alpha,  // New callback for alpha
+        (error) => this.errorMessage = error,
+        this.useLineSearch,
+        (alpha) => this.foundAlpha = alpha,
         this.termination
       );
     } else {
-      // For 2D case - using dummy data for now
-      // In a real implementation, you would call a 2D version of gradient descent
-      setTimeout(() => {
-        this.foundPoint2D = {x: -0.0432, y: -0.0432};
-        this.gradientAtPoint2D = {x: -2*0.0432, y: -2*0.0432};
-        
-        // This is where you would call your actual 2D gradient descent
-        this.testGradientPath();
-      }, 500);
+      // For 2D mode, reinitialize the 3D chart with the new function
+      this.initialize3DChart();
+      
+      // Call the 2D gradient descent
+      this.gradientDescentService.gradientDescent2D(
+        this.function,
+        { x: this.startX, y: this.startY },  // Use both startX and startY
+        this.alpha,
+        this.steps,
+        this.chartService,
+        (point) => {
+          this.foundPoint2D = point;
+        },
+        (gradient) => {
+          this.gradientAtPoint2D = gradient;
+        },
+        (error) => this.errorMessage = error,
+        this.useLineSearch,
+        (alpha) => this.foundAlpha = alpha,
+        this.termination
+      );
     }
   }
   
@@ -205,9 +219,10 @@ export class GradientDescentComponent implements AfterViewInit {
   
     let terms: string[] = [];
     let termCount = 0;
-    let i = 1;
-  
+    
     if (this.graphMode === '2D') {
+      // For 2D, start with power = 2 (quadratic terms)
+      let i = 2; 
       while (termCount < inputCount - 1) {
         if (termCount < inputCount - 1) {
           terms.push(`x<sup>${i}</sup> +`);
@@ -217,25 +232,25 @@ export class GradientDescentComponent implements AfterViewInit {
           terms.push(`y<sup>${i}</sup> +`);
           termCount++;
         }
-        i++;
+        i--;
+        if (i < 1) break; // Stop at linear terms
       }
     } else {
+      // For 1D, start with highest power and go down
+      let i = inputCount - 1;
       while (termCount < inputCount - 1) {
         terms.push(`x<sup>${i}</sup> +`);
         termCount++;
-        i++;
+        i--;
       }
     }
   
-    this.predefinedTexts = terms.reverse();
+    this.predefinedTexts = terms;
     this.predefinedTexts.push(`x<sup>0</sup>`);
   }
   
-  
-
   onInputCountChanged(newInputs: string[]) {
     this.inputs = newInputs;
-    
   }
   
   onAddInput(inputs: string[]): void {
@@ -251,5 +266,19 @@ export class GradientDescentComponent implements AfterViewInit {
   calculateGradient(x: number): number {
     return this.differential.reduce((acc, val, index) => 
       acc + val * Math.pow(x, this.differential.length-1-index), 0);
+  }
+
+  seperateFunction2D(_func: number[]): [number[], number[], number] {
+    return this.gradientDescentService.parseFunction2D(_func);
+  }
+
+  evalFunction2D(pos_x: number, pos_y: number, x: number[], y: number[], c: number): number {
+    return this.gradientDescentService.evaluateFunction2D(pos_x, pos_y, x, y, c);
+  }
+
+  evalGradient2D(pos_x: number, pos_y: number): {x: number, y: number} {
+    const gradX = this.gradientDescentService.evaluateGradientComponent(pos_x, this.gradientDescentService.differential2D[0]);
+    const gradY = this.gradientDescentService.evaluateGradientComponent(pos_y, this.gradientDescentService.differential2D[1]);
+    return {x: gradX, y: gradY};
   }
 }
