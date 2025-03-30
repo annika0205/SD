@@ -222,19 +222,21 @@ export class GradientDescentComponent implements AfterViewInit {
     
     if (this.graphMode === '2D') {
       // For 2D, start with power = 2 (quadratic terms)
-      let i = 2; 
-      while (termCount < inputCount - 1) {
-        if (termCount < inputCount - 1) {
-          terms.push(`x<sup>${i}</sup> +`);
-          termCount++;
+      if (this.graphMode === '2D') {
+        let i = 1;
+        while (termCount < inputCount - 1) {
+          if (termCount < inputCount - 1) {
+            terms.push(`x<sup>${i}</sup> +`);
+            termCount++;
+          }
+          if (termCount < inputCount - 1) {
+            terms.push(`y<sup>${i}</sup> +`);
+            termCount++;
+          }
+          i++;
         }
-        if (termCount < inputCount - 1) {
-          terms.push(`y<sup>${i}</sup> +`);
-          termCount++;
-        }
-        i--;
-        if (i < 1) break; // Stop at linear terms
       }
+      terms.reverse();
     } else {
       // For 1D, start with highest power and go down
       let i = inputCount - 1;
