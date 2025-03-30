@@ -9,6 +9,8 @@ import { StartpageV2Component } from "./startpage-v2/startpage-v2.component";
 import { SortingComponent } from "./sorting/sorting.component";
 import { AstarComponent } from "./graphs/astar/astar.component";
 import { DijkstraComponent } from "./graphs/dijkstra/dijkstra.component";
+import { MergeSortComponent } from "./sorting/mergesort/mergesort.component";
+import { QuickSortComponent } from "./sorting/quicksort/quicksort.component";
 
 const APP_ROUTES: Routes = [
     {path:'sortieralgorithmen', children: SORTING_ROUTES},
@@ -20,8 +22,8 @@ const APP_ROUTES: Routes = [
     {path:'home', component: StartpageV2Component},
     {path:'bubblesort', component: AlgoExampleComponent},
     {path:'selectionsort', component: AlgoExampleComponent},
-    {path:'mergesort', component: AlgoExampleComponent},
-    {path:'quicksort', component: AlgoExampleComponent},
+    {path:'mergesort', component: MergeSortComponent},
+    {path:'quicksort', component: QuickSortComponent},
     {path:'gradient-descent', component: AlgoExampleComponent},
     {path:'dijkstra', component: DijkstraComponent},
     {path:'astar', component: AstarComponent}

@@ -22,6 +22,7 @@ import { StartpageV2Component } from './startpage-v2/startpage-v2.component';
 import { AppServerModule } from './app.module.server';
 import { AstarComponent } from './graphs/astar/astar.component';
 import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
+import { QuickSortComponent } from './sorting/quicksort/quicksort.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { DijkstraComponent } from './graphs/dijkstra/dijkstra.component';
     BubblesortComponent,
     StartpageV2Component,
     AstarComponent,
-    DijkstraComponent
+    DijkstraComponent,
+    QuickSortComponent
   ],
   imports: [
     BrowserModule,
