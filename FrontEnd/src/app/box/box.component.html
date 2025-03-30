@@ -12,7 +12,7 @@
 <div class="algorithm-box standard-card" 
      [class]="class" 
      [class.expanded]="isExpanded"
-     (click)="onBoxClick()">
+    >
     <div class="box-header" (click)="toggleExpand($event)">
       <h2>{{ title }}
         <span class="search-icon" (click)="onSearchClick($event)">
@@ -27,7 +27,8 @@
       <ul class="algorithm-list" *ngIf="!isExpanded">
         <li *ngFor="let item of items; let i = index" 
             [ngClass]="{'bg-gray': i % 2 !== 0}"
-            class="clickableList">
+            class="clickableList"
+            (click)="onClickAlgo(i, $event)">
           <span class="algorithm-name">{{ item.items }}</span>
           <span class="description">{{ item.description }}</span>
         </li>

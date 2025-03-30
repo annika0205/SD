@@ -21,5 +21,117 @@ header{
  }
 
  .logo:hover {
-    background-color: rgba(45, 14, 218, 0.171);
+    background-color:  rgba(168, 85, 247, 0.1);
+}
+
+.header-container {
+    width: 100%;
+    position: relative;
+}
+
+.login-container {
+    position: absolute;
+    right: 3%;
+    display: flex;
+}
+
+.icon-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+}
+
+.icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55px;
+    height: 55px;
+    background-color: rgba(168, 85, 247, 0.1); 
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.icon-wrapper:hover::before {
+    opacity: 1;
+}
+
+.login-icon {
+    position: relative;
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+}
+
+.login-form {
+    position: absolute;
+    right: 10px;
+    top: 100%;
+    padding: 24px;  
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; 
+    width: 320px;   
+    margin-top: 10px; 
+}
+
+
+.login-input {
+    display: block;
+    width: 100%;
+    padding: 12px;  
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 12px; 
+    font-size: 14px;  
+    box-sizing: border-box; 
+}
+
+.login-button {
+    display: block;
+    width: 100%;
+    padding: 12px 16px; 
+    border: none;
+    border-radius: 4px;
+    background-color: #6b46c1;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;    
+    margin-bottom: 12px;
+}
+
+.login-button:hover {
+    background-color: #553c9a;
+}
+
+.toggle-button {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #6b46c1;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #6b46c1;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #6b46c1;
+    color: white;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 14px;
+    padding: 8px;
+    background-color: #fee2e2;
+    border-radius: 4px;
+    text-align: center;
 }

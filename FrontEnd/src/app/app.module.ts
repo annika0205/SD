@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SortingComponent } from './sorting/sorting.component';
@@ -13,7 +14,6 @@ import { routing } from './app.routing';
 import { StartpageComponent } from './startpage/startpage.component';
 import { SelectionSortComponent } from './sorting/selection-sort/selection-sort.component';
 import { MergeSortComponent } from './sorting/mergesort/mergesort.component';
-import { FormsModule } from '@angular/forms';
 import { AlgoExampleComponent } from './algo-example/algo-example.component';
 import { TemplateSortingComponent } from './sorting/template-sorting/template-sorting.component';
 import { GradientDescentComponent } from './optimizing/gradient-descent/gradient-descent.component';
@@ -46,7 +46,10 @@ import { AppServerModule } from './app.module.server';
     FormsModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideHttpClient(
+      withInterceptorsFromDi()
+    )
   ],
   bootstrap: [AppComponent]
 })

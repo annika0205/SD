@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 interface SuchErgebnis {
   algorithmusName: string;  // Geändert von titel zu algorithmusName für mehr Klarheit
@@ -17,6 +18,7 @@ export class StartpageComponent {
 
   suchBegriff: string = '';
   suchergebnisse: SuchErgebnis[] = [];
+  username: string | null = null;
 
   boxes = [
     { title:'Sortieralgorithmen', 
@@ -24,25 +26,20 @@ export class StartpageComponent {
         {items: 'Bubblesort', description: 'Ein einfacher Sortieralgorithmus, der benachbarte Elemente vertauscht, wenn sie in der falschen Reihenfolge sind.'},
         { items: 'Mergesort', description: 'Ein effizienter, auf Teilen-und-Herrsche basierender Sortieralgorithmus.' },
         { items: 'Quicksort', description: 'Ein schneller, rekursiver Sortieralgorithmus, der ein Pivot-Element verwendet.' },
-        { items: 'Selectionsort', description: 'beschreibung selectionsort' }
+        { items: 'Selectionsort', description: 'Ein einfacher Sortieralgorithmus, der wiederholt das kleinste Element findet und an die richtige Position setzt.' }
       ] },
 
     { 
       title: 'Optimierungsalgorithmen', 
       algorithms: [  // Änderung von items zu algorithms
-        {items: 'Item 2.1', description: 'jajaj'},
-        {items: 'Item 2.2', description: 'nenenen'},
-        {items: 'Item 2.3', description: 'dochdoch doch'},
-        {items: 'Item 2.4', description: 'bliblablub'}
+        {items: 'Gradient-Descent', description: 'Ein Optimierungsalgorithmus, der durch schrittweise Bewegung in Richtung des steilsten Abstiegs ein lokales Minimum findet.'}
       ] 
     },
     { 
       title: 'Kürzester-Weg-Algorithmen', 
       algorithms: [  // Änderung von items zu algorithms
-        {items: 'Dijkstra', description: 'furzknoten'},
-        {items: 'A*', description: 'huhuuhu'},
-        {items: 'Item 3.3', description: 'hihih'},
-        {items: 'Item 3.4', description: 'hahaha'}
+        {items: 'Dijkstra', description: 'Ein Graphalgorithmus, der den kürzesten Weg von einem Startknoten zu allen anderen Knoten durch schrittweise Distanzaktualisierung findet.'},
+        {items: 'A*', description: 'Ein Pfadfindungsalgorithmus, der durch Kombination von realen und geschätzten Kosten den besten Weg findet.'}
       ] 
     }
   ];
@@ -51,13 +48,34 @@ export class StartpageComponent {
     'Bubblesort': 'bubblesort',
     'Selectionsort': 'selectionsort',
     'Mergesort': 'mergesort',
-    'Quicksort': 'quicksort'
+    'Quicksort': 'quicksort',
+    'Gradient-Descent': 'gradient-descent',
+    'Dijkstra': 'dijkstra',
+    'A*': 'a*'
   };
 
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    this.authService.user$.subscribe(user => {
+      this.username = user?.username || null;
+    });
+  }
 
   getCategoryClass(index: number): string {
+    
+    let baseClasses = 'category-box';
+    if (!this.username && index > 0) {
+      baseClasses += ' disabled-category';
+    }
+    
+    return baseClasses;
+
     switch(index) {
       case 0: return 'category-sorting';
       case 1: return 'category-search';
@@ -67,6 +85,10 @@ export class StartpageComponent {
   }
 
   onNavigate(index: number) {
+    if (!this.username && index > 0) {
+      return;
+    }
+    
     const routes = [
       '/sortieralgorithmen',
       '/optimierungsalgorithmen',
@@ -74,6 +96,17 @@ export class StartpageComponent {
     ];
    
     this.router.navigate([routes[index]], { state: { items: this.boxes[index].algorithms } });
+  }
+
+  onNavigateToAlgo(index: number) {
+    const routes = [
+      'bubblesort',
+      'selectionsort',
+      'mergesort',
+      'quicksort'
+    ];
+    //[routes[index]]
+    this.router.navigate([routes[0]], { relativeTo: this.route });
   }
 
   suchen(event: Event) {

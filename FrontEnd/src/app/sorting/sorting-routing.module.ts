@@ -4,9 +4,10 @@ import { SelectionSortComponent } from "./selection-sort/selection-sort.componen
 import { SortingStartComponent } from "./sorting-start.component";
 import { StableComponent } from "./stable/stable.component";
 import { BubblesortComponent } from "./bubblesort/bubblesort.component";
+import { SortingComponent } from "./sorting.component";
 
 export const SORTING_ROUTES: Routes = [
-  {path:'', component: SortingStartComponent},
+  {path:'', component: SortingComponent},
   {path:'selection-sort', component: SelectionSortComponent},
   {path:'mergesort', component: MergeSortComponent},
   {path:'stable', component: StableComponent},

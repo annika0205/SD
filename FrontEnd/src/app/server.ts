@@ -1,14 +1,26 @@
+import express, { Express, Request, Response, NextFunction } from 'express';
+import cors from 'cors'; // Import the cors package
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
-import express from 'express';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
-import AppServerModule from '../main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
+const AppServerModule = require('../main.server').default;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
 export function app(): express.Express {
   const server = express();
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+  const serverDistFolder = __dirname;
+
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
 
@@ -17,28 +29,58 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }));
+  // Middleware
+  server.use(express.json());
 
-  // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
+  // Enable CORS for all routes
+  server.use(cors()); // Add this line to allow cross-origin requests
 
-    commonEngine
-      .render({
-        bootstrap: AppServerModule,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: browserDistFolder,
-        providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
+  const users: User[] = [];
+
+  server.post("/register", (req: Request, res: Response) => {
+    console.log("Register request received", req.body);
+    const { username, password, email } = req.body;
+    if (!username || !password || !email) {
+      return res.status(400).json({ message: 'Username, password, and email are required' });
+    }
+    const userExists = users.some(user => user.username === username || user.email === email);
+    if (userExists) {
+      return res.status(400).json({ message: 'Username or email already exists' });
+    }
+    const userId = Date.now().toString();
+    const newUser: User = { id: userId, username, email, password };
+    users.push(newUser);
+    const token = `token_${userId}_${Date.now()}`;
+    console.log("User registered successfully", newUser);
+    return res.status(201).json({ token, userId });
+  });
+
+  server.post("/login", (req: Request, res: Response) => {
+    console.log("Login attempt", req.body);
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+    const user = users.find(u => u.username === username && u.password === password);
+    if (!user) {
+      console.log("Login failed for", username);
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    const token = `token_${user.id}_${Date.now()}`;
+    console.log("Login successful for", username);
+    return res.status(200).json({ token, userId: user.id });
+  });
+
+  server.get('/api/algorithms', (req: Request, res: Response) => {
+    console.log("Algorithms API requested");
+    res.json([ 
+      { category: 'Sortieralgorithmen', algorithms: [{ name: 'Bubblesort', description: 'Ein einfacher Sortieralgorithmus' }] }
+    ]);
+  });
+
+  server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error("Error occurred:", err);
+    res.status(500).json({ message: 'Internal Server Error' });
   });
 
   return server;
@@ -47,7 +89,6 @@ export function app(): express.Express {
 function run(): void {
   const port = process.env['PORT'] || 4000;
 
-  // Start up the Node server
   const server = app();
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
