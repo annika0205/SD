@@ -1,0 +1,13 @@
+{
+  "routes": [
+    "/",
+    "/kürzesterweg",
+    "/optimierungsalgorithmen",
+    "/optimierungsalgorithmen/gradientdescent",
+    "/sortieralgorithmen",
+    "/sortieralgorithmen/bubblesort",
+    "/sortieralgorithmen/mergesort",
+    "/sortieralgorithmen/quicksort",
+    "/sortieralgorithmen/selectionsort"
+  ]
+}

@@ -51,7 +51,7 @@ export class StartpageComponent {
     'Quicksort': 'sortieralgorithmen/quicksort',
     'Gradient-Descent': 'optimierungsalgorithmen/gradient-descent',
     'Dijkstra': 'kürzesterweg/dijkstra',
-    'A*': 'a*'
+    'A*': 'kürzesterweg/astar'
   };
 
 
