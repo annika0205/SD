@@ -54,6 +54,15 @@ export class MergeSortComponent implements OnInit {
     this.numbers = Array(this.inputValues.length).fill(0).map(() => Math.floor(Math.random() * 100) + 1);
     this.inputValues = this.numbers.map(n => n.toString());
     this.resetSteps();
+
+    const validNumbers = this.numbers.filter(n => n !== undefined && !isNaN(n));
+    
+    if (validNumbers.length === 0) {
+      console.log("Bitte geben Sie mindestens eine Zahl ein.");
+    }
+    else {
+      this.originalArray = [...validNumbers];
+    }
   }
 
   addInputField(): void {

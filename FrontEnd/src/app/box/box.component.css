@@ -144,7 +144,7 @@
     transform: scale(1.05);
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.5);
 }
-
+*/
 .clickableList {
     font-size: 40px;
     font-weight: bold;
@@ -155,4 +155,4 @@
 .clickableList:hover {
     transform: scale(1.005);
     background-color: rgba(0, 0, 0, 0.4);
-} */
+}

@@ -26,7 +26,6 @@ export class BoxComponent {
   constructor(private router: Router) {}
 
   toggleExpand(event: Event) {
-    event.stopPropagation();
     this.isExpanded = !this.isExpanded;
   }
 

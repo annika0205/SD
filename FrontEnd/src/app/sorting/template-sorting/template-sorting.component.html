@@ -22,20 +22,6 @@
       <button>schrittweise {{action_button}}</button>
     </div>
   </div>
-  
-  <div class="template-navigation">
-    <div class="template-nav-item prev" (click)="goToPreviousAlgo()">
-      <span class="template-arrow">←</span>
-      <span class="template-name">{{getPreviousAlgo()}}</span>
-    </div>
-    <div class="template-current">
-      <span class="template-name">{{getCurrentAlgo()}}</span>
-    </div>
-    <div class="template-nav-item next" (click)="goToNextAlgo()">
-      <span class="template-name">{{getNextAlgo()}}</span>
-      <span class="template-arrow">→</span>
-    </div>
-  </div>
 
   <div class="template-sidebar" [class.open]="sidebarOpen">
     <div class="template-sidebar-title" (click)="toggleSidebar()">
