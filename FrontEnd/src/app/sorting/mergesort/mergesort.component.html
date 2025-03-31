@@ -4,8 +4,8 @@
       <div class="mergesort-container">
         <div class="visualization-area">
           <!-- Original Array Display -->
-          <div class="array-section" *ngIf="originalArray.length > 0">
-            <h3 class="section-title">Original:</h3>
+          <div class="array-section" *ngIf="originalArray.length >= 0">
+            <h3 class="section-title">Start:</h3>
             <div class="array-row">
               <div class="array-element" *ngFor="let num of originalArray">{{ num }}</div>
             </div>
