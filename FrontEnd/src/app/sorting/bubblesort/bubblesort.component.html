@@ -1,4 +1,5 @@
-<app-template-sorting [description]="'Beschreibungstext'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
+<app-template-sorting [description]="'Bubblesort ist ein einfacher, aber ineffizienter Sortieralgorithmus, der wiederholt benachbarte Elemente eines Arrays vergleicht und vertauscht, wenn sie in der falschen Reihenfolge stehen. Dies wird so lange wiederholt, bis keine Vertauschungen mehr nötig sind, wodurch das größte verbleibende Element bei jedem Durchlauf nach oben blubbert. 
+Worst Case: 𝑂(𝑛^2) '" [action_button] = "'Sortieren'" (sortClicked)="onClick()" (inputsEvent)="inputs=$event">
 
   <div style="display: flex; justify-content: center;">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin: 10px 0; width: fit-content;">
