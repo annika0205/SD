@@ -2,6 +2,8 @@
   "routes": [
     "/",
     "/kürzesterweg",
+    "/kürzesterweg/astar",
+    "/kürzesterweg/dijkstra",
     "/optimierungsalgorithmen",
     "/optimierungsalgorithmen/gradientdescent",
     "/sortieralgorithmen",
