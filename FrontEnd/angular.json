@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "../docs",
+            "outputPath": "https://github.com/annika0205/SD/tree/frontend/FrontEnd/docs",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "externalDependencies": ["cors", "express"],

@@ -1,0 +1,20 @@
+{
+  "routes": [
+    "/",
+    "/bubblesort",
+    "/dijkstra",
+    "/gradient-descent",
+    "/home",
+    "/kürzesterweg",
+    "/mergesort",
+    "/optimierungsalgorithmen",
+    "/optimierungsalgorithmen/gradientdescent",
+    "/quicksort",
+    "/selectionsort",
+    "/sortieralgorithmen",
+    "/sortieralgorithmen/bubblesort",
+    "/sortieralgorithmen/mergesort",
+    "/sortieralgorithmen/selection-sort",
+    "/sortieralgorithmen/stable"
+  ]
+}

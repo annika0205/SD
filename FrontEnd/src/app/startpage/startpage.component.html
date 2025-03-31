@@ -94,7 +94,7 @@
 </div>
 
 <div class="container" >
-     <app-box *ngFor="let box of boxes; let index= index" 
+  <app-box *ngFor="let box of boxes; let index= index" 
      [title]="box.title" 
      [items]="box.algorithms" 
      [class]="getCategoryClass(index)" 
@@ -103,8 +103,8 @@
      class="app-box category-container" >
      <div *ngIf="!username && index > 0" class="login-required-overlay">
       Login erforderlich
-  </div>
-</app-box>
+     </div>
+  </app-box>
 </div>
 
 
